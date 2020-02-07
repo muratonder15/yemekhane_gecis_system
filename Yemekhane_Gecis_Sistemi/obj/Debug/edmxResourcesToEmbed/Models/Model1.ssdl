@@ -1,0 +1,213 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="YEMEKHANEModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="birimler">
+    <Key>
+      <PropertyRef Name="birim_id" />
+    </Key>
+    <Property Name="birim_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="birim_adi" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="gecis_loglari">
+    <Key>
+      <PropertyRef Name="log_id" />
+    </Key>
+    <Property Name="log_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="kullanici_id" Type="int" />
+    <Property Name="kart_id" Type="int" />
+    <Property Name="islem_tipi_id" Type="int" />
+    <Property Name="islem_sonuc_id" Type="int" />
+    <Property Name="ucret" Type="nvarchar" MaxLength="15" />
+    <Property Name="kalan_bakiye" Type="nvarchar" MaxLength="15" />
+    <Property Name="mesaj" Type="nvarchar" MaxLength="50" />
+    <Property Name="kayit_tarihi" Type="date" />
+  </EntityType>
+  <EntityType Name="islem_sonuc">
+    <Key>
+      <PropertyRef Name="sonuc_id" />
+    </Key>
+    <Property Name="sonuc_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="islem_mesaji" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="islem_tipleri">
+    <Key>
+      <PropertyRef Name="islem_tipi_id" />
+    </Key>
+    <Property Name="islem_tipi_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="islem_adi" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="kart_bilgileri">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="kullanici_id" Type="int" />
+    <Property Name="kart_no" Type="nvarchar" MaxLength="8" />
+    <Property Name="kart_tipi_id" Type="int" />
+    <Property Name="bakiye" Type="nvarchar" MaxLength="25" />
+    <Property Name="kayit_tarihi" Type="date" />
+  </EntityType>
+  <EntityType Name="kart_tipleri">
+    <Key>
+      <PropertyRef Name="kart_tipi_id" />
+    </Key>
+    <Property Name="kart_tipi_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="kart_tipi" Type="nvarchar" MaxLength="50" />
+    <Property Name="ucret" Type="nvarchar" MaxLength="15" />
+    <Property Name="kayit_tarihi" Type="date" />
+    <Property Name="guncelleme_tarihi" Type="date" />
+  </EntityType>
+  <EntityType Name="kullanicilar">
+    <Key>
+      <PropertyRef Name="kullanici_id" />
+    </Key>
+    <Property Name="kullanici_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="kullanici_adi" Type="nvarchar" MaxLength="25" />
+    <Property Name="sifre" Type="nvarchar" MaxLength="20" />
+    <Property Name="ad" Type="nvarchar" MaxLength="30" />
+    <Property Name="soyad" Type="nvarchar" MaxLength="30" />
+    <Property Name="email" Type="nvarchar" MaxLength="25" />
+    <Property Name="tc" Type="nvarchar" MaxLength="11" />
+    <Property Name="kayit_tarihi" Type="date" />
+    <Property Name="guncelleme_tarihi" Type="date" />
+  </EntityType>
+  <EntityType Name="ucretler">
+    <Key>
+      <PropertyRef Name="ucret_id" />
+    </Key>
+    <Property Name="ucret_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="kart_tipi_id" Type="int" />
+    <Property Name="ucret" Type="nvarchar" MaxLength="10" />
+    <Property Name="kayit_tarihi" Type="date" />
+    <Property Name="guncelleme_tarihi" Type="date" />
+  </EntityType>
+  <EntityType Name="unvanlar">
+    <Key>
+      <PropertyRef Name="unvan_id" />
+    </Key>
+    <Property Name="unvan_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="unvan_adi" Type="nvarchar" MaxLength="25" />
+  </EntityType>
+  <Association Name="FK_gecis_loglari_islem_sonuc">
+    <End Role="islem_sonuc" Type="Self.islem_sonuc" Multiplicity="0..1" />
+    <End Role="gecis_loglari" Type="Self.gecis_loglari" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="islem_sonuc">
+        <PropertyRef Name="sonuc_id" />
+      </Principal>
+      <Dependent Role="gecis_loglari">
+        <PropertyRef Name="islem_sonuc_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_gecis_loglari_islem_tipleri">
+    <End Role="islem_tipleri" Type="Self.islem_tipleri" Multiplicity="0..1" />
+    <End Role="gecis_loglari" Type="Self.gecis_loglari" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="islem_tipleri">
+        <PropertyRef Name="islem_tipi_id" />
+      </Principal>
+      <Dependent Role="gecis_loglari">
+        <PropertyRef Name="islem_tipi_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_gecis_loglari_kart_bilgileri">
+    <End Role="kart_bilgileri" Type="Self.kart_bilgileri" Multiplicity="0..1" />
+    <End Role="gecis_loglari" Type="Self.gecis_loglari" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="kart_bilgileri">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="gecis_loglari">
+        <PropertyRef Name="kart_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_gecis_loglari_kullanicilar">
+    <End Role="kullanicilar" Type="Self.kullanicilar" Multiplicity="0..1" />
+    <End Role="gecis_loglari" Type="Self.gecis_loglari" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="kullanicilar">
+        <PropertyRef Name="kullanici_id" />
+      </Principal>
+      <Dependent Role="gecis_loglari">
+        <PropertyRef Name="kullanici_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_kart_bilgileri_kart_bilgileri">
+    <End Role="kart_tipleri" Type="Self.kart_tipleri" Multiplicity="0..1" />
+    <End Role="kart_bilgileri" Type="Self.kart_bilgileri" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="kart_tipleri">
+        <PropertyRef Name="kart_tipi_id" />
+      </Principal>
+      <Dependent Role="kart_bilgileri">
+        <PropertyRef Name="kart_tipi_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_kart_bilgileri_kullancilar">
+    <End Role="kullanicilar" Type="Self.kullanicilar" Multiplicity="0..1" />
+    <End Role="kart_bilgileri" Type="Self.kart_bilgileri" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="kullanicilar">
+        <PropertyRef Name="kullanici_id" />
+      </Principal>
+      <Dependent Role="kart_bilgileri">
+        <PropertyRef Name="kullanici_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ucretler_kart_tipleri">
+    <End Role="kart_tipleri" Type="Self.kart_tipleri" Multiplicity="0..1" />
+    <End Role="ucretler" Type="Self.ucretler" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="kart_tipleri">
+        <PropertyRef Name="kart_tipi_id" />
+      </Principal>
+      <Dependent Role="ucretler">
+        <PropertyRef Name="kart_tipi_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="YEMEKHANEModelStoreContainer">
+    <EntitySet Name="birimler" EntityType="Self.birimler" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="gecis_loglari" EntityType="Self.gecis_loglari" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="islem_sonuc" EntityType="Self.islem_sonuc" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="islem_tipleri" EntityType="Self.islem_tipleri" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="kart_bilgileri" EntityType="Self.kart_bilgileri" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="kart_tipleri" EntityType="Self.kart_tipleri" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="kullanicilar" EntityType="Self.kullanicilar" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ucretler" EntityType="Self.ucretler" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="unvanlar" EntityType="Self.unvanlar" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_gecis_loglari_islem_sonuc" Association="Self.FK_gecis_loglari_islem_sonuc">
+      <End Role="islem_sonuc" EntitySet="islem_sonuc" />
+      <End Role="gecis_loglari" EntitySet="gecis_loglari" />
+    </AssociationSet>
+    <AssociationSet Name="FK_gecis_loglari_islem_tipleri" Association="Self.FK_gecis_loglari_islem_tipleri">
+      <End Role="islem_tipleri" EntitySet="islem_tipleri" />
+      <End Role="gecis_loglari" EntitySet="gecis_loglari" />
+    </AssociationSet>
+    <AssociationSet Name="FK_gecis_loglari_kart_bilgileri" Association="Self.FK_gecis_loglari_kart_bilgileri">
+      <End Role="kart_bilgileri" EntitySet="kart_bilgileri" />
+      <End Role="gecis_loglari" EntitySet="gecis_loglari" />
+    </AssociationSet>
+    <AssociationSet Name="FK_gecis_loglari_kullanicilar" Association="Self.FK_gecis_loglari_kullanicilar">
+      <End Role="kullanicilar" EntitySet="kullanicilar" />
+      <End Role="gecis_loglari" EntitySet="gecis_loglari" />
+    </AssociationSet>
+    <AssociationSet Name="FK_kart_bilgileri_kart_bilgileri" Association="Self.FK_kart_bilgileri_kart_bilgileri">
+      <End Role="kart_tipleri" EntitySet="kart_tipleri" />
+      <End Role="kart_bilgileri" EntitySet="kart_bilgileri" />
+    </AssociationSet>
+    <AssociationSet Name="FK_kart_bilgileri_kullancilar" Association="Self.FK_kart_bilgileri_kullancilar">
+      <End Role="kullanicilar" EntitySet="kullanicilar" />
+      <End Role="kart_bilgileri" EntitySet="kart_bilgileri" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ucretler_kart_tipleri" Association="Self.FK_ucretler_kart_tipleri">
+      <End Role="kart_tipleri" EntitySet="kart_tipleri" />
+      <End Role="ucretler" EntitySet="ucretler" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

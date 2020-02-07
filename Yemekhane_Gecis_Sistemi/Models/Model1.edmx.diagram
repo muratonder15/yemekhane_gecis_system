@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="fac8a3c9341b4878a6fbebce47e4ca20" Name="Diagram1" ZoomLevel="64">
+        <EntityTypeShape EntityType="YEMEKHANEModel.birimler" Width="1.5" PointX="7.75" PointY="2.75" />
+        <EntityTypeShape EntityType="YEMEKHANEModel.gecis_loglari" Width="1.5" PointX="5.25" PointY="4.5" />
+        <EntityTypeShape EntityType="YEMEKHANEModel.islem_sonuc" Width="1.5" PointX="3" PointY="11.75" />
+        <EntityTypeShape EntityType="YEMEKHANEModel.islem_tipleri" Width="1.5" PointX="3" PointY="2.375" />
+        <EntityTypeShape EntityType="YEMEKHANEModel.kart_bilgileri" Width="1.5" PointX="3" PointY="5" />
+        <EntityTypeShape EntityType="YEMEKHANEModel.kart_tipleri" Width="1.5" PointX="0.75" PointY="5.125" />
+        <EntityTypeShape EntityType="YEMEKHANEModel.kullanicilar" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="YEMEKHANEModel.ucretler" Width="1.5" PointX="3" PointY="8.75" />
+        <EntityTypeShape EntityType="YEMEKHANEModel.unvanlar" Width="1.5" PointX="7.75" PointY="5.75" />
+        <AssociationConnector Association="YEMEKHANEModel.FK_gecis_loglari_islem_sonuc" />
+        <AssociationConnector Association="YEMEKHANEModel.FK_gecis_loglari_islem_tipleri" />
+        <AssociationConnector Association="YEMEKHANEModel.FK_gecis_loglari_kart_bilgileri" />
+        <AssociationConnector Association="YEMEKHANEModel.FK_gecis_loglari_kullanicilar" />
+        <AssociationConnector Association="YEMEKHANEModel.FK_kart_bilgileri_kart_bilgileri" />
+        <AssociationConnector Association="YEMEKHANEModel.FK_kart_bilgileri_kullancilar" />
+        <AssociationConnector Association="YEMEKHANEModel.FK_ucretler_kart_tipleri" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

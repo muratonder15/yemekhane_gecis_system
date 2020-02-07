@@ -1,0 +1,28 @@
+﻿@model Yemekhane_Gecis_Sistemi.ViewModels.Birimler
+@{
+    ViewBag.Title = "Birim Ekle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("BirimEkle", "Home", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    <div class="alert alert-success" role="alert">
+        @Model.KullaniciMesaji
+    </div>
+    <div class="form-group">
+
+        <label for="default" class="col-sm-1 control-label">Birim Adı</label>
+        <div class="col-sm-5">
+            @Html.TextBoxFor(x => x.BirimAdi, new { @class = "form-control", @placeholder = "Birim Adını Giriniz" })
+            @Html.ValidationMessageFor(x => x.BirimAdi)
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-1 col-sm-5">
+            <button type="submit" class="btn btn-primary">Kaydet</button>
+
+        </div>
+
+    </div>
+}
+

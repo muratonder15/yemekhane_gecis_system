@@ -1,0 +1,68 @@
+﻿@using Yemekhane_Gecis_Sistemi.Models
+@model kart_bilgileri
+@{
+    ViewBag.Title = "Bakiye Yükleme Sayfası ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+    <script language="Javascript">
+       <!--
+        function isNumberKey(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            if (charCode != 44 && charCode > 31
+                && (charCode < 48 || charCode > 57))
+                return false;
+
+            return true;
+        }
+           //-->
+    </script>
+@using (Html.BeginForm("BakiyeYukle", "Home", FormMethod.Post))
+{
+    <div class="form-group">
+
+        @Html.TextBoxFor(x => x.kullanicilar.tc, new { @class = "form-control", @type="number" })<br />
+        <input type="submit" class="btn btn-success" value="bul" />
+
+
+    </div>
+}
+@if (Model != null)
+{
+    using (Html.BeginForm("BakiyeYukle", "Home", FormMethod.Post))
+    {
+
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <td>@Model.kullanici_id</td>
+                </tr>
+                <tr>
+                    <th>ad</th>
+                    <td>@Model.kullanicilar.ad</td>
+                </tr>
+                <tr>
+                    <th>soyad</th>
+                    <td>@Model.kullanicilar.soyad</td>
+                </tr>
+                <tr>
+                    <th>bakiye</th>
+                    <td>@Model.bakiye TL</td>
+                </tr>
+
+            </thead>
+
+        </table>
+        @Html.HiddenFor(x => x.kullanicilar.tc, new { @class = "form-control" })
+        <br />
+        @Html.LabelFor(x => x.bakiye)
+        <div class="form-group">
+
+            @Html.TextBoxFor(x => x.bakiye, new { @class = "form-control", @onkeypress="return isNumberKey(event)" })
+            <br />
+            <input type="submit" class="btn btn-success" value="bakiye yükle" />
+        </div>
+        
+
+    }
+}

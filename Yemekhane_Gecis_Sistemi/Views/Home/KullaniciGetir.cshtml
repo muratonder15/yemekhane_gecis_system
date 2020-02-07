@@ -1,0 +1,84 @@
+﻿@using Yemekhane_Gecis_Sistemi.Models
+@model Yemekhane_Gecis_Sistemi.Models.kart_bilgileri
+@{
+    ViewBag.Title = "KullaniciGetir";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>KullaniciGuncelle</h2>
+
+
+    @using (Html.BeginForm("Guncelle", "Home", FormMethod.Post))
+    {
+<div class="form-group">
+
+    <div class="form-group">
+
+
+        <div>
+            @Html.LabelFor(x => x.kullanici_id)
+            @Html.TextBoxFor(x => x.kullanici_id, new { @class = "form-control", @placeholder = "ID No Giriniz" })
+
+        </div>
+    </div>
+
+    <div class="form-group">
+
+
+        <div>
+            @Html.LabelFor(x => x.kullanicilar.tc)
+            @Html.TextBoxFor(x => x.kullanicilar.tc, new { @class = "form-control", @placeholder = "Tc Kimlik No Giriniz" })
+
+        </div>
+    </div>
+
+    <div class="form-group">
+
+        <div>
+            @Html.LabelFor(x => x.kullanicilar.ad)
+            @Html.TextBoxFor(x => x.kullanicilar.ad, new { @class = "form-control", @placeholder = "Ad Giriniz" })
+
+        </div>
+    </div>
+    <div class="form-group">
+
+        <div>
+            @Html.LabelFor(x => x.kullanicilar.soyad)
+            @Html.TextBoxFor(x => x.kullanicilar.soyad, new { @class = "form-control", @placeholder = "Soyad Giriniz" })
+
+        </div>
+    </div>
+
+    <div class="form-group">
+
+        <div>
+            @Html.LabelFor(x => x.kullanicilar.email)
+            @Html.TextBoxFor(x => x.kullanicilar.email, new { @class = "form-control", @placeholder = "Email Giriniz" })
+
+        </div>
+    </div>
+    <div class="form-group">
+
+        <div>
+            @Html.LabelFor(x => x.kart_tipi_id)
+            @Html.DropDownListFor(x =>x.kart_tipi_id,new List<SelectListItem> (ViewBag.kartList) ,new { @class = "form-control" })
+            
+
+        </div>
+    </div>
+
+    <div class="form-group">
+
+        <div>
+            @Html.LabelFor(x => x.kart_no)
+            @Html.TextBoxFor(x => x.kart_no, new { @class = "form-control", @placeholder = "Kart No Giriniz" })
+
+        </div>
+    </div>
+    <br />
+    <div class="form-group">
+        <button class="btn btn-warning">Güncelle</button>
+    </div>
+
+</div>
+    }

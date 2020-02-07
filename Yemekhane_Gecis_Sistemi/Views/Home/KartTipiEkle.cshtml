@@ -1,0 +1,35 @@
+﻿@model Yemekhane_Gecis_Sistemi.ViewModels.KartTipiBilgileri
+@{
+    ViewBag.Title = "Kart Tipi Ekle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("KartTipiEkle", "Home", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    <div class="alert alert-success" role="alert">
+        @Model.KullaniciMesaji
+    </div>
+    <div class="form-group">
+
+        <label for="default" class="col-sm-1 control-label">Kart Tipi Adı</label>
+        <div class="col-sm-5">
+            @Html.TextBoxFor(x => x.KartTipi, new { @class = "form-control", @placeholder = "Kart Tipi Giriniz" })
+            @Html.ValidationMessageFor(x => x.KartTipi)
+        </div>
+    </div>
+    <div class="form-group">
+
+        <label for="default" class="col-sm-1 control-label">Ücret</label>
+        <div class="col-sm-5">
+            @Html.TextBoxFor(x => x.Ucret, new { @class = "form-control", @placeholder = "Ücret Giriniz" })
+            @Html.ValidationMessageFor(x => x.Ucret)
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-1 col-sm-5">
+            <button type="submit" class="btn btn-primary">Kaydet</button>
+
+        </div>
+
+    </div>
+}
