@@ -88,6 +88,12 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
             return View(model);
         }
 
+        public ActionResult BirimListesi()
+        {
+            var model = db.birimler.ToList();
+            return View(model);
+        }
+
         public ActionResult UnvanEkle()
         {
             Unvanlar model = new Unvanlar();
@@ -107,14 +113,25 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
             return View(model);
         }
 
+        public ActionResult UnvanListesi()
+        {
+            var model = db.unvanlar.ToList();
+            return View(model);
+
+        }
+
         public ActionResult IslemLog()
         {
             return View();
         }
         [HttpPost]
-        public ActionResult IslemLog(string model)
+        public ActionResult IslemLog(kullanicilar model)
         {
-            return View(model);
+            var kullanici_id = (from a in db.kullanicilar where a.tc == model.tc select a.kullanici_id).FirstOrDefault();
+            var gecis_loglari_model = (from a in db.gecis_loglari where a.kullanici_id == kullanici_id select a).ToList();
+
+            
+            return View(gecis_loglari_model);
         }
         public ActionResult KullaniciListele()
         {
@@ -227,9 +244,11 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
 
         public ActionResult KartTipiEkle()
         {
+            KartTipiBilgileri model = new KartTipiBilgileri();
+            model.KullaniciMesaji = "";
             //KartTipiBilgileri model = new KartTipiBilgileri();
             //return View(model);
-            return View();
+            return View(model);
         }
         [HttpPost]
         public ActionResult KartTipiEkle(KartTipiBilgileri model)
@@ -244,6 +263,30 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
             db.SaveChanges();
             model.KullaniciMesaji = "Kart Tipi Başarıyla Eklendi";
             return View(model);
+        }
+
+        public ActionResult KartTipiListesi()
+        {
+            var model = db.kart_tipleri.ToList();
+            return View(model);
+        }
+
+        public ActionResult KartTipiGuncelle(int id)
+        {
+            kart_tipleri modelDB = db.kart_tipleri.Find(id);
+            return View("KartTipiGuncelle",modelDB);
+        }
+
+        [HttpPost]
+        public ActionResult KartTipiGuncelle(kart_tipleri model)
+        {
+            kart_tipleri modelDB = db.kart_tipleri.Find(model.kart_tipi_id);
+            modelDB.kart_tipi = model.kart_tipi;
+            modelDB.ucret = model.ucret;
+            modelDB.guncelleme_tarihi = DateTime.Now;
+            db.SaveChanges();
+            ViewData["KullaniciMesaji"] = "Kart Tipi Güncellendi";
+            return View();
         }
 
 

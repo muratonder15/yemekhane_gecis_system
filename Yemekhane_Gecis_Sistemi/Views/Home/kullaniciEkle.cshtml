@@ -21,7 +21,7 @@
 
         <label for="default" class="col-sm-1 control-label">TC Kimlik No</label>
         <div class="col-sm-5">
-            @Html.TextBoxFor(x => x.TcKimlikNo, new { @class = "form-control", @placeholder = "Tc Kimlik No Giriniz" })
+            @Html.TextBoxFor(x => x.TcKimlikNo, new { @class = "form-control", @placeholder = "Tc Kimlik No Giriniz", @type = "number" })
             @Html.ValidationMessageFor(x => x.TcKimlikNo)
         </div>
     </div>

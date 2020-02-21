@@ -1,0 +1,35 @@
+﻿@using Yemekhane_Gecis_Sistemi.Models
+@model List<kart_tipleri>
+@{
+    ViewBag.Title = "KartTipiListesi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Kart Tipi Id</th>
+            <th>Kart Tipi Adı</th>
+            <th>Ucret</th>
+            <th>Kayıt Tarihi</th>
+            <th>Güncelleme Tarihi</th>
+            <th>Güncelle</th>
+
+        </tr>
+
+        @foreach (var a in Model)
+        {
+    <tr>
+        <td>@a.kart_tipi_id</td>
+        <td>@a.kart_tipi</td>
+        <td>@a.ucret</td>
+        <td>@a.kayit_tarihi</td>
+        <td>@a.guncelleme_tarihi</td>
+        <td>@Html.ActionLink("Kart Tipi Güncelle", "KartTipiGuncelle", "Home", new { id=a.kart_tipi_id},null)</td>
+    </tr>
+        }
+    </thead>
+</table>
+<br />
+@Html.ActionLink("Kart Tipi Ekle", "KartTipiEkle", "Home",null, new { @class = "btn btn-primary" })
+

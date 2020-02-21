@@ -1,0 +1,47 @@
+﻿@using Yemekhane_Gecis_Sistemi.Models
+@model kart_tipleri
+@{
+    ViewBag.Title = "KartTipiGuncelle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+    <script language="Javascript">
+       <!--
+        function isNumberKey(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            if (charCode != 44 && charCode > 31
+                && (charCode < 48 || charCode > 57))
+                return false;
+
+            return true;
+        }
+           //-->
+    </script>
+@using (Html.BeginForm("KartTipiGuncelle", "Home", FormMethod.Post))
+{
+    <div class="alert alert-success" role="alert">       
+        @ViewData["KullaniciMesaji"]
+    </div>
+    <div class="form-group">
+        <div>
+            @Html.LabelFor(x => x.kart_tipi_id)
+            @Html.TextBoxFor(x => x.kart_tipi_id, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div>
+            @Html.LabelFor(x => x.kart_tipi)
+            @Html.TextBoxFor(x => x.kart_tipi, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div>
+            @Html.LabelFor(x => x.ucret)
+            @Html.TextBoxFor(x => x.ucret, new { @class = "form-control", @onkeypress="return isNumberKey(event)" })
+        </div>
+    </div>
+    <input type="submit" value="Kart Tipini Güncelle" class="btn btn-success" />
+
+}
+
+
+

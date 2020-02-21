@@ -1,8 +1,45 @@
-﻿
+﻿@using Yemekhane_Gecis_Sistemi.Models
+@model kullanicilar
 @{
     ViewBag.Title = "Islem Loglari";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>IslemLoglari</h2>
+
+@using (Html.BeginForm("IslemLog", "Home", FormMethod.Post))
+{
+    <div class="form-group">
+        @Html.TextBoxFor(x => x.tc new { @class = "form-control", @placeholder = "Tc Kimlik No Giriniz" })
+        <input type="submit" value="göster" class="btn btn-primary" />
+    </div>
+
+}
+
+@if (Model != null)
+{
+    //@model List<kullanicilar>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+
+                <th>ID</th>
+                <th>Ad</th>
+                <th>Soyad</th>
+                <th>Email</th>
+                <th>Tc Kimlik No</th>
+                <th>Kart Tipi</th>
+                <th>Kart No</th>
+                <th>Bakiye</th>
+                <th>Güncelle</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var a in List<kullanicilar>)
+            {
+
+            }
+            }
+        </tbody>
+    </table>
 

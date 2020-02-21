@@ -3,7 +3,18 @@
     ViewBag.Title = "Kart Tipi Ekle";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<script language="Javascript">
+       <!--
+        function isNumberKey(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            if (charCode != 44 && charCode > 31
+                && (charCode < 48 || charCode > 57))
+                return false;
 
+            return true;
+        }
+           //-->
+</script>
 @using (Html.BeginForm("KartTipiEkle", "Home", FormMethod.Post, new { @class = "form-horizontal" }))
 {
     <div class="alert alert-success" role="alert">
@@ -21,7 +32,7 @@
 
         <label for="default" class="col-sm-1 control-label">Ücret</label>
         <div class="col-sm-5">
-            @Html.TextBoxFor(x => x.Ucret, new { @class = "form-control", @placeholder = "Ücret Giriniz" })
+            @Html.TextBoxFor(x => x.Ucret, new { @class = "form-control", @placeholder = "Ücret Giriniz", @onkeypress="return isNumberKey(event)" })
             @Html.ValidationMessageFor(x => x.Ucret)
         </div>
     </div>

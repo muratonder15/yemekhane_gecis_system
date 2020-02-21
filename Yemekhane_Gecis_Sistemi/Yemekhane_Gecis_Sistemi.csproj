@@ -129,6 +129,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\IslemController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -275,6 +276,11 @@
     <Content Include="Views\Home\KartTipiEkle.cshtml" />
     <Content Include="Views\Home\KullaniciGetir.cshtml" />
     <Content Include="Views\Home\KisiBilgi.cshtml" />
+    <Content Include="Views\Home\BirimListesi.cshtml" />
+    <Content Include="Views\Home\UnvanListesi.cshtml" />
+    <Content Include="Views\Home\KartTipiListesi.cshtml" />
+    <Content Include="Views\Home\KartTipiGuncelle.cshtml" />
+    <Content Include="Views\Islem\GecisTest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
