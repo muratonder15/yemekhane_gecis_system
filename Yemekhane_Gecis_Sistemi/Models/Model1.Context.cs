@@ -34,5 +34,7 @@ namespace Yemekhane_Gecis_Sistemi.Models
         public virtual DbSet<kullanicilar> kullanicilar { get; set; }
         public virtual DbSet<ucretler> ucretler { get; set; }
         public virtual DbSet<unvanlar> unvanlar { get; set; }
+        public virtual DbSet<View_Kullanicilar1> View_Kullanicilar1 { get; set; }
+        public virtual DbSet<View_gecis_loglari> View_gecis_loglari { get; set; }
     }
 }

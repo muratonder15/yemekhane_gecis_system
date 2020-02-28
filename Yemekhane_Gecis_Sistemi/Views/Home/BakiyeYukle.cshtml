@@ -18,48 +18,55 @@
     </script>
 @using (Html.BeginForm("BakiyeYukle", "Home", FormMethod.Post))
 {
-    <div class="form-group">
-
-        @Html.TextBoxFor(x => x.kullanicilar.tc, new { @class = "form-control", @type="number" })<br />
+    <div class="row">
+        <div class="col-md-3">
+            @Html.TextBoxFor(x => x.kullanicilar.tc, new { @class = "form-control", @type = "number", @placeholder = "Tc Kimlik No Giriniz" })
+        </div>
+        
         <input type="submit" class="btn btn-success" value="bul" />
-
-
     </div>
+    <br />
+    <br />
 }
 @if (Model != null)
 {
     using (Html.BeginForm("BakiyeYukle", "Home", FormMethod.Post))
     {
-
+<div class="row">
+    <div class="col-md-3">
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th>id</th>
+                    <th>Id:</th>
                     <td>@Model.kullanici_id</td>
                 </tr>
                 <tr>
-                    <th>ad</th>
+                    <th>Ad:</th>
                     <td>@Model.kullanicilar.ad</td>
                 </tr>
                 <tr>
-                    <th>soyad</th>
+                    <th>Soyad:</th>
                     <td>@Model.kullanicilar.soyad</td>
                 </tr>
                 <tr>
-                    <th>bakiye</th>
+                    <th>Bakiye:</th>
                     <td>@Model.bakiye TL</td>
                 </tr>
 
             </thead>
 
         </table>
+    </div>
+</div>
         @Html.HiddenFor(x => x.kullanicilar.tc, new { @class = "form-control" })
         <br />
+        
         @Html.LabelFor(x => x.bakiye)
-        <div class="form-group">
+        <div class="row">
+            <div class="col-md-3">
+                @Html.TextBoxFor(x => x.bakiye, new { @class = "form-control", @onkeypress = "return isNumberKey(event)" })
+            </div>
 
-            @Html.TextBoxFor(x => x.bakiye, new { @class = "form-control", @onkeypress="return isNumberKey(event)" })
-            <br />
             <input type="submit" class="btn btn-success" value="bakiye yükle" />
         </div>
         

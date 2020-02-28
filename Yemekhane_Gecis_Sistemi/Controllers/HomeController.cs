@@ -125,12 +125,16 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult IslemLog(kullanicilar model)
+        public ActionResult IslemLog(string tckimlikno)
         {
-            var kullanici_id = (from a in db.kullanicilar where a.tc == model.tc select a.kullanici_id).FirstOrDefault();
-            var gecis_loglari_model = (from a in db.gecis_loglari where a.kullanici_id == kullanici_id select a).ToList();
+            var kullanici_id = (from a in db.kullanicilar where a.tc == tckimlikno select a).FirstOrDefault();
+            var gecis_loglari_model = (from a in db.View_gecis_loglari where a.kullanici_id == kullanici_id.kullanici_id select a).ToList();
+            var kart_bilgileri = (from a in db.View_Kullanicilar1 where a.kullanici_id == kullanici_id.kullanici_id select a).FirstOrDefault();
+            ViewData["ad"] = kullanici_id.ad;
+            ViewData["soyad"] = kullanici_id.soyad;
+            ViewData["kart_tipi"] = kart_bilgileri.kart_tipi;
+            ViewData["bakiye"] = kart_bilgileri.bakiye.ToString();
 
-            
             return View(gecis_loglari_model);
         }
         public ActionResult KullaniciListele()

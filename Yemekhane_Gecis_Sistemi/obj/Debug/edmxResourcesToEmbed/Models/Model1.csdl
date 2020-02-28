@@ -38,6 +38,8 @@
       <End Role="kart_tipleri" EntitySet="kart_tipleri" />
       <End Role="ucretler" EntitySet="ucretler" />
     </AssociationSet>
+    <EntitySet Name="View_Kullanicilar1" EntityType="YEMEKHANEModel.View_Kullanicilar1" />
+    <EntitySet Name="View_gecis_loglari" EntityType="YEMEKHANEModel.View_gecis_loglari" />
   </EntityContainer>
   <EntityType Name="birimler">
     <Key>
@@ -224,4 +226,34 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <EntityType Name="View_Kullanicilar1">
+    <Key>
+      <PropertyRef Name="kullanici_id" />
+    </Key>
+    <Property Name="kullanici_id" Type="Int32" Nullable="false" />
+    <Property Name="kullanici_adi" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+    <Property Name="ad" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="soyad" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="tc" Type="String" MaxLength="11" FixedLength="false" Unicode="true" />
+    <Property Name="kart_tipi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="kart_no" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
+    <Property Name="bakiye" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="View_gecis_loglari">
+    <Key>
+      <PropertyRef Name="log_id" />
+      <PropertyRef Name="kullanici_id" />
+    </Key>
+    <Property Name="log_id" Type="Int32" Nullable="false" />
+    <Property Name="kayit_tarihi" Type="DateTime" Precision="0" />
+    <Property Name="kullanici_id" Type="Int32" Nullable="false" />
+    <Property Name="ad" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="soyad" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="kart_id" Type="Int32" />
+    <Property Name="islem_adi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="islem_mesaji" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ucret" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+    <Property Name="kalan_bakiye" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+    <Property Name="mesaj" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
 </Schema>

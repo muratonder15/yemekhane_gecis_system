@@ -21,6 +21,8 @@
         <AssociationConnector Association="YEMEKHANEModel.FK_kart_bilgileri_kart_bilgileri" />
         <AssociationConnector Association="YEMEKHANEModel.FK_kart_bilgileri_kullancilar" />
         <AssociationConnector Association="YEMEKHANEModel.FK_ucretler_kart_tipleri" />
+        <EntityTypeShape EntityType="YEMEKHANEModel.View_Kullanicilar1" Width="1.5" PointX="7.375" PointY="8.75" />
+        <EntityTypeShape EntityType="YEMEKHANEModel.View_gecis_loglari" Width="1.5" PointX="9.375" PointY="8.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

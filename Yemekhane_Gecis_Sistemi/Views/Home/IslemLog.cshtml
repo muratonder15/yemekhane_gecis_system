@@ -1,45 +1,87 @@
 ﻿@using Yemekhane_Gecis_Sistemi.Models
-@model kullanicilar
+@model List<View_gecis_loglari>
 @{
     ViewBag.Title = "Islem Loglari";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>IslemLoglari</h2>
+
 
 @using (Html.BeginForm("IslemLog", "Home", FormMethod.Post))
 {
     <div class="form-group">
-        @Html.TextBoxFor(x => x.tc new { @class = "form-control", @placeholder = "Tc Kimlik No Giriniz" })
-        <input type="submit" value="göster" class="btn btn-primary" />
+
+        <div class="col-md-2">
+            @Html.TextBox("tckimlikno", null, new { @class = "form-control", @placeholder = "Tc Kimlik No Giriniz" })
+        </div>
     </div>
+    <input type="submit" value="göster" class="btn btn-primary" />
 
 }
-
+<br />
 @if (Model != null)
 {
-    //@model List<kullanicilar>
-    <table class="table table-hover">
-        <thead>
-            <tr>
+    <div class="form-group">
+        <div class="col-md-12">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ad:</th>
+                        <td>@ViewData["ad"]</td>
+                    </tr>
+                    <tr>
+                        <th>Soyad:</th>
+                        <td>@ViewData["soyad"]</td>
 
-                <th>ID</th>
-                <th>Ad</th>
-                <th>Soyad</th>
-                <th>Email</th>
-                <th>Tc Kimlik No</th>
-                <th>Kart Tipi</th>
-                <th>Kart No</th>
-                <th>Bakiye</th>
-                <th>Güncelle</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var a in List<kullanicilar>)
-            {
+                    </tr>
+                    <tr>
+                        <th>Kart Tipi:</th>
+                        <td>@ViewData["kart_tipi"]</td>
+                    </tr>
+                    <tr>
+                        <th>Bakiye:</th>
+                        <td>@ViewData["bakiye"]</td>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br />
+    <br />
+    <br />
+    <br />
+    <div class="form-group">
+        <div class="col-md-12">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
 
-            }
-            }
-        </tbody>
-    </table>
+                        <th>ID</th>
+                        <th>İşlem Tarihi</th>
+                        <th>İşlem Mesajı</th>
+                        <th>İşlem Adı</th>
+                        <th>Ücret</th>
+                        <th>Mesaj</th>
 
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var a in Model)
+                    {
+                        <tr>
+                            <td>@a.log_id</td>
+                            <td>@a.kayit_tarihi</td>
+                            <td>@a.islem_mesaji</td>
+                            <td>@a.islem_adi</td>
+                            <td>@a.ucret</td>
+                            <td>@a.mesaj</td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
