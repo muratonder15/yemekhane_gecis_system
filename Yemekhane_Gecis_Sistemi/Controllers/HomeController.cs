@@ -11,10 +11,13 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
     public class HomeController : Controller
     {
         DB db = new DB();
+        IslemController islem = new IslemController();
         public ActionResult Index()
         {
             return View();
         }
+
+        
 
         public ActionResult About()
         {
@@ -65,7 +68,7 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
 
             model = GetData();
             model.KullaniciMesaji = "Kayıt Başarıyla Gerçekleşti";
-           
+            islem.SistemLog(999, 3, model.TcKimlikNo+ "tc numaralı kişi sisteme eklendi");
             return View(model);
         }
 

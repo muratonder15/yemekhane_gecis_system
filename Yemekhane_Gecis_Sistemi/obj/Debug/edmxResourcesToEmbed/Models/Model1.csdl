@@ -40,6 +40,16 @@
     </AssociationSet>
     <EntitySet Name="View_Kullanicilar1" EntityType="YEMEKHANEModel.View_Kullanicilar1" />
     <EntitySet Name="View_gecis_loglari" EntityType="YEMEKHANEModel.View_gecis_loglari" />
+    <EntitySet Name="sistem_log" EntityType="YEMEKHANEModel.sistem_log" />
+    <EntitySet Name="sysdiagrams" EntityType="YEMEKHANEModel.sysdiagrams" />
+    <AssociationSet Name="FK_sistem_log_islem_tipleri" Association="YEMEKHANEModel.FK_sistem_log_islem_tipleri">
+      <End Role="islem_tipleri" EntitySet="islem_tipleri" />
+      <End Role="sistem_log" EntitySet="sistem_log" />
+    </AssociationSet>
+    <AssociationSet Name="FK_sistem_log_kullanicilar" Association="YEMEKHANEModel.FK_sistem_log_kullanicilar">
+      <End Role="kullanicilar" EntitySet="kullanicilar" />
+      <End Role="sistem_log" EntitySet="sistem_log" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="birimler">
     <Key>
@@ -81,6 +91,7 @@
     <Property Name="islem_tipi_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="islem_adi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="gecis_loglari" Relationship="YEMEKHANEModel.FK_gecis_loglari_islem_tipleri" FromRole="islem_tipleri" ToRole="gecis_loglari" />
+    <NavigationProperty Name="sistem_log" Relationship="YEMEKHANEModel.FK_sistem_log_islem_tipleri" FromRole="islem_tipleri" ToRole="sistem_log" />
   </EntityType>
   <EntityType Name="kart_bilgileri">
     <Key>
@@ -123,6 +134,7 @@
     <Property Name="guncelleme_tarihi" Type="DateTime" Precision="0" />
     <NavigationProperty Name="gecis_loglari" Relationship="YEMEKHANEModel.FK_gecis_loglari_kullanicilar" FromRole="kullanicilar" ToRole="gecis_loglari" />
     <NavigationProperty Name="kart_bilgileri" Relationship="YEMEKHANEModel.FK_kart_bilgileri_kullancilar" FromRole="kullanicilar" ToRole="kart_bilgileri" />
+    <NavigationProperty Name="sistem_log" Relationship="YEMEKHANEModel.FK_sistem_log_kullanicilar" FromRole="kullanicilar" ToRole="sistem_log" />
   </EntityType>
   <EntityType Name="ucretler">
     <Key>
@@ -256,4 +268,50 @@
     <Property Name="kalan_bakiye" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
     <Property Name="mesaj" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
   </EntityType>
+  <EntityType Name="sistem_log">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="kullanici_id" Type="Int32" />
+    <Property Name="islem_tarihi" Type="DateTime" Precision="0" />
+    <Property Name="islem_tipi_id" Type="Int32" />
+    <Property Name="mesaj" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="islem_tipleri" Relationship="YEMEKHANEModel.FK_sistem_log_islem_tipleri" FromRole="sistem_log" ToRole="islem_tipleri" />
+    <NavigationProperty Name="kullanicilar" Relationship="YEMEKHANEModel.FK_sistem_log_kullanicilar" FromRole="sistem_log" ToRole="kullanicilar" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <Association Name="FK_sistem_log_islem_tipleri">
+    <End Type="YEMEKHANEModel.islem_tipleri" Role="islem_tipleri" Multiplicity="0..1" />
+    <End Type="YEMEKHANEModel.sistem_log" Role="sistem_log" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="islem_tipleri">
+        <PropertyRef Name="islem_tipi_id" />
+      </Principal>
+      <Dependent Role="sistem_log">
+        <PropertyRef Name="islem_tipi_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_sistem_log_kullanicilar">
+    <End Type="YEMEKHANEModel.kullanicilar" Role="kullanicilar" Multiplicity="0..1" />
+    <End Type="YEMEKHANEModel.sistem_log" Role="sistem_log" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="kullanicilar">
+        <PropertyRef Name="kullanici_id" />
+      </Principal>
+      <Dependent Role="sistem_log">
+        <PropertyRef Name="kullanici_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

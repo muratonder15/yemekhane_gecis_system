@@ -70,6 +70,26 @@
     <Property Name="kayit_tarihi" Type="date" />
     <Property Name="guncelleme_tarihi" Type="date" />
   </EntityType>
+  <EntityType Name="sistem_log">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="kullanici_id" Type="int" />
+    <Property Name="islem_tarihi" Type="date" />
+    <Property Name="islem_tipi_id" Type="int" />
+    <Property Name="mesaj" Type="nvarchar" MaxLength="25" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
   <EntityType Name="ucretler">
     <Key>
       <PropertyRef Name="ucret_id" />
@@ -193,6 +213,30 @@ warning 6002: The table/view 'YEMEKHANE.dbo.View_Kullanicilar1' does not have a 
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_sistem_log_islem_tipleri">
+    <End Role="islem_tipleri" Type="Self.islem_tipleri" Multiplicity="0..1" />
+    <End Role="sistem_log" Type="Self.sistem_log" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="islem_tipleri">
+        <PropertyRef Name="islem_tipi_id" />
+      </Principal>
+      <Dependent Role="sistem_log">
+        <PropertyRef Name="islem_tipi_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_sistem_log_kullanicilar">
+    <End Role="kullanicilar" Type="Self.kullanicilar" Multiplicity="0..1" />
+    <End Role="sistem_log" Type="Self.sistem_log" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="kullanicilar">
+        <PropertyRef Name="kullanici_id" />
+      </Principal>
+      <Dependent Role="sistem_log">
+        <PropertyRef Name="kullanici_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_ucretler_kart_tipleri">
     <End Role="kart_tipleri" Type="Self.kart_tipleri" Multiplicity="0..1" />
     <End Role="ucretler" Type="Self.ucretler" Multiplicity="*" />
@@ -213,6 +257,8 @@ warning 6002: The table/view 'YEMEKHANE.dbo.View_Kullanicilar1' does not have a 
     <EntitySet Name="kart_bilgileri" EntityType="Self.kart_bilgileri" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="kart_tipleri" EntityType="Self.kart_tipleri" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="kullanicilar" EntityType="Self.kullanicilar" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sistem_log" EntityType="Self.sistem_log" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ucretler" EntityType="Self.ucretler" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="unvanlar" EntityType="Self.unvanlar" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="View_gecis_loglari" EntityType="Self.View_gecis_loglari" store:Type="Views" store:Schema="dbo">
@@ -265,6 +311,14 @@ warning 6002: The table/view 'YEMEKHANE.dbo.View_Kullanicilar1' does not have a 
     <AssociationSet Name="FK_kart_bilgileri_kullancilar" Association="Self.FK_kart_bilgileri_kullancilar">
       <End Role="kullanicilar" EntitySet="kullanicilar" />
       <End Role="kart_bilgileri" EntitySet="kart_bilgileri" />
+    </AssociationSet>
+    <AssociationSet Name="FK_sistem_log_islem_tipleri" Association="Self.FK_sistem_log_islem_tipleri">
+      <End Role="islem_tipleri" EntitySet="islem_tipleri" />
+      <End Role="sistem_log" EntitySet="sistem_log" />
+    </AssociationSet>
+    <AssociationSet Name="FK_sistem_log_kullanicilar" Association="Self.FK_sistem_log_kullanicilar">
+      <End Role="kullanicilar" EntitySet="kullanicilar" />
+      <End Role="sistem_log" EntitySet="sistem_log" />
     </AssociationSet>
     <AssociationSet Name="FK_ucretler_kart_tipleri" Association="Self.FK_ucretler_kart_tipleri">
       <End Role="kart_tipleri" EntitySet="kart_tipleri" />

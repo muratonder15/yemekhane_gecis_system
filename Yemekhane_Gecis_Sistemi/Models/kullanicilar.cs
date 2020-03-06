@@ -19,6 +19,7 @@ namespace Yemekhane_Gecis_Sistemi.Models
         {
             this.gecis_loglari = new HashSet<gecis_loglari>();
             this.kart_bilgileri = new HashSet<kart_bilgileri>();
+            this.sistem_log = new HashSet<sistem_log>();
         }
     
         public int kullanici_id { get; set; }
@@ -35,5 +36,7 @@ namespace Yemekhane_Gecis_Sistemi.Models
         public virtual ICollection<gecis_loglari> gecis_loglari { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<kart_bilgileri> kart_bilgileri { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<sistem_log> sistem_log { get; set; }
     }
 }

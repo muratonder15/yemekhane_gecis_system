@@ -15,6 +15,17 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
             return View();
         }
         DB db = new DB();
+
+        public void SistemLog(int kullanici_id,int islem_tipi_id,string mesaj)
+        {
+            sistem_log sistem_log_model = new sistem_log();
+            sistem_log_model.islem_tarihi = DateTime.Now;
+            sistem_log_model.kullanici_id = kullanici_id;
+            sistem_log_model.islem_tipi_id = islem_tipi_id;
+            sistem_log_model.mesaj = mesaj;
+            db.sistem_log.Add(sistem_log_model);
+            db.SaveChanges();
+        }
         public void LogTut(string kartno,double ucret,double kalan)
         {
 
