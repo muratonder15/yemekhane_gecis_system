@@ -12,6 +12,8 @@ namespace Yemekhane_Gecis_Sistemi.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class DB : DbContext
     {
@@ -36,7 +38,21 @@ namespace Yemekhane_Gecis_Sistemi.Models
         public virtual DbSet<unvanlar> unvanlar { get; set; }
         public virtual DbSet<View_Kullanicilar1> View_Kullanicilar1 { get; set; }
         public virtual DbSet<View_gecis_loglari> View_gecis_loglari { get; set; }
-        public virtual DbSet<sistem_log> sistem_log { get; set; }
         public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
+        public virtual DbSet<view_sistem_loglari> view_sistem_loglari { get; set; }
+        public virtual DbSet<sistem_log> sistem_log { get; set; }
+    
+        public virtual ObjectResult<SP_KisiGecisRapor_Result> SP_KisiGecisRapor(Nullable<System.DateTime> baslangic_tarihi, Nullable<System.DateTime> bitis_tarihi)
+        {
+            var baslangic_tarihiParameter = baslangic_tarihi.HasValue ?
+                new ObjectParameter("baslangic_tarihi", baslangic_tarihi) :
+                new ObjectParameter("baslangic_tarihi", typeof(System.DateTime));
+    
+            var bitis_tarihiParameter = bitis_tarihi.HasValue ?
+                new ObjectParameter("bitis_tarihi", bitis_tarihi) :
+                new ObjectParameter("bitis_tarihi", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_KisiGecisRapor_Result>("SP_KisiGecisRapor", baslangic_tarihiParameter, bitis_tarihiParameter);
+        }
     }
 }

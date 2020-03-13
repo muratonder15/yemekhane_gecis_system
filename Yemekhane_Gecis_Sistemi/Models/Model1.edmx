@@ -83,7 +83,7 @@
           <Property Name="kullanici_id" Type="int" />
           <Property Name="islem_tarihi" Type="date" />
           <Property Name="islem_tipi_id" Type="int" />
-          <Property Name="mesaj" Type="nvarchar" MaxLength="25" />
+          <Property Name="mesaj" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -145,6 +145,19 @@ warning 6002: The table/view 'YEMEKHANE.dbo.View_Kullanicilar1' does not have a 
           <Property Name="kart_tipi" Type="nvarchar" MaxLength="50" />
           <Property Name="kart_no" Type="nvarchar" MaxLength="8" />
           <Property Name="bakiye" Type="nvarchar" MaxLength="25" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_loglari' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_sistem_loglari">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="ad" Type="nvarchar" MaxLength="30" />
+          <Property Name="soyad" Type="nvarchar" MaxLength="30" />
+          <Property Name="islem_adi" Type="nvarchar" MaxLength="50" />
+          <Property Name="islem_tarihi" Type="date" />
+          <Property Name="mesaj" Type="nvarchar" MaxLength="25" />
         </EntityType>
         <Association Name="FK_gecis_loglari_islem_sonuc">
           <End Role="islem_sonuc" Type="Self.islem_sonuc" Multiplicity="0..1" />
@@ -254,6 +267,10 @@ warning 6002: The table/view 'YEMEKHANE.dbo.View_Kullanicilar1' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="SP_KisiGecisRapor" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="baslangic_tarihi" Type="datetime" Mode="In" />
+          <Parameter Name="bitis_tarihi" Type="datetime" Mode="In" />
+        </Function>
         <EntityContainer Name="YEMEKHANEModelStoreContainer">
           <EntitySet Name="birimler" EntityType="Self.birimler" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="gecis_loglari" EntityType="Self.gecis_loglari" Schema="dbo" store:Type="Tables" />
@@ -292,6 +309,16 @@ warning 6002: The table/view 'YEMEKHANE.dbo.View_Kullanicilar1' does not have a 
     [View_Kullanicilar1].[kart_no] AS [kart_no], 
     [View_Kullanicilar1].[bakiye] AS [bakiye]
     FROM [dbo].[View_Kullanicilar1] AS [View_Kullanicilar1]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_sistem_loglari" EntityType="Self.view_sistem_loglari" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_sistem_loglari].[id] AS [id], 
+    [view_sistem_loglari].[ad] AS [ad], 
+    [view_sistem_loglari].[soyad] AS [soyad], 
+    [view_sistem_loglari].[islem_adi] AS [islem_adi], 
+    [view_sistem_loglari].[islem_tarihi] AS [islem_tarihi], 
+    [view_sistem_loglari].[mesaj] AS [mesaj]
+    FROM [dbo].[view_sistem_loglari] AS [view_sistem_loglari]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_gecis_loglari_islem_sonuc" Association="Self.FK_gecis_loglari_islem_sonuc">
             <End Role="islem_sonuc" EntitySet="islem_sonuc" />
@@ -374,8 +401,9 @@ warning 6002: The table/view 'YEMEKHANE.dbo.View_Kullanicilar1' does not have a 
           </AssociationSet>
           <EntitySet Name="View_Kullanicilar1" EntityType="YEMEKHANEModel.View_Kullanicilar1" />
           <EntitySet Name="View_gecis_loglari" EntityType="YEMEKHANEModel.View_gecis_loglari" />
-          <EntitySet Name="sistem_log" EntityType="YEMEKHANEModel.sistem_log" />
           <EntitySet Name="sysdiagrams" EntityType="YEMEKHANEModel.sysdiagrams" />
+          <EntitySet Name="view_sistem_loglari" EntityType="YEMEKHANEModel.view_sistem_loglari" />
+          <EntitySet Name="sistem_log" EntityType="YEMEKHANEModel.sistem_log" />
           <AssociationSet Name="FK_sistem_log_islem_tipleri" Association="YEMEKHANEModel.FK_sistem_log_islem_tipleri">
             <End Role="islem_tipleri" EntitySet="islem_tipleri" />
             <End Role="sistem_log" EntitySet="sistem_log" />
@@ -384,7 +412,11 @@ warning 6002: The table/view 'YEMEKHANE.dbo.View_Kullanicilar1' does not have a 
             <End Role="kullanicilar" EntitySet="kullanicilar" />
             <End Role="sistem_log" EntitySet="sistem_log" />
           </AssociationSet>
-        </EntityContainer>
+          <FunctionImport Name="SP_KisiGecisRapor" ReturnType="Collection(YEMEKHANEModel.SP_KisiGecisRapor_Result)">
+            <Parameter Name="baslangic_tarihi" Mode="In" Type="DateTime" />
+            <Parameter Name="bitis_tarihi" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          </EntityContainer>
         <EntityType Name="birimler">
           <Key>
             <PropertyRef Name="birim_id" />
@@ -602,18 +634,6 @@ warning 6002: The table/view 'YEMEKHANE.dbo.View_Kullanicilar1' does not have a 
           <Property Name="kalan_bakiye" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
           <Property Name="mesaj" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="sistem_log">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="kullanici_id" Type="Int32" />
-          <Property Name="islem_tarihi" Type="DateTime" Precision="0" />
-          <Property Name="islem_tipi_id" Type="Int32" />
-          <Property Name="mesaj" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="islem_tipleri" Relationship="YEMEKHANEModel.FK_sistem_log_islem_tipleri" FromRole="sistem_log" ToRole="islem_tipleri" />
-          <NavigationProperty Name="kullanicilar" Relationship="YEMEKHANEModel.FK_sistem_log_kullanicilar" FromRole="sistem_log" ToRole="kullanicilar" />
-        </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
             <PropertyRef Name="diagram_id" />
@@ -623,6 +643,29 @@ warning 6002: The table/view 'YEMEKHANE.dbo.View_Kullanicilar1' does not have a 
           <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="version" Type="Int32" />
           <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="view_sistem_loglari">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="ad" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="soyad" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="islem_adi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="islem_tarihi" Type="DateTime" Precision="0" />
+          <Property Name="mesaj" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="sistem_log">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="kullanici_id" Type="Int32" />
+          <Property Name="islem_tarihi" Type="DateTime" Precision="0" />
+          <Property Name="islem_tipi_id" Type="Int32" />
+          <Property Name="mesaj" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="islem_tipleri" Relationship="YEMEKHANEModel.FK_sistem_log_islem_tipleri" FromRole="sistem_log" ToRole="islem_tipleri" />
+          <NavigationProperty Name="kullanicilar" Relationship="YEMEKHANEModel.FK_sistem_log_kullanicilar" FromRole="sistem_log" ToRole="kullanicilar" />
         </EntityType>
         <Association Name="FK_sistem_log_islem_tipleri">
           <End Type="YEMEKHANEModel.islem_tipleri" Role="islem_tipleri" Multiplicity="0..1" />
@@ -648,7 +691,14 @@ warning 6002: The table/view 'YEMEKHANE.dbo.View_Kullanicilar1' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        <ComplexType Name="SP_KisiGecisRapor_Result">
+          <Property Type="String" Name="tc" Nullable="true" MaxLength="11" />
+          <Property Type="String" Name="ad_soyad" Nullable="true" MaxLength="61" />
+          <Property Type="String" Name="kart_tipi" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="gecis_sayisi" Nullable="true" />
+          <Property Type="String" Name="ucret" Nullable="true" MaxLength="15" />
+        </ComplexType>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -781,17 +831,6 @@ warning 6002: The table/view 'YEMEKHANE.dbo.View_Kullanicilar1' does not have a 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="sistem_log">
-            <EntityTypeMapping TypeName="YEMEKHANEModel.sistem_log">
-              <MappingFragment StoreEntitySet="sistem_log">
-                <ScalarProperty Name="mesaj" ColumnName="mesaj" />
-                <ScalarProperty Name="islem_tipi_id" ColumnName="islem_tipi_id" />
-                <ScalarProperty Name="islem_tarihi" ColumnName="islem_tarihi" />
-                <ScalarProperty Name="kullanici_id" ColumnName="kullanici_id" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="sysdiagrams">
             <EntityTypeMapping TypeName="YEMEKHANEModel.sysdiagrams">
               <MappingFragment StoreEntitySet="sysdiagrams">
@@ -803,6 +842,40 @@ warning 6002: The table/view 'YEMEKHANE.dbo.View_Kullanicilar1' does not have a 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="view_sistem_loglari">
+            <EntityTypeMapping TypeName="YEMEKHANEModel.view_sistem_loglari">
+              <MappingFragment StoreEntitySet="view_sistem_loglari">
+                <ScalarProperty Name="mesaj" ColumnName="mesaj" />
+                <ScalarProperty Name="islem_tarihi" ColumnName="islem_tarihi" />
+                <ScalarProperty Name="islem_adi" ColumnName="islem_adi" />
+                <ScalarProperty Name="soyad" ColumnName="soyad" />
+                <ScalarProperty Name="ad" ColumnName="ad" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sistem_log">
+            <EntityTypeMapping TypeName="YEMEKHANEModel.sistem_log">
+              <MappingFragment StoreEntitySet="sistem_log">
+                <ScalarProperty Name="mesaj" ColumnName="mesaj" />
+                <ScalarProperty Name="islem_tipi_id" ColumnName="islem_tipi_id" />
+                <ScalarProperty Name="islem_tarihi" ColumnName="islem_tarihi" />
+                <ScalarProperty Name="kullanici_id" ColumnName="kullanici_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SP_KisiGecisRapor" FunctionName="YEMEKHANEModel.Store.SP_KisiGecisRapor">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="YEMEKHANEModel.SP_KisiGecisRapor_Result">
+                <ScalarProperty Name="tc" ColumnName="tc" />
+                <ScalarProperty Name="ad_soyad" ColumnName="ad_soyad" />
+                <ScalarProperty Name="kart_tipi" ColumnName="kart_tipi" />
+                <ScalarProperty Name="gecis_sayisi" ColumnName="gecis_sayisi" />
+                <ScalarProperty Name="ucret" ColumnName="ucret" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

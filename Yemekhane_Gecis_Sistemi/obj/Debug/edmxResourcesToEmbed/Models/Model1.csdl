@@ -40,8 +40,9 @@
     </AssociationSet>
     <EntitySet Name="View_Kullanicilar1" EntityType="YEMEKHANEModel.View_Kullanicilar1" />
     <EntitySet Name="View_gecis_loglari" EntityType="YEMEKHANEModel.View_gecis_loglari" />
-    <EntitySet Name="sistem_log" EntityType="YEMEKHANEModel.sistem_log" />
     <EntitySet Name="sysdiagrams" EntityType="YEMEKHANEModel.sysdiagrams" />
+    <EntitySet Name="view_sistem_loglari" EntityType="YEMEKHANEModel.view_sistem_loglari" />
+    <EntitySet Name="sistem_log" EntityType="YEMEKHANEModel.sistem_log" />
     <AssociationSet Name="FK_sistem_log_islem_tipleri" Association="YEMEKHANEModel.FK_sistem_log_islem_tipleri">
       <End Role="islem_tipleri" EntitySet="islem_tipleri" />
       <End Role="sistem_log" EntitySet="sistem_log" />
@@ -50,6 +51,10 @@
       <End Role="kullanicilar" EntitySet="kullanicilar" />
       <End Role="sistem_log" EntitySet="sistem_log" />
     </AssociationSet>
+    <FunctionImport Name="SP_KisiGecisRapor" ReturnType="Collection(YEMEKHANEModel.SP_KisiGecisRapor_Result)">
+      <Parameter Name="baslangic_tarihi" Mode="In" Type="DateTime" />
+      <Parameter Name="bitis_tarihi" Mode="In" Type="DateTime" />
+    </FunctionImport>
   </EntityContainer>
   <EntityType Name="birimler">
     <Key>
@@ -268,18 +273,6 @@
     <Property Name="kalan_bakiye" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
     <Property Name="mesaj" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
   </EntityType>
-  <EntityType Name="sistem_log">
-    <Key>
-      <PropertyRef Name="id" />
-    </Key>
-    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="kullanici_id" Type="Int32" />
-    <Property Name="islem_tarihi" Type="DateTime" Precision="0" />
-    <Property Name="islem_tipi_id" Type="Int32" />
-    <Property Name="mesaj" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="islem_tipleri" Relationship="YEMEKHANEModel.FK_sistem_log_islem_tipleri" FromRole="sistem_log" ToRole="islem_tipleri" />
-    <NavigationProperty Name="kullanicilar" Relationship="YEMEKHANEModel.FK_sistem_log_kullanicilar" FromRole="sistem_log" ToRole="kullanicilar" />
-  </EntityType>
   <EntityType Name="sysdiagrams">
     <Key>
       <PropertyRef Name="diagram_id" />
@@ -289,6 +282,29 @@
     <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="version" Type="Int32" />
     <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="view_sistem_loglari">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="ad" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="soyad" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="islem_adi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="islem_tarihi" Type="DateTime" Precision="0" />
+    <Property Name="mesaj" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="sistem_log">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="kullanici_id" Type="Int32" />
+    <Property Name="islem_tarihi" Type="DateTime" Precision="0" />
+    <Property Name="islem_tipi_id" Type="Int32" />
+    <Property Name="mesaj" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="islem_tipleri" Relationship="YEMEKHANEModel.FK_sistem_log_islem_tipleri" FromRole="sistem_log" ToRole="islem_tipleri" />
+    <NavigationProperty Name="kullanicilar" Relationship="YEMEKHANEModel.FK_sistem_log_kullanicilar" FromRole="sistem_log" ToRole="kullanicilar" />
   </EntityType>
   <Association Name="FK_sistem_log_islem_tipleri">
     <End Type="YEMEKHANEModel.islem_tipleri" Role="islem_tipleri" Multiplicity="0..1" />
@@ -314,4 +330,11 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <ComplexType Name="SP_KisiGecisRapor_Result">
+    <Property Type="String" Name="tc" Nullable="true" MaxLength="11" />
+    <Property Type="String" Name="ad_soyad" Nullable="true" MaxLength="61" />
+    <Property Type="String" Name="kart_tipi" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="gecis_sayisi" Nullable="true" />
+    <Property Type="String" Name="ucret" Nullable="true" MaxLength="15" />
+  </ComplexType>
 </Schema>

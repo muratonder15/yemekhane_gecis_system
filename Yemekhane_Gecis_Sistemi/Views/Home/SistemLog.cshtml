@@ -1,8 +1,32 @@
-﻿
+﻿@using Yemekhane_Gecis_Sistemi.Models
+@model List<view_sistem_loglari>
 @{
     ViewBag.Title = "Sistem Logları";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>SistemLog</h2>
+<table class="table table-hover">
+    <thead>
+        <tr>
+        <th>Id</th>
+        <th>İşlemi Yapan</th>
+        <th>İslem Adı</th>
+        <th>İslem Tarihi</th>
+        <th>Mesaj</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var a in Model)
+        {
+            <tr>
+            <td>@a.id</td>
+            <td>@a.ad @a.soyad</td>
+            <td>@a.islem_adi</td>
+            <td>@a.islem_tarihi</td>
+            <td>@a.mesaj</td>
+            </tr>
+        }
+    </tbody>
+</table>
 

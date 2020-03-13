@@ -1,8 +1,19 @@
-﻿
+﻿@using Yemekhane_Gecis_Sistemi.Models
+@model View_gecis_loglari
 @{
     ViewBag.Title = "KisiGeci sRaporu";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>KisiGecisRaporu</h2>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#date").datetimepicker({
+            dateFormat: 'dd-mm-yy', timeFormat: 'hh:mm:ss'
+        });
+    });
+</script>
+<div class="bootstrap-datetimepicker-widget>
+    @Html.TextBox("tarih")
+</div>
 

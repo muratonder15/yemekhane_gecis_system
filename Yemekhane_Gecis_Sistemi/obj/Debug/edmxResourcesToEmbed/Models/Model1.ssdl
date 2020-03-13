@@ -78,7 +78,7 @@
     <Property Name="kullanici_id" Type="int" />
     <Property Name="islem_tarihi" Type="date" />
     <Property Name="islem_tipi_id" Type="int" />
-    <Property Name="mesaj" Type="nvarchar" MaxLength="25" />
+    <Property Name="mesaj" Type="nvarchar" MaxLength="100" />
   </EntityType>
   <EntityType Name="sysdiagrams">
     <Key>
@@ -140,6 +140,19 @@ warning 6002: The table/view 'YEMEKHANE.dbo.View_Kullanicilar1' does not have a 
     <Property Name="kart_tipi" Type="nvarchar" MaxLength="50" />
     <Property Name="kart_no" Type="nvarchar" MaxLength="8" />
     <Property Name="bakiye" Type="nvarchar" MaxLength="25" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_loglari' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="view_sistem_loglari">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" Nullable="false" />
+    <Property Name="ad" Type="nvarchar" MaxLength="30" />
+    <Property Name="soyad" Type="nvarchar" MaxLength="30" />
+    <Property Name="islem_adi" Type="nvarchar" MaxLength="50" />
+    <Property Name="islem_tarihi" Type="date" />
+    <Property Name="mesaj" Type="nvarchar" MaxLength="25" />
   </EntityType>
   <Association Name="FK_gecis_loglari_islem_sonuc">
     <End Role="islem_sonuc" Type="Self.islem_sonuc" Multiplicity="0..1" />
@@ -249,6 +262,10 @@ warning 6002: The table/view 'YEMEKHANE.dbo.View_Kullanicilar1' does not have a 
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Function Name="SP_KisiGecisRapor" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="baslangic_tarihi" Type="datetime" Mode="In" />
+    <Parameter Name="bitis_tarihi" Type="datetime" Mode="In" />
+  </Function>
   <EntityContainer Name="YEMEKHANEModelStoreContainer">
     <EntitySet Name="birimler" EntityType="Self.birimler" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="gecis_loglari" EntityType="Self.gecis_loglari" Schema="dbo" store:Type="Tables" />
@@ -287,6 +304,16 @@ warning 6002: The table/view 'YEMEKHANE.dbo.View_Kullanicilar1' does not have a 
     [View_Kullanicilar1].[kart_no] AS [kart_no], 
     [View_Kullanicilar1].[bakiye] AS [bakiye]
     FROM [dbo].[View_Kullanicilar1] AS [View_Kullanicilar1]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="view_sistem_loglari" EntityType="Self.view_sistem_loglari" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [view_sistem_loglari].[id] AS [id], 
+    [view_sistem_loglari].[ad] AS [ad], 
+    [view_sistem_loglari].[soyad] AS [soyad], 
+    [view_sistem_loglari].[islem_adi] AS [islem_adi], 
+    [view_sistem_loglari].[islem_tarihi] AS [islem_tarihi], 
+    [view_sistem_loglari].[mesaj] AS [mesaj]
+    FROM [dbo].[view_sistem_loglari] AS [view_sistem_loglari]</DefiningQuery>
     </EntitySet>
     <AssociationSet Name="FK_gecis_loglari_islem_sonuc" Association="Self.FK_gecis_loglari_islem_sonuc">
       <End Role="islem_sonuc" EntitySet="islem_sonuc" />

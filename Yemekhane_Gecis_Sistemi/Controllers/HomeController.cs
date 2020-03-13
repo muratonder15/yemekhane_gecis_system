@@ -12,6 +12,7 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
     {
         DB db = new DB();
         IslemController islem = new IslemController();
+        int session_kullanici_kodu = 9;
         public ActionResult Index()
         {
             return View();
@@ -68,7 +69,7 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
 
             model = GetData();
             model.KullaniciMesaji = "Kayıt Başarıyla Gerçekleşti";
-            islem.SistemLog(999, 3, model.TcKimlikNo+ "tc numaralı kişi sisteme eklendi");
+            islem.SistemLog(session_kullanici_kodu, 3, model.TcKimlikNo+ "tc numaralı kişi sisteme eklendi");
             return View(model);
         }
 
@@ -88,6 +89,7 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
             db.birimler.Add(birimlerModel);
             db.SaveChanges();
             model.KullaniciMesaji = "Birim Başarıyla Eklendi";
+            islem.SistemLog(session_kullanici_kodu, 3, model.BirimAdi + " birimi sisteme eklendi");
             return View(model);
         }
 
@@ -113,6 +115,7 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
             db.unvanlar.Add(unvanlarModel);
             db.SaveChanges();
             model.KullaniciMesaji = "Unvan Başarıyla Eklendi";
+            islem.SistemLog(session_kullanici_kodu, 3, model.UnvanAdi + " unvanı sisteme eklendi");
             return View(model);
         }
 
@@ -196,7 +199,7 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
             
 
             db.SaveChanges();
-
+            islem.SistemLog(session_kullanici_kodu, 4, a.kullanicilar.tc + " tc numaralı kişi sisteme eklendi");
             return RedirectToAction("KullaniciListele");
         }
        
@@ -214,6 +217,8 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
             {
                 model.bakiye = (Convert.ToDouble(model.bakiye)+Convert.ToDouble(a.bakiye)).ToString();
                 db.SaveChanges();
+                islem.LogTut(model.kart_no, 1, 1,Convert.ToDouble(a.bakiye), Convert.ToDouble(model.bakiye));
+                islem.SistemLog(session_kullanici_kodu, 1, a.kullanicilar.tc + " tc numaralı kişiye "+a.bakiye +" TL yüklendi.");
                 return Redirect("KullaniciListele");
             }
             return View(model);
@@ -228,6 +233,7 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
         [HttpPost]
         public ActionResult KisiGecisRaporu(string model)
         {
+            islem.SistemLog(session_kullanici_kodu, 6, "Kişi geçiş raporu alındı.");
             return View(model);
         }
         public ActionResult GunlukGecisRaporu()
@@ -241,7 +247,9 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
         }
         public ActionResult SistemLog()
         {
-            return View();
+            var sistem_loglari = db.view_sistem_loglari.ToList();
+            
+            return View(sistem_loglari);
         }
         [HttpPost]
         public ActionResult SistemLog(string model)
@@ -269,6 +277,7 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
             db.kart_tipleri.Add(kartTipleriModel);
             db.SaveChanges();
             model.KullaniciMesaji = "Kart Tipi Başarıyla Eklendi";
+            islem.SistemLog(session_kullanici_kodu, 3, model.KartTipi + " kartı sisteme eklendi");
             return View(model);
         }
 
@@ -293,6 +302,7 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
             modelDB.guncelleme_tarihi = DateTime.Now;
             db.SaveChanges();
             ViewData["KullaniciMesaji"] = "Kart Tipi Güncellendi";
+            islem.SistemLog(session_kullanici_kodu, 4, model.kart_tipi + " kartı güncellendi");
             return View();
         }
 
