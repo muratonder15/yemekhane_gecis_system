@@ -25,6 +25,14 @@ namespace Yemekhane_Gecis_Sistemi
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+
+            //&nbsp;datepicker&nbsp;js
+            bundles.Add(new ScriptBundle("~/bundles/datepickerJS").Include(
+              "~/Scripts/bootstrap-datepicker.js"));
+
+            //&nbsp;datepicker&nbsp;css
+            bundles.Add(new StyleBundle("~/Content/datepickerCSS").Include(
+              "~/Content/bootstrap-datepicker.css"));
         }
     }
 }

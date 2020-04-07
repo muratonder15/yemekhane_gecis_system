@@ -15,7 +15,7 @@
 @using (Html.BeginForm("KullaniciEkle", "Home", FormMethod.Post, new { @class = "form-horizontal" }))
 {
     <div class="alert alert-success" role="alert">
-        @Model.KullaniciMesaji
+        @ViewBag.KullaniciMesaji
     </div>
     <div class="form-group">
 
@@ -41,6 +41,20 @@
         </div>
     </div>
 
+    <div class="form-group">
+        <label for="predefined" class="col-sm-1 control-label">Birim Seçiniz</label>
+        <div class="col-sm-5">
+            @Html.DropDownListFor(x => x.BirimId, Model.BirimListesi, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.BirimId)
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="predefined" class="col-sm-1 control-label">Unvan Seçiniz</label>
+        <div class="col-sm-5">
+            @Html.DropDownListFor(x => x.UnvanId, Model.UnvanListesi, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.UnvanId)
+        </div>
+    </div>
     <div class="form-group">
         <label for="predefined" class="col-sm-1 control-label">E-Mail</label>
         <div class="col-sm-5">

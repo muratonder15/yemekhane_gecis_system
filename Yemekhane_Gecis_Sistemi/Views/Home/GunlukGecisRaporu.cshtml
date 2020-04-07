@@ -1,8 +1,33 @@
-﻿
+﻿@using Yemekhane_Gecis_Sistemi.ViewModels
+@model List<GunlukRapor>
 @{
-    ViewBag.Title = "Gunluk Gecis Raporu";
+    ViewBag.Title = DateTime.Now.ToShortDateString() + " Tarihli Yemekhane Geçişleri";
+
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>GunlukGecisRaporu</h2>
 
+<div class="col-md-4">
+    <div class="row">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>kart tipi</th>
+                    <th>geçiş sayısı</th>
+                </tr>
+
+            </thead>
+            @foreach (var a in Model)
+            {
+                <tr>
+                    <td>@a.kart_tipi</td>
+                    <td>@a.gecis_sayisi</td>
+                </tr>
+            }
+        </table>
+    </div>
+
+    <div class="row">
+       <i> Son güncelleme: @DateTime.Now.ToShortTimeString()</i>
+    </div>
+</div>

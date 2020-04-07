@@ -1,5 +1,5 @@
 ﻿@using Yemekhane_Gecis_Sistemi.Models
-@model kart_bilgileri
+@model kullanicilar
 @{
     ViewBag.Title = "Bakiye Yükleme Sayfası ";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -20,7 +20,7 @@
 {
     <div class="row">
         <div class="col-md-3">
-            @Html.TextBoxFor(x => x.kullanicilar.tc, new { @class = "form-control", @type = "number", @placeholder = "Tc Kimlik No Giriniz" })
+            @Html.TextBoxFor(x => x.tc, new { @class = "form-control", @type = "number", @placeholder = "Tc Kimlik No Giriniz" })
         </div>
         
         <input type="submit" class="btn btn-success" value="bul" />
@@ -42,11 +42,11 @@
                 </tr>
                 <tr>
                     <th>Ad:</th>
-                    <td>@Model.kullanicilar.ad</td>
+                    <td>@Model.ad</td>
                 </tr>
                 <tr>
                     <th>Soyad:</th>
-                    <td>@Model.kullanicilar.soyad</td>
+                    <td>@Model.soyad</td>
                 </tr>
                 <tr>
                     <th>Bakiye:</th>
@@ -58,7 +58,7 @@
         </table>
     </div>
 </div>
-        @Html.HiddenFor(x => x.kullanicilar.tc, new { @class = "form-control" })
+        @Html.HiddenFor(x => x.tc, new { @class = "form-control" })
         <br />
         
         @Html.LabelFor(x => x.bakiye)

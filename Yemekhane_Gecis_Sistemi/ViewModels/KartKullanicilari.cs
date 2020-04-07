@@ -28,14 +28,25 @@ namespace Yemekhane_Gecis_Sistemi.ViewModels
         [Required(ErrorMessage ="Kategori Seçiniz...!")]
         public int KartTipiId { get; set; }
 
+        [Required(ErrorMessage = "Birim Seçiniz...!")]
+        public int BirimId { get; set; }
+
+        [Required(ErrorMessage = "Unvan Seçiniz...!")]
+        public int UnvanId { get; set; }
+
         [Required(ErrorMessage = "Kart No Girilmedi...!")]
         [MaxLength(8, ErrorMessage = "Kart No 8 Karakterli Olmalıdır")]
         [MinLength(8, ErrorMessage = "Kart No 8 Karakterli Olmalıdır")]
         public string KartNo { get; set; }
         public string KayitTarihi { get; set; }
         public string GüncellemeTarihi { get; set; }
+        public string SonGecerlilikTarihi { get; set; }
 
         public List<SelectListItem> KartListesi { get; set; }
+
+        public List<SelectListItem> BirimListesi { get; set; }
+
+        public List<SelectListItem> UnvanListesi { get; set; }
 
         public string KullaniciMesaji { get; set; }
 

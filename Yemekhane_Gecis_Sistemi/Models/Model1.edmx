@@ -12,6 +12,17 @@
           <Property Name="birim_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="birim_adi" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="duyurular">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="gonderen_id" Type="int" />
+          <Property Name="kart_tipi_id" Type="int" />
+          <Property Name="konu" Type="nvarchar" MaxLength="50" />
+          <Property Name="mesaj" Type="nvarchar" MaxLength="200" />
+          <Property Name="kayit_tarihi" Type="datetime" />
+        </EntityType>
         <EntityType Name="gecis_loglari">
           <Key>
             <PropertyRef Name="log_id" />
@@ -24,7 +35,7 @@
           <Property Name="ucret" Type="nvarchar" MaxLength="15" />
           <Property Name="kalan_bakiye" Type="nvarchar" MaxLength="15" />
           <Property Name="mesaj" Type="nvarchar" MaxLength="50" />
-          <Property Name="kayit_tarihi" Type="date" />
+          <Property Name="kayit_tarihi" Type="datetime" />
         </EntityType>
         <EntityType Name="islem_sonuc">
           <Key>
@@ -46,10 +57,19 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="kullanici_id" Type="int" />
-          <Property Name="kart_no" Type="nvarchar" MaxLength="8" />
+          <Property Name="kart_no" Type="nvarchar" MaxLength="15" />
           <Property Name="kart_tipi_id" Type="int" />
+          <Property Name="durum" Type="int" />
+          <Property Name="son_gecerlilik_tarihi" Type="datetime" />
           <Property Name="bakiye" Type="nvarchar" MaxLength="25" />
-          <Property Name="kayit_tarihi" Type="date" />
+          <Property Name="kayit_tarihi" Type="datetime" />
+        </EntityType>
+        <EntityType Name="kart_durumlari">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="durum_adi" Type="nvarchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="kart_tipleri">
           <Key>
@@ -58,22 +78,28 @@
           <Property Name="kart_tipi_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="kart_tipi" Type="nvarchar" MaxLength="50" />
           <Property Name="ucret" Type="nvarchar" MaxLength="15" />
-          <Property Name="kayit_tarihi" Type="date" />
-          <Property Name="guncelleme_tarihi" Type="date" />
+          <Property Name="kayit_tarihi" Type="datetime" />
+          <Property Name="guncelleme_tarihi" Type="datetime" />
         </EntityType>
         <EntityType Name="kullanicilar">
           <Key>
             <PropertyRef Name="kullanici_id" />
           </Key>
           <Property Name="kullanici_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="yetki_id" Type="int" />
+          <Property Name="birim_id" Type="int" />
+          <Property Name="unvan_id" Type="int" />
           <Property Name="kullanici_adi" Type="nvarchar" MaxLength="25" />
           <Property Name="sifre" Type="nvarchar" MaxLength="20" />
           <Property Name="ad" Type="nvarchar" MaxLength="30" />
           <Property Name="soyad" Type="nvarchar" MaxLength="30" />
           <Property Name="email" Type="nvarchar" MaxLength="25" />
           <Property Name="tc" Type="nvarchar" MaxLength="11" />
-          <Property Name="kayit_tarihi" Type="date" />
-          <Property Name="guncelleme_tarihi" Type="date" />
+          <Property Name="resim" Type="nchar" MaxLength="100" />
+          <Property Name="bakiye" Type="nvarchar" MaxLength="25" />
+          <Property Name="kayit_tarihi" Type="datetime" />
+          <Property Name="guncelleme_tarihi" Type="datetime" />
+          <Property Name="aktif_mi" Type="int" />
         </EntityType>
         <EntityType Name="sistem_log">
           <Key>
@@ -81,19 +107,9 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="kullanici_id" Type="int" />
-          <Property Name="islem_tarihi" Type="date" />
+          <Property Name="islem_tarihi" Type="datetime" />
           <Property Name="islem_tipi_id" Type="int" />
           <Property Name="mesaj" Type="nvarchar" MaxLength="100" />
-        </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="principal_id" Type="int" Nullable="false" />
-          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="version" Type="int" />
-          <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="ucretler">
           <Key>
@@ -102,8 +118,8 @@
           <Property Name="ucret_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="kart_tipi_id" Type="int" />
           <Property Name="ucret" Type="nvarchar" MaxLength="10" />
-          <Property Name="kayit_tarihi" Type="date" />
-          <Property Name="guncelleme_tarihi" Type="date" />
+          <Property Name="kayit_tarihi" Type="datetime" />
+          <Property Name="guncelleme_tarihi" Type="datetime" />
         </EntityType>
         <EntityType Name="unvanlar">
           <Key>
@@ -112,19 +128,27 @@
           <Property Name="unvan_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="unvan_adi" Type="nvarchar" MaxLength="25" />
         </EntityType>
+        <EntityType Name="yetkiler">
+          <Key>
+            <PropertyRef Name="yetki_id" />
+          </Key>
+          <Property Name="yetki_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="yetki_adi" Type="nvarchar" MaxLength="50" />
+        </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'YEMEKHANE.dbo.View_gecis_loglari' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="View_gecis_loglari">
+warning 6002: The table/view 'YEMEKHANE.dbo.view_gecis_loglari' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_gecis_loglari">
           <Key>
             <PropertyRef Name="log_id" />
             <PropertyRef Name="kullanici_id" />
           </Key>
           <Property Name="log_id" Type="int" Nullable="false" />
-          <Property Name="kayit_tarihi" Type="date" />
+          <Property Name="kayit_tarihi" Type="datetime" />
           <Property Name="kullanici_id" Type="int" Nullable="false" />
           <Property Name="ad" Type="nvarchar" MaxLength="30" />
           <Property Name="soyad" Type="nvarchar" MaxLength="30" />
-          <Property Name="kart_id" Type="int" />
+          <Property Name="kart_tipi" Type="nvarchar" MaxLength="50" />
+          <Property Name="kart_no" Type="nvarchar" MaxLength="8" />
           <Property Name="islem_adi" Type="nvarchar" MaxLength="50" />
           <Property Name="islem_mesaji" Type="nvarchar" MaxLength="50" />
           <Property Name="ucret" Type="nvarchar" MaxLength="15" />
@@ -132,8 +156,8 @@ warning 6002: The table/view 'YEMEKHANE.dbo.View_gecis_loglari' does not have a 
           <Property Name="mesaj" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'YEMEKHANE.dbo.View_Kullanicilar1' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="View_Kullanicilar1">
+warning 6002: The table/view 'YEMEKHANE.dbo.view_kullanicilar' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_kullanicilar">
           <Key>
             <PropertyRef Name="kullanici_id" />
           </Key>
@@ -141,24 +165,37 @@ warning 6002: The table/view 'YEMEKHANE.dbo.View_Kullanicilar1' does not have a 
           <Property Name="kullanici_adi" Type="nvarchar" MaxLength="25" />
           <Property Name="ad" Type="nvarchar" MaxLength="30" />
           <Property Name="soyad" Type="nvarchar" MaxLength="30" />
+          <Property Name="email" Type="nvarchar" MaxLength="25" />
           <Property Name="tc" Type="nvarchar" MaxLength="11" />
-          <Property Name="kart_tipi" Type="nvarchar" MaxLength="50" />
           <Property Name="kart_no" Type="nvarchar" MaxLength="8" />
+          <Property Name="kart_tipi" Type="nvarchar" MaxLength="50" />
           <Property Name="bakiye" Type="nvarchar" MaxLength="25" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_loglari' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="view_sistem_loglari">
+warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_sistem_log">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" Nullable="false" />
           <Property Name="ad" Type="nvarchar" MaxLength="30" />
           <Property Name="soyad" Type="nvarchar" MaxLength="30" />
+          <Property Name="islem_tarihi" Type="datetime" />
           <Property Name="islem_adi" Type="nvarchar" MaxLength="50" />
-          <Property Name="islem_tarihi" Type="date" />
-          <Property Name="mesaj" Type="nvarchar" MaxLength="25" />
+          <Property Name="mesaj" Type="nvarchar" MaxLength="100" />
         </EntityType>
+        <Association Name="FK_duyurular_kullanicilar">
+          <End Role="kullanicilar" Type="Self.kullanicilar" Multiplicity="0..1" />
+          <End Role="duyurular" Type="Self.duyurular" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="kullanicilar">
+              <PropertyRef Name="kullanici_id" />
+            </Principal>
+            <Dependent Role="duyurular">
+              <PropertyRef Name="gonderen_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_gecis_loglari_islem_sonuc">
           <End Role="islem_sonuc" Type="Self.islem_sonuc" Multiplicity="0..1" />
           <End Role="gecis_loglari" Type="Self.gecis_loglari" Multiplicity="*" />
@@ -219,6 +256,18 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_loglari' does not have a
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_kart_bilgileri_kart_durumlari">
+          <End Role="kart_durumlari" Type="Self.kart_durumlari" Multiplicity="0..1" />
+          <End Role="kart_bilgileri" Type="Self.kart_bilgileri" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="kart_durumlari">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="kart_bilgileri">
+              <PropertyRef Name="durum" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_kart_bilgileri_kullancilar">
           <End Role="kullanicilar" Type="Self.kullanicilar" Multiplicity="0..1" />
           <End Role="kart_bilgileri" Type="Self.kart_bilgileri" Multiplicity="*" />
@@ -228,6 +277,42 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_loglari' does not have a
             </Principal>
             <Dependent Role="kart_bilgileri">
               <PropertyRef Name="kullanici_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_kullanicilar_birimler">
+          <End Role="birimler" Type="Self.birimler" Multiplicity="0..1" />
+          <End Role="kullanicilar" Type="Self.kullanicilar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="birimler">
+              <PropertyRef Name="birim_id" />
+            </Principal>
+            <Dependent Role="kullanicilar">
+              <PropertyRef Name="birim_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_kullanicilar_unvanlar">
+          <End Role="unvanlar" Type="Self.unvanlar" Multiplicity="0..1" />
+          <End Role="kullanicilar" Type="Self.kullanicilar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="unvanlar">
+              <PropertyRef Name="unvan_id" />
+            </Principal>
+            <Dependent Role="kullanicilar">
+              <PropertyRef Name="unvan_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_kullanicilar_yetkiler">
+          <End Role="yetkiler" Type="Self.yetkiler" Multiplicity="0..1" />
+          <End Role="kullanicilar" Type="Self.kullanicilar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="yetkiler">
+              <PropertyRef Name="yetki_id" />
+            </Principal>
+            <Dependent Role="kullanicilar">
+              <PropertyRef Name="yetki_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -267,59 +352,67 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_loglari' does not have a
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Function Name="SP_KisiGecisRapor" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="baslangic_tarihi" Type="datetime" Mode="In" />
-          <Parameter Name="bitis_tarihi" Type="datetime" Mode="In" />
+        <Function Name="SP_KISI_GECIS_RAPORU" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="baslangic_tarihi" Type="nvarchar" Mode="In" />
+          <Parameter Name="bitis_tarihi" Type="nvarchar" Mode="In" />
         </Function>
         <EntityContainer Name="YEMEKHANEModelStoreContainer">
           <EntitySet Name="birimler" EntityType="Self.birimler" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="duyurular" EntityType="Self.duyurular" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="gecis_loglari" EntityType="Self.gecis_loglari" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="islem_sonuc" EntityType="Self.islem_sonuc" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="islem_tipleri" EntityType="Self.islem_tipleri" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="kart_bilgileri" EntityType="Self.kart_bilgileri" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="kart_durumlari" EntityType="Self.kart_durumlari" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="kart_tipleri" EntityType="Self.kart_tipleri" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="kullanicilar" EntityType="Self.kullanicilar" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sistem_log" EntityType="Self.sistem_log" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ucretler" EntityType="Self.ucretler" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="unvanlar" EntityType="Self.unvanlar" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="View_gecis_loglari" EntityType="Self.View_gecis_loglari" store:Type="Views" store:Schema="dbo">
+          <EntitySet Name="yetkiler" EntityType="Self.yetkiler" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="view_gecis_loglari" EntityType="Self.view_gecis_loglari" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
-    [View_gecis_loglari].[log_id] AS [log_id], 
-    [View_gecis_loglari].[kayit_tarihi] AS [kayit_tarihi], 
-    [View_gecis_loglari].[kullanici_id] AS [kullanici_id], 
-    [View_gecis_loglari].[ad] AS [ad], 
-    [View_gecis_loglari].[soyad] AS [soyad], 
-    [View_gecis_loglari].[kart_id] AS [kart_id], 
-    [View_gecis_loglari].[islem_adi] AS [islem_adi], 
-    [View_gecis_loglari].[islem_mesaji] AS [islem_mesaji], 
-    [View_gecis_loglari].[ucret] AS [ucret], 
-    [View_gecis_loglari].[kalan_bakiye] AS [kalan_bakiye], 
-    [View_gecis_loglari].[mesaj] AS [mesaj]
-    FROM [dbo].[View_gecis_loglari] AS [View_gecis_loglari]</DefiningQuery>
+    [view_gecis_loglari].[log_id] AS [log_id], 
+    [view_gecis_loglari].[kayit_tarihi] AS [kayit_tarihi], 
+    [view_gecis_loglari].[kullanici_id] AS [kullanici_id], 
+    [view_gecis_loglari].[ad] AS [ad], 
+    [view_gecis_loglari].[soyad] AS [soyad], 
+    [view_gecis_loglari].[kart_tipi] AS [kart_tipi], 
+    [view_gecis_loglari].[kart_no] AS [kart_no], 
+    [view_gecis_loglari].[islem_adi] AS [islem_adi], 
+    [view_gecis_loglari].[islem_mesaji] AS [islem_mesaji], 
+    [view_gecis_loglari].[ucret] AS [ucret], 
+    [view_gecis_loglari].[kalan_bakiye] AS [kalan_bakiye], 
+    [view_gecis_loglari].[mesaj] AS [mesaj]
+    FROM [dbo].[view_gecis_loglari] AS [view_gecis_loglari]</DefiningQuery>
           </EntitySet>
-          <EntitySet Name="View_Kullanicilar1" EntityType="Self.View_Kullanicilar1" store:Type="Views" store:Schema="dbo">
+          <EntitySet Name="view_kullanicilar" EntityType="Self.view_kullanicilar" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
-    [View_Kullanicilar1].[kullanici_id] AS [kullanici_id], 
-    [View_Kullanicilar1].[kullanici_adi] AS [kullanici_adi], 
-    [View_Kullanicilar1].[ad] AS [ad], 
-    [View_Kullanicilar1].[soyad] AS [soyad], 
-    [View_Kullanicilar1].[tc] AS [tc], 
-    [View_Kullanicilar1].[kart_tipi] AS [kart_tipi], 
-    [View_Kullanicilar1].[kart_no] AS [kart_no], 
-    [View_Kullanicilar1].[bakiye] AS [bakiye]
-    FROM [dbo].[View_Kullanicilar1] AS [View_Kullanicilar1]</DefiningQuery>
+    [view_kullanicilar].[kullanici_id] AS [kullanici_id], 
+    [view_kullanicilar].[kullanici_adi] AS [kullanici_adi], 
+    [view_kullanicilar].[ad] AS [ad], 
+    [view_kullanicilar].[soyad] AS [soyad], 
+    [view_kullanicilar].[email] AS [email], 
+    [view_kullanicilar].[tc] AS [tc], 
+    [view_kullanicilar].[kart_no] AS [kart_no], 
+    [view_kullanicilar].[kart_tipi] AS [kart_tipi], 
+    [view_kullanicilar].[bakiye] AS [bakiye]
+    FROM [dbo].[view_kullanicilar] AS [view_kullanicilar]</DefiningQuery>
           </EntitySet>
-          <EntitySet Name="view_sistem_loglari" EntityType="Self.view_sistem_loglari" store:Type="Views" store:Schema="dbo">
+          <EntitySet Name="view_sistem_log" EntityType="Self.view_sistem_log" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
-    [view_sistem_loglari].[id] AS [id], 
-    [view_sistem_loglari].[ad] AS [ad], 
-    [view_sistem_loglari].[soyad] AS [soyad], 
-    [view_sistem_loglari].[islem_adi] AS [islem_adi], 
-    [view_sistem_loglari].[islem_tarihi] AS [islem_tarihi], 
-    [view_sistem_loglari].[mesaj] AS [mesaj]
-    FROM [dbo].[view_sistem_loglari] AS [view_sistem_loglari]</DefiningQuery>
+    [view_sistem_log].[id] AS [id], 
+    [view_sistem_log].[ad] AS [ad], 
+    [view_sistem_log].[soyad] AS [soyad], 
+    [view_sistem_log].[islem_tarihi] AS [islem_tarihi], 
+    [view_sistem_log].[islem_adi] AS [islem_adi], 
+    [view_sistem_log].[mesaj] AS [mesaj]
+    FROM [dbo].[view_sistem_log] AS [view_sistem_log]</DefiningQuery>
           </EntitySet>
+          <AssociationSet Name="FK_duyurular_kullanicilar" Association="Self.FK_duyurular_kullanicilar">
+            <End Role="kullanicilar" EntitySet="kullanicilar" />
+            <End Role="duyurular" EntitySet="duyurular" />
+          </AssociationSet>
           <AssociationSet Name="FK_gecis_loglari_islem_sonuc" Association="Self.FK_gecis_loglari_islem_sonuc">
             <End Role="islem_sonuc" EntitySet="islem_sonuc" />
             <End Role="gecis_loglari" EntitySet="gecis_loglari" />
@@ -340,9 +433,25 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_loglari' does not have a
             <End Role="kart_tipleri" EntitySet="kart_tipleri" />
             <End Role="kart_bilgileri" EntitySet="kart_bilgileri" />
           </AssociationSet>
+          <AssociationSet Name="FK_kart_bilgileri_kart_durumlari" Association="Self.FK_kart_bilgileri_kart_durumlari">
+            <End Role="kart_durumlari" EntitySet="kart_durumlari" />
+            <End Role="kart_bilgileri" EntitySet="kart_bilgileri" />
+          </AssociationSet>
           <AssociationSet Name="FK_kart_bilgileri_kullancilar" Association="Self.FK_kart_bilgileri_kullancilar">
             <End Role="kullanicilar" EntitySet="kullanicilar" />
             <End Role="kart_bilgileri" EntitySet="kart_bilgileri" />
+          </AssociationSet>
+          <AssociationSet Name="FK_kullanicilar_birimler" Association="Self.FK_kullanicilar_birimler">
+            <End Role="birimler" EntitySet="birimler" />
+            <End Role="kullanicilar" EntitySet="kullanicilar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_kullanicilar_unvanlar" Association="Self.FK_kullanicilar_unvanlar">
+            <End Role="unvanlar" EntitySet="unvanlar" />
+            <End Role="kullanicilar" EntitySet="kullanicilar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_kullanicilar_yetkiler" Association="Self.FK_kullanicilar_yetkiler">
+            <End Role="yetkiler" EntitySet="yetkiler" />
+            <End Role="kullanicilar" EntitySet="kullanicilar" />
           </AssociationSet>
           <AssociationSet Name="FK_sistem_log_islem_tipleri" Association="Self.FK_sistem_log_islem_tipleri">
             <End Role="islem_tipleri" EntitySet="islem_tipleri" />
@@ -366,9 +475,7 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_loglari' does not have a
           <EntitySet Name="gecis_loglari" EntityType="YEMEKHANEModel.gecis_loglari" />
           <EntitySet Name="islem_sonuc" EntityType="YEMEKHANEModel.islem_sonuc" />
           <EntitySet Name="islem_tipleri" EntityType="YEMEKHANEModel.islem_tipleri" />
-          <EntitySet Name="kart_bilgileri" EntityType="YEMEKHANEModel.kart_bilgileri" />
           <EntitySet Name="kart_tipleri" EntityType="YEMEKHANEModel.kart_tipleri" />
-          <EntitySet Name="kullanicilar" EntityType="YEMEKHANEModel.kullanicilar" />
           <EntitySet Name="ucretler" EntityType="YEMEKHANEModel.ucretler" />
           <EntitySet Name="unvanlar" EntityType="YEMEKHANEModel.unvanlar" />
           <AssociationSet Name="FK_gecis_loglari_islem_sonuc" Association="YEMEKHANEModel.FK_gecis_loglari_islem_sonuc">
@@ -379,43 +486,67 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_loglari' does not have a
             <End Role="islem_tipleri" EntitySet="islem_tipleri" />
             <End Role="gecis_loglari" EntitySet="gecis_loglari" />
           </AssociationSet>
+          <AssociationSet Name="FK_ucretler_kart_tipleri" Association="YEMEKHANEModel.FK_ucretler_kart_tipleri">
+            <End Role="kart_tipleri" EntitySet="kart_tipleri" />
+            <End Role="ucretler" EntitySet="ucretler" />
+          </AssociationSet>
+          <EntitySet Name="sistem_log" EntityType="YEMEKHANEModel.sistem_log" />
+          <AssociationSet Name="FK_sistem_log_islem_tipleri" Association="YEMEKHANEModel.FK_sistem_log_islem_tipleri">
+            <End Role="islem_tipleri" EntitySet="islem_tipleri" />
+            <End Role="sistem_log" EntitySet="sistem_log" />
+          </AssociationSet>
+          <EntitySet Name="view_kullanicilar" EntityType="YEMEKHANEModel.view_kullanicilar" />
+          <EntitySet Name="view_sistem_log" EntityType="YEMEKHANEModel.view_sistem_log" />
+          <FunctionImport Name="SP_KISI_GECIS_RAPORU" ReturnType="Collection(YEMEKHANEModel.SP_KISI_GECIS_RAPORU_Result)">
+            <Parameter Name="baslangic_tarihi" Mode="In" Type="String" />
+            <Parameter Name="bitis_tarihi" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="view_gecis_loglari" EntityType="YEMEKHANEModel.view_gecis_loglari" />
+          <EntitySet Name="duyurular" EntityType="YEMEKHANEModel.duyurular" />
+          <EntitySet Name="yetkiler" EntityType="YEMEKHANEModel.yetkiler" />
+          <EntitySet Name="kart_durumlari" EntityType="YEMEKHANEModel.kart_durumlari" />
+          <EntitySet Name="kart_bilgileri" EntityType="YEMEKHANEModel.kart_bilgileri" />
           <AssociationSet Name="FK_gecis_loglari_kart_bilgileri" Association="YEMEKHANEModel.FK_gecis_loglari_kart_bilgileri">
             <End Role="kart_bilgileri" EntitySet="kart_bilgileri" />
-            <End Role="gecis_loglari" EntitySet="gecis_loglari" />
-          </AssociationSet>
-          <AssociationSet Name="FK_gecis_loglari_kullanicilar" Association="YEMEKHANEModel.FK_gecis_loglari_kullanicilar">
-            <End Role="kullanicilar" EntitySet="kullanicilar" />
             <End Role="gecis_loglari" EntitySet="gecis_loglari" />
           </AssociationSet>
           <AssociationSet Name="FK_kart_bilgileri_kart_bilgileri" Association="YEMEKHANEModel.FK_kart_bilgileri_kart_bilgileri">
             <End Role="kart_tipleri" EntitySet="kart_tipleri" />
             <End Role="kart_bilgileri" EntitySet="kart_bilgileri" />
           </AssociationSet>
+          <AssociationSet Name="FK_kart_bilgileri_kart_durumlari" Association="YEMEKHANEModel.FK_kart_bilgileri_kart_durumlari">
+            <End Role="kart_durumlari" EntitySet="kart_durumlari" />
+            <End Role="kart_bilgileri" EntitySet="kart_bilgileri" />
+          </AssociationSet>
+          <EntitySet Name="kullanicilar" EntityType="YEMEKHANEModel.kullanicilar" />
+          <AssociationSet Name="FK_kullanicilar_birimler" Association="YEMEKHANEModel.FK_kullanicilar_birimler">
+            <End Role="birimler" EntitySet="birimler" />
+            <End Role="kullanicilar" EntitySet="kullanicilar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_duyurular_kullanicilar" Association="YEMEKHANEModel.FK_duyurular_kullanicilar">
+            <End Role="kullanicilar" EntitySet="kullanicilar" />
+            <End Role="duyurular" EntitySet="duyurular" />
+          </AssociationSet>
+          <AssociationSet Name="FK_gecis_loglari_kullanicilar" Association="YEMEKHANEModel.FK_gecis_loglari_kullanicilar">
+            <End Role="kullanicilar" EntitySet="kullanicilar" />
+            <End Role="gecis_loglari" EntitySet="gecis_loglari" />
+          </AssociationSet>
           <AssociationSet Name="FK_kart_bilgileri_kullancilar" Association="YEMEKHANEModel.FK_kart_bilgileri_kullancilar">
             <End Role="kullanicilar" EntitySet="kullanicilar" />
             <End Role="kart_bilgileri" EntitySet="kart_bilgileri" />
           </AssociationSet>
-          <AssociationSet Name="FK_ucretler_kart_tipleri" Association="YEMEKHANEModel.FK_ucretler_kart_tipleri">
-            <End Role="kart_tipleri" EntitySet="kart_tipleri" />
-            <End Role="ucretler" EntitySet="ucretler" />
+          <AssociationSet Name="FK_kullanicilar_unvanlar" Association="YEMEKHANEModel.FK_kullanicilar_unvanlar">
+            <End Role="unvanlar" EntitySet="unvanlar" />
+            <End Role="kullanicilar" EntitySet="kullanicilar" />
           </AssociationSet>
-          <EntitySet Name="View_Kullanicilar1" EntityType="YEMEKHANEModel.View_Kullanicilar1" />
-          <EntitySet Name="View_gecis_loglari" EntityType="YEMEKHANEModel.View_gecis_loglari" />
-          <EntitySet Name="sysdiagrams" EntityType="YEMEKHANEModel.sysdiagrams" />
-          <EntitySet Name="view_sistem_loglari" EntityType="YEMEKHANEModel.view_sistem_loglari" />
-          <EntitySet Name="sistem_log" EntityType="YEMEKHANEModel.sistem_log" />
-          <AssociationSet Name="FK_sistem_log_islem_tipleri" Association="YEMEKHANEModel.FK_sistem_log_islem_tipleri">
-            <End Role="islem_tipleri" EntitySet="islem_tipleri" />
-            <End Role="sistem_log" EntitySet="sistem_log" />
+          <AssociationSet Name="FK_kullanicilar_yetkiler" Association="YEMEKHANEModel.FK_kullanicilar_yetkiler">
+            <End Role="yetkiler" EntitySet="yetkiler" />
+            <End Role="kullanicilar" EntitySet="kullanicilar" />
           </AssociationSet>
           <AssociationSet Name="FK_sistem_log_kullanicilar" Association="YEMEKHANEModel.FK_sistem_log_kullanicilar">
             <End Role="kullanicilar" EntitySet="kullanicilar" />
             <End Role="sistem_log" EntitySet="sistem_log" />
           </AssociationSet>
-          <FunctionImport Name="SP_KisiGecisRapor" ReturnType="Collection(YEMEKHANEModel.SP_KisiGecisRapor_Result)">
-            <Parameter Name="baslangic_tarihi" Mode="In" Type="DateTime" />
-            <Parameter Name="bitis_tarihi" Mode="In" Type="DateTime" />
-          </FunctionImport>
           </EntityContainer>
         <EntityType Name="birimler">
           <Key>
@@ -423,6 +554,7 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_loglari' does not have a
           </Key>
           <Property Name="birim_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="birim_adi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="kullanicilar" Relationship="YEMEKHANEModel.FK_kullanicilar_birimler" FromRole="birimler" ToRole="kullanicilar" />
         </EntityType>
         <EntityType Name="gecis_loglari">
           <Key>
@@ -436,7 +568,7 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_loglari' does not have a
           <Property Name="ucret" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
           <Property Name="kalan_bakiye" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
           <Property Name="mesaj" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="kayit_tarihi" Type="DateTime" Precision="0" />
+          <Property Name="kayit_tarihi" Type="DateTime" Precision="3" />
           <NavigationProperty Name="islem_sonuc" Relationship="YEMEKHANEModel.FK_gecis_loglari_islem_sonuc" FromRole="gecis_loglari" ToRole="islem_sonuc" />
           <NavigationProperty Name="islem_tipleri" Relationship="YEMEKHANEModel.FK_gecis_loglari_islem_tipleri" FromRole="gecis_loglari" ToRole="islem_tipleri" />
           <NavigationProperty Name="kart_bilgileri" Relationship="YEMEKHANEModel.FK_gecis_loglari_kart_bilgileri" FromRole="gecis_loglari" ToRole="kart_bilgileri" />
@@ -459,20 +591,6 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_loglari' does not have a
           <NavigationProperty Name="gecis_loglari" Relationship="YEMEKHANEModel.FK_gecis_loglari_islem_tipleri" FromRole="islem_tipleri" ToRole="gecis_loglari" />
           <NavigationProperty Name="sistem_log" Relationship="YEMEKHANEModel.FK_sistem_log_islem_tipleri" FromRole="islem_tipleri" ToRole="sistem_log" />
         </EntityType>
-        <EntityType Name="kart_bilgileri">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="kullanici_id" Type="Int32" />
-          <Property Name="kart_no" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
-          <Property Name="kart_tipi_id" Type="Int32" />
-          <Property Name="bakiye" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-          <Property Name="kayit_tarihi" Type="DateTime" Precision="0" />
-          <NavigationProperty Name="gecis_loglari" Relationship="YEMEKHANEModel.FK_gecis_loglari_kart_bilgileri" FromRole="kart_bilgileri" ToRole="gecis_loglari" />
-          <NavigationProperty Name="kart_tipleri" Relationship="YEMEKHANEModel.FK_kart_bilgileri_kart_bilgileri" FromRole="kart_bilgileri" ToRole="kart_tipleri" />
-          <NavigationProperty Name="kullanicilar" Relationship="YEMEKHANEModel.FK_kart_bilgileri_kullancilar" FromRole="kart_bilgileri" ToRole="kullanicilar" />
-        </EntityType>
         <EntityType Name="kart_tipleri">
           <Key>
             <PropertyRef Name="kart_tipi_id" />
@@ -480,27 +598,10 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_loglari' does not have a
           <Property Name="kart_tipi_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="kart_tipi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ucret" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="kayit_tarihi" Type="DateTime" Precision="0" />
-          <Property Name="guncelleme_tarihi" Type="DateTime" Precision="0" />
-          <NavigationProperty Name="kart_bilgileri" Relationship="YEMEKHANEModel.FK_kart_bilgileri_kart_bilgileri" FromRole="kart_tipleri" ToRole="kart_bilgileri" />
+          <Property Name="kayit_tarihi" Type="DateTime" Precision="3" />
+          <Property Name="guncelleme_tarihi" Type="DateTime" Precision="3" />
           <NavigationProperty Name="ucretler" Relationship="YEMEKHANEModel.FK_ucretler_kart_tipleri" FromRole="kart_tipleri" ToRole="ucretler" />
-        </EntityType>
-        <EntityType Name="kullanicilar">
-          <Key>
-            <PropertyRef Name="kullanici_id" />
-          </Key>
-          <Property Name="kullanici_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="kullanici_adi" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-          <Property Name="sifre" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="ad" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="soyad" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="email" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-          <Property Name="tc" Type="String" MaxLength="11" FixedLength="false" Unicode="true" />
-          <Property Name="kayit_tarihi" Type="DateTime" Precision="0" />
-          <Property Name="guncelleme_tarihi" Type="DateTime" Precision="0" />
-          <NavigationProperty Name="gecis_loglari" Relationship="YEMEKHANEModel.FK_gecis_loglari_kullanicilar" FromRole="kullanicilar" ToRole="gecis_loglari" />
-          <NavigationProperty Name="kart_bilgileri" Relationship="YEMEKHANEModel.FK_kart_bilgileri_kullancilar" FromRole="kullanicilar" ToRole="kart_bilgileri" />
-          <NavigationProperty Name="sistem_log" Relationship="YEMEKHANEModel.FK_sistem_log_kullanicilar" FromRole="kullanicilar" ToRole="sistem_log" />
+          <NavigationProperty Name="kart_bilgileri" Relationship="YEMEKHANEModel.FK_kart_bilgileri_kart_bilgileri" FromRole="kart_tipleri" ToRole="kart_bilgileri" />
         </EntityType>
         <EntityType Name="ucretler">
           <Key>
@@ -509,8 +610,8 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_loglari' does not have a
           <Property Name="ucret_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="kart_tipi_id" Type="Int32" />
           <Property Name="ucret" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="kayit_tarihi" Type="DateTime" Precision="0" />
-          <Property Name="guncelleme_tarihi" Type="DateTime" Precision="0" />
+          <Property Name="kayit_tarihi" Type="DateTime" Precision="3" />
+          <Property Name="guncelleme_tarihi" Type="DateTime" Precision="3" />
           <NavigationProperty Name="kart_tipleri" Relationship="YEMEKHANEModel.FK_ucretler_kart_tipleri" FromRole="ucretler" ToRole="kart_tipleri" />
         </EntityType>
         <EntityType Name="unvanlar">
@@ -519,6 +620,7 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_loglari' does not have a
           </Key>
           <Property Name="unvan_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="unvan_adi" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="kullanicilar" Relationship="YEMEKHANEModel.FK_kullanicilar_unvanlar" FromRole="unvanlar" ToRole="kullanicilar" />
         </EntityType>
         <Association Name="FK_gecis_loglari_islem_sonuc">
           <End Type="YEMEKHANEModel.islem_sonuc" Role="islem_sonuc" Multiplicity="0..1" />
@@ -544,54 +646,6 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_loglari' does not have a
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_gecis_loglari_kart_bilgileri">
-          <End Type="YEMEKHANEModel.kart_bilgileri" Role="kart_bilgileri" Multiplicity="0..1" />
-          <End Type="YEMEKHANEModel.gecis_loglari" Role="gecis_loglari" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="kart_bilgileri">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="gecis_loglari">
-              <PropertyRef Name="kart_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_gecis_loglari_kullanicilar">
-          <End Type="YEMEKHANEModel.kullanicilar" Role="kullanicilar" Multiplicity="0..1" />
-          <End Type="YEMEKHANEModel.gecis_loglari" Role="gecis_loglari" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="kullanicilar">
-              <PropertyRef Name="kullanici_id" />
-            </Principal>
-            <Dependent Role="gecis_loglari">
-              <PropertyRef Name="kullanici_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_kart_bilgileri_kart_bilgileri">
-          <End Type="YEMEKHANEModel.kart_tipleri" Role="kart_tipleri" Multiplicity="0..1" />
-          <End Type="YEMEKHANEModel.kart_bilgileri" Role="kart_bilgileri" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="kart_tipleri">
-              <PropertyRef Name="kart_tipi_id" />
-            </Principal>
-            <Dependent Role="kart_bilgileri">
-              <PropertyRef Name="kart_tipi_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_kart_bilgileri_kullancilar">
-          <End Type="YEMEKHANEModel.kullanicilar" Role="kullanicilar" Multiplicity="0..1" />
-          <End Type="YEMEKHANEModel.kart_bilgileri" Role="kart_bilgileri" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="kullanicilar">
-              <PropertyRef Name="kullanici_id" />
-            </Principal>
-            <Dependent Role="kart_bilgileri">
-              <PropertyRef Name="kullanici_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_ucretler_kart_tipleri">
           <End Type="YEMEKHANEModel.kart_tipleri" Role="kart_tipleri" Multiplicity="0..1" />
           <End Type="YEMEKHANEModel.ucretler" Role="ucretler" Multiplicity="*" />
@@ -604,64 +658,13 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_loglari' does not have a
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="View_Kullanicilar1">
-          <Key>
-            <PropertyRef Name="kullanici_id" />
-          </Key>
-          <Property Name="kullanici_id" Type="Int32" Nullable="false" />
-          <Property Name="kullanici_adi" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-          <Property Name="ad" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="soyad" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="tc" Type="String" MaxLength="11" FixedLength="false" Unicode="true" />
-          <Property Name="kart_tipi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="kart_no" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
-          <Property Name="bakiye" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="View_gecis_loglari">
-          <Key>
-            <PropertyRef Name="log_id" />
-            <PropertyRef Name="kullanici_id" />
-          </Key>
-          <Property Name="log_id" Type="Int32" Nullable="false" />
-          <Property Name="kayit_tarihi" Type="DateTime" Precision="0" />
-          <Property Name="kullanici_id" Type="Int32" Nullable="false" />
-          <Property Name="ad" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="soyad" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="kart_id" Type="Int32" />
-          <Property Name="islem_adi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="islem_mesaji" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ucret" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="kalan_bakiye" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="mesaj" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
-        </EntityType>
-        <EntityType Name="view_sistem_loglari">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" />
-          <Property Name="ad" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="soyad" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="islem_adi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="islem_tarihi" Type="DateTime" Precision="0" />
-          <Property Name="mesaj" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="sistem_log">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="kullanici_id" Type="Int32" />
-          <Property Name="islem_tarihi" Type="DateTime" Precision="0" />
+          <Property Name="islem_tarihi" Type="DateTime" Precision="3" />
           <Property Name="islem_tipi_id" Type="Int32" />
           <Property Name="mesaj" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="islem_tipleri" Relationship="YEMEKHANEModel.FK_sistem_log_islem_tipleri" FromRole="sistem_log" ToRole="islem_tipleri" />
@@ -679,6 +682,278 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_loglari' does not have a
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="SP_KisiGecisRapor_Result">
+          <Property Type="String" Name="tc" Nullable="true" MaxLength="11" />
+          <Property Type="String" Name="ad_soyad" Nullable="true" MaxLength="61" />
+          <Property Type="String" Name="kart_tipi" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="gecis_sayisi" Nullable="true" />
+          <Property Type="String" Name="ucret" Nullable="true" MaxLength="15" />
+        </ComplexType>
+        <EntityType Name="view_kullanicilar">
+          <Key>
+            <PropertyRef Name="kullanici_id" />
+          </Key>
+          <Property Name="kullanici_id" Type="Int32" Nullable="false" />
+          <Property Name="kullanici_adi" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="ad" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="soyad" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="email" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="tc" Type="String" MaxLength="11" FixedLength="false" Unicode="true" />
+          <Property Name="kart_no" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
+          <Property Name="kart_tipi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="bakiye" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="view_sistem_log">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="ad" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="soyad" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="islem_tarihi" Type="DateTime" Precision="3" />
+          <Property Name="islem_adi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="mesaj" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <ComplexType Name="SP_KISI_GECIS_RAPOR_Result">
+          <Property Type="Int32" Name="kullanici_id" Nullable="false" />
+          <Property Type="String" Name="ucret" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="ad" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="soyad" Nullable="true" MaxLength="30" />
+          <Property Type="Int32" Name="gecis_sayisi" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="SP_KISI_GECIS_RAPORU_Result">
+          <Property Type="Int32" Name="kullanici_id" Nullable="false" />
+          <Property Type="String" Name="ucret" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="ad" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="soyad" Nullable="true" MaxLength="30" />
+          <Property Type="Int32" Name="gecis_sayisi" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="SP_KISI_GECIS_RAPOR1_Result">
+          <Property Type="Int32" Name="kullanici_id" Nullable="false" />
+          <Property Type="String" Name="ucret" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="ad" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="soyad" Nullable="true" MaxLength="30" />
+          <Property Type="Int32" Name="gecis_sayisi" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="SP_KISI_GECIS_RAPORU1_Result">
+          <Property Type="Int32" Name="kullanici_id" Nullable="false" />
+          <Property Type="String" Name="ucret" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="ad" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="soyad" Nullable="true" MaxLength="30" />
+          <Property Type="Int32" Name="gecis_sayisi" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="SP_KISI_GECIS_RAPORU2_Result">
+          <Property Type="Int32" Name="kullanici_id" Nullable="false" />
+          <Property Type="String" Name="ucret" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="ad" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="soyad" Nullable="true" MaxLength="30" />
+          <Property Type="Int32" Name="gecis_sayisi" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="SP_KISI_GECIS_RAPORU_Result1">
+          <Property Type="Int32" Name="kullanici_id" Nullable="false" />
+          <Property Type="String" Name="ucret" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="ad" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="soyad" Nullable="true" MaxLength="30" />
+          <Property Type="Int32" Name="gecis_sayisi" Nullable="true" />
+        </ComplexType>
+        <EntityType Name="view_gecis_loglari">
+          <Key>
+            <PropertyRef Name="log_id" />
+            <PropertyRef Name="kullanici_id" />
+          </Key>
+          <Property Name="log_id" Type="Int32" Nullable="false" />
+          <Property Name="kayit_tarihi" Type="DateTime" Precision="3" />
+          <Property Name="kullanici_id" Type="Int32" Nullable="false" />
+          <Property Name="ad" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="soyad" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="kart_tipi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="kart_no" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
+          <Property Name="islem_adi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="islem_mesaji" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ucret" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="kalan_bakiye" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="mesaj" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="duyurular">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="gonderen_id" Type="Int32" />
+          <Property Name="kart_tipi_id" Type="Int32" />
+          <Property Name="konu" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="mesaj" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="kayit_tarihi" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="kullanicilar" Relationship="YEMEKHANEModel.FK_duyurular_kullanicilar" FromRole="duyurular" ToRole="kullanicilar" />
+        </EntityType>
+        <EntityType Name="yetkiler">
+          <Key>
+            <PropertyRef Name="yetki_id" />
+          </Key>
+          <Property Name="yetki_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="yetki_adi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="kullanicilar" Relationship="YEMEKHANEModel.FK_kullanicilar_yetkiler" FromRole="yetkiler" ToRole="kullanicilar" />
+        </EntityType>
+        <EntityType Name="kart_durumlari">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="durum_adi" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="kart_bilgileri" Relationship="YEMEKHANEModel.FK_kart_bilgileri_kart_durumlari" FromRole="kart_durumlari" ToRole="kart_bilgileri" />
+        </EntityType>
+        <EntityType Name="kart_bilgileri">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="kullanici_id" Type="Int32" />
+          <Property Name="kart_no" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="kart_tipi_id" Type="Int32" />
+          <Property Name="durum" Type="Int32" />
+          <Property Name="son_gecerlilik_tarihi" Type="DateTime" Precision="3" />
+          <Property Name="bakiye" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="kayit_tarihi" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="gecis_loglari" Relationship="YEMEKHANEModel.FK_gecis_loglari_kart_bilgileri" FromRole="kart_bilgileri" ToRole="gecis_loglari" />
+          <NavigationProperty Name="kart_tipleri" Relationship="YEMEKHANEModel.FK_kart_bilgileri_kart_bilgileri" FromRole="kart_bilgileri" ToRole="kart_tipleri" />
+          <NavigationProperty Name="kart_durumlari" Relationship="YEMEKHANEModel.FK_kart_bilgileri_kart_durumlari" FromRole="kart_bilgileri" ToRole="kart_durumlari" />
+          <NavigationProperty Name="kullanicilar" Relationship="YEMEKHANEModel.FK_kart_bilgileri_kullancilar" FromRole="kart_bilgileri" ToRole="kullanicilar" />
+        </EntityType>
+        <Association Name="FK_gecis_loglari_kart_bilgileri">
+          <End Type="YEMEKHANEModel.kart_bilgileri" Role="kart_bilgileri" Multiplicity="0..1" />
+          <End Type="YEMEKHANEModel.gecis_loglari" Role="gecis_loglari" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="kart_bilgileri">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="gecis_loglari">
+              <PropertyRef Name="kart_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_kart_bilgileri_kart_bilgileri">
+          <End Type="YEMEKHANEModel.kart_tipleri" Role="kart_tipleri" Multiplicity="0..1" />
+          <End Type="YEMEKHANEModel.kart_bilgileri" Role="kart_bilgileri" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="kart_tipleri">
+              <PropertyRef Name="kart_tipi_id" />
+            </Principal>
+            <Dependent Role="kart_bilgileri">
+              <PropertyRef Name="kart_tipi_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_kart_bilgileri_kart_durumlari">
+          <End Type="YEMEKHANEModel.kart_durumlari" Role="kart_durumlari" Multiplicity="0..1" />
+          <End Type="YEMEKHANEModel.kart_bilgileri" Role="kart_bilgileri" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="kart_durumlari">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="kart_bilgileri">
+              <PropertyRef Name="durum" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="kullanicilar">
+          <Key>
+            <PropertyRef Name="kullanici_id" />
+          </Key>
+          <Property Name="kullanici_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="yetki_id" Type="Int32" />
+          <Property Name="birim_id" Type="Int32" />
+          <Property Name="unvan_id" Type="Int32" />
+          <Property Name="kullanici_adi" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="sifre" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ad" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="soyad" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="email" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="tc" Type="String" MaxLength="11" FixedLength="false" Unicode="true" />
+          <Property Name="resim" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
+          <Property Name="bakiye" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="kayit_tarihi" Type="DateTime" Precision="3" />
+          <Property Name="guncelleme_tarihi" Type="DateTime" Precision="3" />
+          <Property Name="aktif_mi" Type="Int32" />
+          <NavigationProperty Name="birimler" Relationship="YEMEKHANEModel.FK_kullanicilar_birimler" FromRole="kullanicilar" ToRole="birimler" />
+          <NavigationProperty Name="duyurular" Relationship="YEMEKHANEModel.FK_duyurular_kullanicilar" FromRole="kullanicilar" ToRole="duyurular" />
+          <NavigationProperty Name="gecis_loglari" Relationship="YEMEKHANEModel.FK_gecis_loglari_kullanicilar" FromRole="kullanicilar" ToRole="gecis_loglari" />
+          <NavigationProperty Name="kart_bilgileri" Relationship="YEMEKHANEModel.FK_kart_bilgileri_kullancilar" FromRole="kullanicilar" ToRole="kart_bilgileri" />
+          <NavigationProperty Name="unvanlar" Relationship="YEMEKHANEModel.FK_kullanicilar_unvanlar" FromRole="kullanicilar" ToRole="unvanlar" />
+          <NavigationProperty Name="yetkiler" Relationship="YEMEKHANEModel.FK_kullanicilar_yetkiler" FromRole="kullanicilar" ToRole="yetkiler" />
+          <NavigationProperty Name="sistem_log" Relationship="YEMEKHANEModel.FK_sistem_log_kullanicilar" FromRole="kullanicilar" ToRole="sistem_log" />
+        </EntityType>
+        <Association Name="FK_kullanicilar_birimler">
+          <End Type="YEMEKHANEModel.birimler" Role="birimler" Multiplicity="0..1" />
+          <End Type="YEMEKHANEModel.kullanicilar" Role="kullanicilar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="birimler">
+              <PropertyRef Name="birim_id" />
+            </Principal>
+            <Dependent Role="kullanicilar">
+              <PropertyRef Name="birim_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_duyurular_kullanicilar">
+          <End Type="YEMEKHANEModel.kullanicilar" Role="kullanicilar" Multiplicity="0..1" />
+          <End Type="YEMEKHANEModel.duyurular" Role="duyurular" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="kullanicilar">
+              <PropertyRef Name="kullanici_id" />
+            </Principal>
+            <Dependent Role="duyurular">
+              <PropertyRef Name="gonderen_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_gecis_loglari_kullanicilar">
+          <End Type="YEMEKHANEModel.kullanicilar" Role="kullanicilar" Multiplicity="0..1" />
+          <End Type="YEMEKHANEModel.gecis_loglari" Role="gecis_loglari" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="kullanicilar">
+              <PropertyRef Name="kullanici_id" />
+            </Principal>
+            <Dependent Role="gecis_loglari">
+              <PropertyRef Name="kullanici_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_kart_bilgileri_kullancilar">
+          <End Type="YEMEKHANEModel.kullanicilar" Role="kullanicilar" Multiplicity="0..1" />
+          <End Type="YEMEKHANEModel.kart_bilgileri" Role="kart_bilgileri" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="kullanicilar">
+              <PropertyRef Name="kullanici_id" />
+            </Principal>
+            <Dependent Role="kart_bilgileri">
+              <PropertyRef Name="kullanici_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_kullanicilar_unvanlar">
+          <End Type="YEMEKHANEModel.unvanlar" Role="unvanlar" Multiplicity="0..1" />
+          <End Type="YEMEKHANEModel.kullanicilar" Role="kullanicilar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="unvanlar">
+              <PropertyRef Name="unvan_id" />
+            </Principal>
+            <Dependent Role="kullanicilar">
+              <PropertyRef Name="unvan_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_kullanicilar_yetkiler">
+          <End Type="YEMEKHANEModel.yetkiler" Role="yetkiler" Multiplicity="0..1" />
+          <End Type="YEMEKHANEModel.kullanicilar" Role="kullanicilar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="yetkiler">
+              <PropertyRef Name="yetki_id" />
+            </Principal>
+            <Dependent Role="kullanicilar">
+              <PropertyRef Name="yetki_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_sistem_log_kullanicilar">
           <End Type="YEMEKHANEModel.kullanicilar" Role="kullanicilar" Multiplicity="0..1" />
           <End Type="YEMEKHANEModel.sistem_log" Role="sistem_log" Multiplicity="*" />
@@ -691,55 +966,173 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_loglari' does not have a
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <ComplexType Name="SP_KisiGecisRapor_Result">
-          <Property Type="String" Name="tc" Nullable="true" MaxLength="11" />
-          <Property Type="String" Name="ad_soyad" Nullable="true" MaxLength="61" />
-          <Property Type="String" Name="kart_tipi" Nullable="true" MaxLength="50" />
-          <Property Type="Int32" Name="gecis_sayisi" Nullable="true" />
-          <Property Type="String" Name="ucret" Nullable="true" MaxLength="15" />
-        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
-      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="YEMEKHANEModelStoreContainer" CdmEntityContainer="DB">
-          <EntitySetMapping Name="birimler">
-            <EntityTypeMapping TypeName="YEMEKHANEModel.birimler">
-              <MappingFragment StoreEntitySet="birimler">
-                <ScalarProperty Name="birim_adi" ColumnName="birim_adi" />
-                <ScalarProperty Name="birim_id" ColumnName="birim_id" />
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="YEMEKHANEModelStoreContainer" CdmEntityContainer="DB">
+    <EntitySetMapping Name="birimler">
+      <EntityTypeMapping TypeName="IsTypeOf(YEMEKHANEModel.birimler)">
+        <MappingFragment StoreEntitySet="birimler">
+          <ScalarProperty Name="birim_id" ColumnName="birim_id" />
+          <ScalarProperty Name="birim_adi" ColumnName="birim_adi" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="gecis_loglari">
+      <EntityTypeMapping TypeName="IsTypeOf(YEMEKHANEModel.gecis_loglari)">
+        <MappingFragment StoreEntitySet="gecis_loglari">
+          <ScalarProperty Name="log_id" ColumnName="log_id" />
+          <ScalarProperty Name="kullanici_id" ColumnName="kullanici_id" />
+          <ScalarProperty Name="kart_id" ColumnName="kart_id" />
+          <ScalarProperty Name="islem_tipi_id" ColumnName="islem_tipi_id" />
+          <ScalarProperty Name="islem_sonuc_id" ColumnName="islem_sonuc_id" />
+          <ScalarProperty Name="ucret" ColumnName="ucret" />
+          <ScalarProperty Name="kalan_bakiye" ColumnName="kalan_bakiye" />
+          <ScalarProperty Name="mesaj" ColumnName="mesaj" />
+          <ScalarProperty Name="kayit_tarihi" ColumnName="kayit_tarihi" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="islem_sonuc">
+      <EntityTypeMapping TypeName="IsTypeOf(YEMEKHANEModel.islem_sonuc)">
+        <MappingFragment StoreEntitySet="islem_sonuc">
+          <ScalarProperty Name="sonuc_id" ColumnName="sonuc_id" />
+          <ScalarProperty Name="islem_mesaji" ColumnName="islem_mesaji" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="islem_tipleri">
+      <EntityTypeMapping TypeName="IsTypeOf(YEMEKHANEModel.islem_tipleri)">
+        <MappingFragment StoreEntitySet="islem_tipleri">
+          <ScalarProperty Name="islem_tipi_id" ColumnName="islem_tipi_id" />
+          <ScalarProperty Name="islem_adi" ColumnName="islem_adi" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="kart_tipleri">
+      <EntityTypeMapping TypeName="IsTypeOf(YEMEKHANEModel.kart_tipleri)">
+        <MappingFragment StoreEntitySet="kart_tipleri">
+          <ScalarProperty Name="kart_tipi_id" ColumnName="kart_tipi_id" />
+          <ScalarProperty Name="kart_tipi" ColumnName="kart_tipi" />
+          <ScalarProperty Name="ucret" ColumnName="ucret" />
+          <ScalarProperty Name="kayit_tarihi" ColumnName="kayit_tarihi" />
+          <ScalarProperty Name="guncelleme_tarihi" ColumnName="guncelleme_tarihi" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ucretler">
+      <EntityTypeMapping TypeName="IsTypeOf(YEMEKHANEModel.ucretler)">
+        <MappingFragment StoreEntitySet="ucretler">
+          <ScalarProperty Name="ucret_id" ColumnName="ucret_id" />
+          <ScalarProperty Name="kart_tipi_id" ColumnName="kart_tipi_id" />
+          <ScalarProperty Name="ucret" ColumnName="ucret" />
+          <ScalarProperty Name="kayit_tarihi" ColumnName="kayit_tarihi" />
+          <ScalarProperty Name="guncelleme_tarihi" ColumnName="guncelleme_tarihi" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="unvanlar">
+      <EntityTypeMapping TypeName="IsTypeOf(YEMEKHANEModel.unvanlar)">
+        <MappingFragment StoreEntitySet="unvanlar">
+          <ScalarProperty Name="unvan_id" ColumnName="unvan_id" />
+          <ScalarProperty Name="unvan_adi" ColumnName="unvan_adi" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="sistem_log">
+      <EntityTypeMapping TypeName="IsTypeOf(YEMEKHANEModel.sistem_log)">
+        <MappingFragment StoreEntitySet="sistem_log">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="kullanici_id" ColumnName="kullanici_id" />
+          <ScalarProperty Name="islem_tarihi" ColumnName="islem_tarihi" />
+          <ScalarProperty Name="islem_tipi_id" ColumnName="islem_tipi_id" />
+          <ScalarProperty Name="mesaj" ColumnName="mesaj" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+          <EntitySetMapping Name="view_kullanicilar">
+            <EntityTypeMapping TypeName="YEMEKHANEModel.view_kullanicilar">
+              <MappingFragment StoreEntitySet="view_kullanicilar">
+                <ScalarProperty Name="bakiye" ColumnName="bakiye" />
+                <ScalarProperty Name="kart_tipi" ColumnName="kart_tipi" />
+                <ScalarProperty Name="kart_no" ColumnName="kart_no" />
+                <ScalarProperty Name="tc" ColumnName="tc" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="soyad" ColumnName="soyad" />
+                <ScalarProperty Name="ad" ColumnName="ad" />
+                <ScalarProperty Name="kullanici_adi" ColumnName="kullanici_adi" />
+                <ScalarProperty Name="kullanici_id" ColumnName="kullanici_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="gecis_loglari">
-            <EntityTypeMapping TypeName="YEMEKHANEModel.gecis_loglari">
-              <MappingFragment StoreEntitySet="gecis_loglari">
-                <ScalarProperty Name="kayit_tarihi" ColumnName="kayit_tarihi" />
+          <EntitySetMapping Name="view_sistem_log">
+            <EntityTypeMapping TypeName="YEMEKHANEModel.view_sistem_log">
+              <MappingFragment StoreEntitySet="view_sistem_log">
+                <ScalarProperty Name="mesaj" ColumnName="mesaj" />
+                <ScalarProperty Name="islem_adi" ColumnName="islem_adi" />
+                <ScalarProperty Name="islem_tarihi" ColumnName="islem_tarihi" />
+                <ScalarProperty Name="soyad" ColumnName="soyad" />
+                <ScalarProperty Name="ad" ColumnName="ad" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SP_KISI_GECIS_RAPORU" FunctionName="YEMEKHANEModel.Store.SP_KISI_GECIS_RAPORU">
+          <ResultMapping>
+              <ComplexTypeMapping TypeName="YEMEKHANEModel.SP_KISI_GECIS_RAPORU_Result">
+                <ScalarProperty Name="kullanici_id" ColumnName="kullanici_id" />
+                <ScalarProperty Name="ucret" ColumnName="ucret" />
+                <ScalarProperty Name="ad" ColumnName="ad" />
+                <ScalarProperty Name="soyad" ColumnName="soyad" />
+                <ScalarProperty Name="gecis_sayisi" ColumnName="gecis_sayisi" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="view_gecis_loglari">
+            <EntityTypeMapping TypeName="YEMEKHANEModel.view_gecis_loglari">
+              <MappingFragment StoreEntitySet="view_gecis_loglari">
                 <ScalarProperty Name="mesaj" ColumnName="mesaj" />
                 <ScalarProperty Name="kalan_bakiye" ColumnName="kalan_bakiye" />
                 <ScalarProperty Name="ucret" ColumnName="ucret" />
-                <ScalarProperty Name="islem_sonuc_id" ColumnName="islem_sonuc_id" />
-                <ScalarProperty Name="islem_tipi_id" ColumnName="islem_tipi_id" />
-                <ScalarProperty Name="kart_id" ColumnName="kart_id" />
+                <ScalarProperty Name="islem_mesaji" ColumnName="islem_mesaji" />
+                <ScalarProperty Name="islem_adi" ColumnName="islem_adi" />
+                <ScalarProperty Name="kart_no" ColumnName="kart_no" />
+                <ScalarProperty Name="kart_tipi" ColumnName="kart_tipi" />
+                <ScalarProperty Name="soyad" ColumnName="soyad" />
+                <ScalarProperty Name="ad" ColumnName="ad" />
                 <ScalarProperty Name="kullanici_id" ColumnName="kullanici_id" />
+                <ScalarProperty Name="kayit_tarihi" ColumnName="kayit_tarihi" />
                 <ScalarProperty Name="log_id" ColumnName="log_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="islem_sonuc">
-            <EntityTypeMapping TypeName="YEMEKHANEModel.islem_sonuc">
-              <MappingFragment StoreEntitySet="islem_sonuc">
-                <ScalarProperty Name="islem_mesaji" ColumnName="islem_mesaji" />
-                <ScalarProperty Name="sonuc_id" ColumnName="sonuc_id" />
+          <EntitySetMapping Name="duyurular">
+            <EntityTypeMapping TypeName="YEMEKHANEModel.duyurular">
+              <MappingFragment StoreEntitySet="duyurular">
+                <ScalarProperty Name="kayit_tarihi" ColumnName="kayit_tarihi" />
+                <ScalarProperty Name="mesaj" ColumnName="mesaj" />
+                <ScalarProperty Name="konu" ColumnName="konu" />
+                <ScalarProperty Name="kart_tipi_id" ColumnName="kart_tipi_id" />
+                <ScalarProperty Name="gonderen_id" ColumnName="gonderen_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="islem_tipleri">
-            <EntityTypeMapping TypeName="YEMEKHANEModel.islem_tipleri">
-              <MappingFragment StoreEntitySet="islem_tipleri">
-                <ScalarProperty Name="islem_adi" ColumnName="islem_adi" />
-                <ScalarProperty Name="islem_tipi_id" ColumnName="islem_tipi_id" />
+          <EntitySetMapping Name="yetkiler">
+            <EntityTypeMapping TypeName="YEMEKHANEModel.yetkiler">
+              <MappingFragment StoreEntitySet="yetkiler">
+                <ScalarProperty Name="yetki_adi" ColumnName="yetki_adi" />
+                <ScalarProperty Name="yetki_id" ColumnName="yetki_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="kart_durumlari">
+            <EntityTypeMapping TypeName="YEMEKHANEModel.kart_durumlari">
+              <MappingFragment StoreEntitySet="kart_durumlari">
+                <ScalarProperty Name="durum_adi" ColumnName="durum_adi" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -748,6 +1141,8 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_loglari' does not have a
               <MappingFragment StoreEntitySet="kart_bilgileri">
                 <ScalarProperty Name="kayit_tarihi" ColumnName="kayit_tarihi" />
                 <ScalarProperty Name="bakiye" ColumnName="bakiye" />
+                <ScalarProperty Name="son_gecerlilik_tarihi" ColumnName="son_gecerlilik_tarihi" />
+                <ScalarProperty Name="durum" ColumnName="durum" />
                 <ScalarProperty Name="kart_tipi_id" ColumnName="kart_tipi_id" />
                 <ScalarProperty Name="kart_no" ColumnName="kart_no" />
                 <ScalarProperty Name="kullanici_id" ColumnName="kullanici_id" />
@@ -755,130 +1150,29 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_loglari' does not have a
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="kart_tipleri">
-            <EntityTypeMapping TypeName="YEMEKHANEModel.kart_tipleri">
-              <MappingFragment StoreEntitySet="kart_tipleri">
-                <ScalarProperty Name="guncelleme_tarihi" ColumnName="guncelleme_tarihi" />
-                <ScalarProperty Name="kayit_tarihi" ColumnName="kayit_tarihi" />
-                <ScalarProperty Name="ucret" ColumnName="ucret" />
-                <ScalarProperty Name="kart_tipi" ColumnName="kart_tipi" />
-                <ScalarProperty Name="kart_tipi_id" ColumnName="kart_tipi_id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="kullanicilar">
             <EntityTypeMapping TypeName="YEMEKHANEModel.kullanicilar">
               <MappingFragment StoreEntitySet="kullanicilar">
+                <ScalarProperty Name="aktif_mi" ColumnName="aktif_mi" />
                 <ScalarProperty Name="guncelleme_tarihi" ColumnName="guncelleme_tarihi" />
                 <ScalarProperty Name="kayit_tarihi" ColumnName="kayit_tarihi" />
+                <ScalarProperty Name="bakiye" ColumnName="bakiye" />
+                <ScalarProperty Name="resim" ColumnName="resim" />
                 <ScalarProperty Name="tc" ColumnName="tc" />
                 <ScalarProperty Name="email" ColumnName="email" />
                 <ScalarProperty Name="soyad" ColumnName="soyad" />
                 <ScalarProperty Name="ad" ColumnName="ad" />
                 <ScalarProperty Name="sifre" ColumnName="sifre" />
                 <ScalarProperty Name="kullanici_adi" ColumnName="kullanici_adi" />
-                <ScalarProperty Name="kullanici_id" ColumnName="kullanici_id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ucretler">
-            <EntityTypeMapping TypeName="YEMEKHANEModel.ucretler">
-              <MappingFragment StoreEntitySet="ucretler">
-                <ScalarProperty Name="guncelleme_tarihi" ColumnName="guncelleme_tarihi" />
-                <ScalarProperty Name="kayit_tarihi" ColumnName="kayit_tarihi" />
-                <ScalarProperty Name="ucret" ColumnName="ucret" />
-                <ScalarProperty Name="kart_tipi_id" ColumnName="kart_tipi_id" />
-                <ScalarProperty Name="ucret_id" ColumnName="ucret_id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="unvanlar">
-            <EntityTypeMapping TypeName="YEMEKHANEModel.unvanlar">
-              <MappingFragment StoreEntitySet="unvanlar">
-                <ScalarProperty Name="unvan_adi" ColumnName="unvan_adi" />
                 <ScalarProperty Name="unvan_id" ColumnName="unvan_id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="View_Kullanicilar1">
-            <EntityTypeMapping TypeName="YEMEKHANEModel.View_Kullanicilar1">
-              <MappingFragment StoreEntitySet="View_Kullanicilar1">
-                <ScalarProperty Name="bakiye" ColumnName="bakiye" />
-                <ScalarProperty Name="kart_no" ColumnName="kart_no" />
-                <ScalarProperty Name="kart_tipi" ColumnName="kart_tipi" />
-                <ScalarProperty Name="tc" ColumnName="tc" />
-                <ScalarProperty Name="soyad" ColumnName="soyad" />
-                <ScalarProperty Name="ad" ColumnName="ad" />
-                <ScalarProperty Name="kullanici_adi" ColumnName="kullanici_adi" />
+                <ScalarProperty Name="birim_id" ColumnName="birim_id" />
+                <ScalarProperty Name="yetki_id" ColumnName="yetki_id" />
                 <ScalarProperty Name="kullanici_id" ColumnName="kullanici_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="View_gecis_loglari">
-            <EntityTypeMapping TypeName="YEMEKHANEModel.View_gecis_loglari">
-              <MappingFragment StoreEntitySet="View_gecis_loglari">
-                <ScalarProperty Name="mesaj" ColumnName="mesaj" />
-                <ScalarProperty Name="kalan_bakiye" ColumnName="kalan_bakiye" />
-                <ScalarProperty Name="ucret" ColumnName="ucret" />
-                <ScalarProperty Name="islem_mesaji" ColumnName="islem_mesaji" />
-                <ScalarProperty Name="islem_adi" ColumnName="islem_adi" />
-                <ScalarProperty Name="kart_id" ColumnName="kart_id" />
-                <ScalarProperty Name="soyad" ColumnName="soyad" />
-                <ScalarProperty Name="ad" ColumnName="ad" />
-                <ScalarProperty Name="kullanici_id" ColumnName="kullanici_id" />
-                <ScalarProperty Name="kayit_tarihi" ColumnName="kayit_tarihi" />
-                <ScalarProperty Name="log_id" ColumnName="log_id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="YEMEKHANEModel.sysdiagrams">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="definition" ColumnName="definition" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="name" ColumnName="name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="view_sistem_loglari">
-            <EntityTypeMapping TypeName="YEMEKHANEModel.view_sistem_loglari">
-              <MappingFragment StoreEntitySet="view_sistem_loglari">
-                <ScalarProperty Name="mesaj" ColumnName="mesaj" />
-                <ScalarProperty Name="islem_tarihi" ColumnName="islem_tarihi" />
-                <ScalarProperty Name="islem_adi" ColumnName="islem_adi" />
-                <ScalarProperty Name="soyad" ColumnName="soyad" />
-                <ScalarProperty Name="ad" ColumnName="ad" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="sistem_log">
-            <EntityTypeMapping TypeName="YEMEKHANEModel.sistem_log">
-              <MappingFragment StoreEntitySet="sistem_log">
-                <ScalarProperty Name="mesaj" ColumnName="mesaj" />
-                <ScalarProperty Name="islem_tipi_id" ColumnName="islem_tipi_id" />
-                <ScalarProperty Name="islem_tarihi" ColumnName="islem_tarihi" />
-                <ScalarProperty Name="kullanici_id" ColumnName="kullanici_id" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="SP_KisiGecisRapor" FunctionName="YEMEKHANEModel.Store.SP_KisiGecisRapor">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="YEMEKHANEModel.SP_KisiGecisRapor_Result">
-                <ScalarProperty Name="tc" ColumnName="tc" />
-                <ScalarProperty Name="ad_soyad" ColumnName="ad_soyad" />
-                <ScalarProperty Name="kart_tipi" ColumnName="kart_tipi" />
-                <ScalarProperty Name="gecis_sayisi" ColumnName="gecis_sayisi" />
-                <ScalarProperty Name="ucret" ColumnName="ucret" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-        </EntityContainerMapping>
-      </Mapping>
-    </edmx:Mappings>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
   </edmx:Runtime>
   <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
   <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
@@ -892,7 +1186,7 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_loglari' does not have a
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
         <DesignerProperty Name="EnablePluralization" Value="false" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
-        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>
     </Options>

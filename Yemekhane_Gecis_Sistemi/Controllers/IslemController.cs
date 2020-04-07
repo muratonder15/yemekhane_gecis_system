@@ -83,25 +83,26 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
 
         public void GecisYap(string kartno)
         {
-            var kayit_sayisi = (from a in db.kart_bilgileri where a.kart_no == kartno select a).Count();
+            var kart_bilgisi = (from a in db.kart_bilgileri where a.kart_no == kartno select a).FirstOrDefault();
            
-            if (kayit_sayisi == 1)
+            if (kart_bilgisi!=null)
             {
+                var kullanici = (from k in db.kullanicilar where k.kullanici_id == kart_bilgisi.kullanici_id select k).FirstOrDefault();
                 var ucret = (from a in db.kart_bilgileri
                              join b in db.kart_tipleri
                              on a.kart_tipi_id equals b.kart_tipi_id
                              where a.kart_no==kartno
                              select b.ucret).FirstOrDefault();
-                var kart_bilgisi = (from a in db.kart_bilgileri where a.kart_no == kartno select a).FirstOrDefault();
-                if (Convert.ToDouble(kart_bilgisi.bakiye) >= Convert.ToDouble(ucret))
+                //var kart_bilgisi = (from a in db.kart_bilgileri where a.kart_no == kartno select a).FirstOrDefault();
+                if (Convert.ToDouble(kullanici.bakiye) >= Convert.ToDouble(ucret))
                 {
-                kart_bilgisi.bakiye = (Convert.ToDouble(kart_bilgisi.bakiye) - Convert.ToDouble(ucret)).ToString(); 
+                    kullanici.bakiye = (Convert.ToDouble(kullanici.bakiye) - Convert.ToDouble(ucret)).ToString(); 
                 db.SaveChanges();
-                LogTut(kartno,2,1, Convert.ToDouble(ucret),Convert.ToDouble(kart_bilgisi.bakiye));
+                LogTut(kartno,2,1, Convert.ToDouble(ucret),Convert.ToDouble(kullanici.bakiye));
                 }
                 else
                 {
-                    LogTut(kartno, 2,2, Convert.ToDouble(ucret), Convert.ToDouble(kart_bilgisi.bakiye));
+                    LogTut(kartno, 2,2, Convert.ToDouble(ucret), Convert.ToDouble(kullanici.bakiye));
                 }
                               
                 
@@ -125,5 +126,8 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
             GecisYap(kartno.kart_no);
             return View();
         }
+        
+
+        
     }
 }

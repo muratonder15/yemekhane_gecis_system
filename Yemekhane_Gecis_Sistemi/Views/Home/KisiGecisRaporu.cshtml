@@ -1,19 +1,69 @@
 ﻿@using Yemekhane_Gecis_Sistemi.Models
-@model View_gecis_loglari
+@model  List<SP_KISI_GECIS_RAPORU_Result>
 @{
-    ViewBag.Title = "KisiGeci sRaporu";
+    ViewBag.Title = "KisiGecisRaporu";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>KisiGecisRaporu</h2>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $("#date").datetimepicker({
-            dateFormat: 'dd-mm-yy', timeFormat: 'hh:mm:ss'
-        });
-    });
-</script>
-<div class="bootstrap-datetimepicker-widget>
-    @Html.TextBox("tarih")
+
+
+
+
+@using (Html.BeginForm("KisiGecisRaporu", "Home", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+<div class="form-group">
+    <label for="text" class="col-sm-1 control-label">Başlangıç Tarihi</label>
+    <div class="col-sm-2">
+
+        <input type="text" class="form-control" id="baslangic_tarihi" name="baslangic_tarihi" readonly>
+
+    </div>
+
 </div>
+    <div class="form-group">
+
+        <label for="text" class="col-sm-1 control-label">Bitiş Tarihi</label>
+    <div class="col-sm-2">
+
+        <input type="text" class="form-control" id="bitis_tarihi" name="bitis_tarihi" readonly>
+
+    </div>
+
+</div>
+<div class="form-group">
+    <div class="col-sm-offset-1 col-sm-5">
+        <button type="submit" class="btn btn-primary">Rapor Al</button>
+    </div>
+
+</div>
+}
+
+@*@if (Model != null)
+{
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Ad</th>
+            <th>Soyad</th>
+            <th>Ucret</th>
+            <th>Geçiş Sayısı</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var a in Model)
+{
+    <tr>
+        <td>@a.kullanici_id</td>
+        <td>@a.ad</td>
+        <td>@a.soyad</td>
+        <td>@a.ucret</td>
+        <td>@a.gecis_sayisi</td>
+        
+    </tr>
+}
+    </tbody>
+</table>
+    
+}*@
 

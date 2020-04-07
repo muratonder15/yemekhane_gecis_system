@@ -1,0 +1,42 @@
+﻿@using Yemekhane_Gecis_Sistemi.Models
+@model duyurular
+@{
+    ViewBag.Title = "Duyurular";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+@using (Html.BeginForm("Duyurular", "Home", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    <div class="alert alert-success" role="alert">
+        @ViewBag.KullaniciMesaji
+    </div>
+    <div class="form-group">
+        <label for="default" class="col-sm-1 control-label">Konu</label>
+        <div class="col-md-4">
+            @Html.TextBoxFor(x => x.konu, new { @class = "form-control", @placeholder = "Konu Giriniz." })
+            @Html.ValidationMessageFor(x => x.konu)
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="default" class="col-sm-1 control-label">Mesaj</label>
+        <div class="col-md-4">
+            @Html.TextAreaFor(x => x.mesaj, new { @class = "form-control", @placeholder = "Mesaj Giriniz.",@style = "height:200px;" })
+            @Html.ValidationMessageFor(x => x.mesaj)
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="default" class="col-sm-1 control-label">Kart Tipi</label>
+        <div class="col-md-4">
+            @Html.DropDownListFor(x=>x.kart_tipi_id, new List<SelectListItem>(ViewBag.kart_tipi_listesi), new { @class = "form-control" })
+       
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Gönder</button>
+
+
+
+}

@@ -1,5 +1,5 @@
 ﻿@using Yemekhane_Gecis_Sistemi.Models
-@model Yemekhane_Gecis_Sistemi.Models.kart_bilgileri
+@model kart_bilgileri
 @{
     ViewBag.Title = "KullaniciGetir";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -10,6 +10,14 @@
 
     @using (Html.BeginForm("Guncelle", "Home", FormMethod.Post))
     {
+        <div class="alert alert-success" role="alert">
+            @if (ViewData["KullaniciMesaji"]!=null)
+            {
+                <script type="text/javascript">
+                    alert('@ViewData["KullaniciMesaji"]');
+                </script>
+            }
+        </div>
 <div class="form-group">
 
     <div class="form-group">
@@ -48,6 +56,22 @@
 
         </div>
     </div>
+    <div class="form-group">
+        
+        <div>
+            @Html.LabelFor(x => x.kullanicilar.birim_id)
+            @Html.DropDownListFor(x => x.kullanicilar.birim_id, new List<SelectListItem>(ViewBag.birimList), new { @class = "form-control" })
+           
+        </div>
+    </div>
+    <div class="form-group">
+        
+        <div>
+            @Html.LabelFor(x => x.kullanicilar.unvan_id)
+            @Html.DropDownListFor(x => x.kullanicilar.unvan_id, new List<SelectListItem>(ViewBag.unvanList), new { @class = "form-control" })
+           
+        </div>
+    </div>
 
     <div class="form-group">
 
@@ -78,6 +102,9 @@
     <br />
     <div class="form-group">
         <button class="btn btn-warning">Güncelle</button>
+    </div>
+    <div class="form-group">
+        <a href="/Home/KullaniciListele" class="btn btn-primary">Geri Dön</a>
     </div>
 
 </div>

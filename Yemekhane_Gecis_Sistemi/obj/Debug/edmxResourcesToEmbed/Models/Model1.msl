@@ -2,41 +2,166 @@
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="YEMEKHANEModelStoreContainer" CdmEntityContainer="DB">
     <EntitySetMapping Name="birimler">
-      <EntityTypeMapping TypeName="YEMEKHANEModel.birimler">
+      <EntityTypeMapping TypeName="IsTypeOf(YEMEKHANEModel.birimler)">
         <MappingFragment StoreEntitySet="birimler">
-          <ScalarProperty Name="birim_adi" ColumnName="birim_adi" />
           <ScalarProperty Name="birim_id" ColumnName="birim_id" />
+          <ScalarProperty Name="birim_adi" ColumnName="birim_adi" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="gecis_loglari">
-      <EntityTypeMapping TypeName="YEMEKHANEModel.gecis_loglari">
+      <EntityTypeMapping TypeName="IsTypeOf(YEMEKHANEModel.gecis_loglari)">
         <MappingFragment StoreEntitySet="gecis_loglari">
-          <ScalarProperty Name="kayit_tarihi" ColumnName="kayit_tarihi" />
-          <ScalarProperty Name="mesaj" ColumnName="mesaj" />
-          <ScalarProperty Name="kalan_bakiye" ColumnName="kalan_bakiye" />
-          <ScalarProperty Name="ucret" ColumnName="ucret" />
-          <ScalarProperty Name="islem_sonuc_id" ColumnName="islem_sonuc_id" />
-          <ScalarProperty Name="islem_tipi_id" ColumnName="islem_tipi_id" />
-          <ScalarProperty Name="kart_id" ColumnName="kart_id" />
-          <ScalarProperty Name="kullanici_id" ColumnName="kullanici_id" />
           <ScalarProperty Name="log_id" ColumnName="log_id" />
+          <ScalarProperty Name="kullanici_id" ColumnName="kullanici_id" />
+          <ScalarProperty Name="kart_id" ColumnName="kart_id" />
+          <ScalarProperty Name="islem_tipi_id" ColumnName="islem_tipi_id" />
+          <ScalarProperty Name="islem_sonuc_id" ColumnName="islem_sonuc_id" />
+          <ScalarProperty Name="ucret" ColumnName="ucret" />
+          <ScalarProperty Name="kalan_bakiye" ColumnName="kalan_bakiye" />
+          <ScalarProperty Name="mesaj" ColumnName="mesaj" />
+          <ScalarProperty Name="kayit_tarihi" ColumnName="kayit_tarihi" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="islem_sonuc">
-      <EntityTypeMapping TypeName="YEMEKHANEModel.islem_sonuc">
+      <EntityTypeMapping TypeName="IsTypeOf(YEMEKHANEModel.islem_sonuc)">
         <MappingFragment StoreEntitySet="islem_sonuc">
-          <ScalarProperty Name="islem_mesaji" ColumnName="islem_mesaji" />
           <ScalarProperty Name="sonuc_id" ColumnName="sonuc_id" />
+          <ScalarProperty Name="islem_mesaji" ColumnName="islem_mesaji" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="islem_tipleri">
-      <EntityTypeMapping TypeName="YEMEKHANEModel.islem_tipleri">
+      <EntityTypeMapping TypeName="IsTypeOf(YEMEKHANEModel.islem_tipleri)">
         <MappingFragment StoreEntitySet="islem_tipleri">
-          <ScalarProperty Name="islem_adi" ColumnName="islem_adi" />
           <ScalarProperty Name="islem_tipi_id" ColumnName="islem_tipi_id" />
+          <ScalarProperty Name="islem_adi" ColumnName="islem_adi" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="kart_tipleri">
+      <EntityTypeMapping TypeName="IsTypeOf(YEMEKHANEModel.kart_tipleri)">
+        <MappingFragment StoreEntitySet="kart_tipleri">
+          <ScalarProperty Name="kart_tipi_id" ColumnName="kart_tipi_id" />
+          <ScalarProperty Name="kart_tipi" ColumnName="kart_tipi" />
+          <ScalarProperty Name="ucret" ColumnName="ucret" />
+          <ScalarProperty Name="kayit_tarihi" ColumnName="kayit_tarihi" />
+          <ScalarProperty Name="guncelleme_tarihi" ColumnName="guncelleme_tarihi" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ucretler">
+      <EntityTypeMapping TypeName="IsTypeOf(YEMEKHANEModel.ucretler)">
+        <MappingFragment StoreEntitySet="ucretler">
+          <ScalarProperty Name="ucret_id" ColumnName="ucret_id" />
+          <ScalarProperty Name="kart_tipi_id" ColumnName="kart_tipi_id" />
+          <ScalarProperty Name="ucret" ColumnName="ucret" />
+          <ScalarProperty Name="kayit_tarihi" ColumnName="kayit_tarihi" />
+          <ScalarProperty Name="guncelleme_tarihi" ColumnName="guncelleme_tarihi" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="unvanlar">
+      <EntityTypeMapping TypeName="IsTypeOf(YEMEKHANEModel.unvanlar)">
+        <MappingFragment StoreEntitySet="unvanlar">
+          <ScalarProperty Name="unvan_id" ColumnName="unvan_id" />
+          <ScalarProperty Name="unvan_adi" ColumnName="unvan_adi" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="sistem_log">
+      <EntityTypeMapping TypeName="IsTypeOf(YEMEKHANEModel.sistem_log)">
+        <MappingFragment StoreEntitySet="sistem_log">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="kullanici_id" ColumnName="kullanici_id" />
+          <ScalarProperty Name="islem_tarihi" ColumnName="islem_tarihi" />
+          <ScalarProperty Name="islem_tipi_id" ColumnName="islem_tipi_id" />
+          <ScalarProperty Name="mesaj" ColumnName="mesaj" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="view_kullanicilar">
+      <EntityTypeMapping TypeName="YEMEKHANEModel.view_kullanicilar">
+        <MappingFragment StoreEntitySet="view_kullanicilar">
+          <ScalarProperty Name="bakiye" ColumnName="bakiye" />
+          <ScalarProperty Name="kart_tipi" ColumnName="kart_tipi" />
+          <ScalarProperty Name="kart_no" ColumnName="kart_no" />
+          <ScalarProperty Name="tc" ColumnName="tc" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="soyad" ColumnName="soyad" />
+          <ScalarProperty Name="ad" ColumnName="ad" />
+          <ScalarProperty Name="kullanici_adi" ColumnName="kullanici_adi" />
+          <ScalarProperty Name="kullanici_id" ColumnName="kullanici_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="view_sistem_log">
+      <EntityTypeMapping TypeName="YEMEKHANEModel.view_sistem_log">
+        <MappingFragment StoreEntitySet="view_sistem_log">
+          <ScalarProperty Name="mesaj" ColumnName="mesaj" />
+          <ScalarProperty Name="islem_adi" ColumnName="islem_adi" />
+          <ScalarProperty Name="islem_tarihi" ColumnName="islem_tarihi" />
+          <ScalarProperty Name="soyad" ColumnName="soyad" />
+          <ScalarProperty Name="ad" ColumnName="ad" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="SP_KISI_GECIS_RAPORU" FunctionName="YEMEKHANEModel.Store.SP_KISI_GECIS_RAPORU">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="YEMEKHANEModel.SP_KISI_GECIS_RAPORU_Result">
+          <ScalarProperty Name="kullanici_id" ColumnName="kullanici_id" />
+          <ScalarProperty Name="ucret" ColumnName="ucret" />
+          <ScalarProperty Name="ad" ColumnName="ad" />
+          <ScalarProperty Name="soyad" ColumnName="soyad" />
+          <ScalarProperty Name="gecis_sayisi" ColumnName="gecis_sayisi" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <EntitySetMapping Name="view_gecis_loglari">
+      <EntityTypeMapping TypeName="YEMEKHANEModel.view_gecis_loglari">
+        <MappingFragment StoreEntitySet="view_gecis_loglari">
+          <ScalarProperty Name="mesaj" ColumnName="mesaj" />
+          <ScalarProperty Name="kalan_bakiye" ColumnName="kalan_bakiye" />
+          <ScalarProperty Name="ucret" ColumnName="ucret" />
+          <ScalarProperty Name="islem_mesaji" ColumnName="islem_mesaji" />
+          <ScalarProperty Name="islem_adi" ColumnName="islem_adi" />
+          <ScalarProperty Name="kart_no" ColumnName="kart_no" />
+          <ScalarProperty Name="kart_tipi" ColumnName="kart_tipi" />
+          <ScalarProperty Name="soyad" ColumnName="soyad" />
+          <ScalarProperty Name="ad" ColumnName="ad" />
+          <ScalarProperty Name="kullanici_id" ColumnName="kullanici_id" />
+          <ScalarProperty Name="kayit_tarihi" ColumnName="kayit_tarihi" />
+          <ScalarProperty Name="log_id" ColumnName="log_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="duyurular">
+      <EntityTypeMapping TypeName="YEMEKHANEModel.duyurular">
+        <MappingFragment StoreEntitySet="duyurular">
+          <ScalarProperty Name="kayit_tarihi" ColumnName="kayit_tarihi" />
+          <ScalarProperty Name="mesaj" ColumnName="mesaj" />
+          <ScalarProperty Name="konu" ColumnName="konu" />
+          <ScalarProperty Name="kart_tipi_id" ColumnName="kart_tipi_id" />
+          <ScalarProperty Name="gonderen_id" ColumnName="gonderen_id" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="yetkiler">
+      <EntityTypeMapping TypeName="YEMEKHANEModel.yetkiler">
+        <MappingFragment StoreEntitySet="yetkiler">
+          <ScalarProperty Name="yetki_adi" ColumnName="yetki_adi" />
+          <ScalarProperty Name="yetki_id" ColumnName="yetki_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="kart_durumlari">
+      <EntityTypeMapping TypeName="YEMEKHANEModel.kart_durumlari">
+        <MappingFragment StoreEntitySet="kart_durumlari">
+          <ScalarProperty Name="durum_adi" ColumnName="durum_adi" />
+          <ScalarProperty Name="id" ColumnName="id" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -45,6 +170,8 @@
         <MappingFragment StoreEntitySet="kart_bilgileri">
           <ScalarProperty Name="kayit_tarihi" ColumnName="kayit_tarihi" />
           <ScalarProperty Name="bakiye" ColumnName="bakiye" />
+          <ScalarProperty Name="son_gecerlilik_tarihi" ColumnName="son_gecerlilik_tarihi" />
+          <ScalarProperty Name="durum" ColumnName="durum" />
           <ScalarProperty Name="kart_tipi_id" ColumnName="kart_tipi_id" />
           <ScalarProperty Name="kart_no" ColumnName="kart_no" />
           <ScalarProperty Name="kullanici_id" ColumnName="kullanici_id" />
@@ -52,126 +179,26 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="kart_tipleri">
-      <EntityTypeMapping TypeName="YEMEKHANEModel.kart_tipleri">
-        <MappingFragment StoreEntitySet="kart_tipleri">
-          <ScalarProperty Name="guncelleme_tarihi" ColumnName="guncelleme_tarihi" />
-          <ScalarProperty Name="kayit_tarihi" ColumnName="kayit_tarihi" />
-          <ScalarProperty Name="ucret" ColumnName="ucret" />
-          <ScalarProperty Name="kart_tipi" ColumnName="kart_tipi" />
-          <ScalarProperty Name="kart_tipi_id" ColumnName="kart_tipi_id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="kullanicilar">
       <EntityTypeMapping TypeName="YEMEKHANEModel.kullanicilar">
         <MappingFragment StoreEntitySet="kullanicilar">
+          <ScalarProperty Name="aktif_mi" ColumnName="aktif_mi" />
           <ScalarProperty Name="guncelleme_tarihi" ColumnName="guncelleme_tarihi" />
           <ScalarProperty Name="kayit_tarihi" ColumnName="kayit_tarihi" />
+          <ScalarProperty Name="bakiye" ColumnName="bakiye" />
+          <ScalarProperty Name="resim" ColumnName="resim" />
           <ScalarProperty Name="tc" ColumnName="tc" />
           <ScalarProperty Name="email" ColumnName="email" />
           <ScalarProperty Name="soyad" ColumnName="soyad" />
           <ScalarProperty Name="ad" ColumnName="ad" />
           <ScalarProperty Name="sifre" ColumnName="sifre" />
           <ScalarProperty Name="kullanici_adi" ColumnName="kullanici_adi" />
-          <ScalarProperty Name="kullanici_id" ColumnName="kullanici_id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="ucretler">
-      <EntityTypeMapping TypeName="YEMEKHANEModel.ucretler">
-        <MappingFragment StoreEntitySet="ucretler">
-          <ScalarProperty Name="guncelleme_tarihi" ColumnName="guncelleme_tarihi" />
-          <ScalarProperty Name="kayit_tarihi" ColumnName="kayit_tarihi" />
-          <ScalarProperty Name="ucret" ColumnName="ucret" />
-          <ScalarProperty Name="kart_tipi_id" ColumnName="kart_tipi_id" />
-          <ScalarProperty Name="ucret_id" ColumnName="ucret_id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="unvanlar">
-      <EntityTypeMapping TypeName="YEMEKHANEModel.unvanlar">
-        <MappingFragment StoreEntitySet="unvanlar">
-          <ScalarProperty Name="unvan_adi" ColumnName="unvan_adi" />
           <ScalarProperty Name="unvan_id" ColumnName="unvan_id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="View_Kullanicilar1">
-      <EntityTypeMapping TypeName="YEMEKHANEModel.View_Kullanicilar1">
-        <MappingFragment StoreEntitySet="View_Kullanicilar1">
-          <ScalarProperty Name="bakiye" ColumnName="bakiye" />
-          <ScalarProperty Name="kart_no" ColumnName="kart_no" />
-          <ScalarProperty Name="kart_tipi" ColumnName="kart_tipi" />
-          <ScalarProperty Name="tc" ColumnName="tc" />
-          <ScalarProperty Name="soyad" ColumnName="soyad" />
-          <ScalarProperty Name="ad" ColumnName="ad" />
-          <ScalarProperty Name="kullanici_adi" ColumnName="kullanici_adi" />
+          <ScalarProperty Name="birim_id" ColumnName="birim_id" />
+          <ScalarProperty Name="yetki_id" ColumnName="yetki_id" />
           <ScalarProperty Name="kullanici_id" ColumnName="kullanici_id" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="View_gecis_loglari">
-      <EntityTypeMapping TypeName="YEMEKHANEModel.View_gecis_loglari">
-        <MappingFragment StoreEntitySet="View_gecis_loglari">
-          <ScalarProperty Name="mesaj" ColumnName="mesaj" />
-          <ScalarProperty Name="kalan_bakiye" ColumnName="kalan_bakiye" />
-          <ScalarProperty Name="ucret" ColumnName="ucret" />
-          <ScalarProperty Name="islem_mesaji" ColumnName="islem_mesaji" />
-          <ScalarProperty Name="islem_adi" ColumnName="islem_adi" />
-          <ScalarProperty Name="kart_id" ColumnName="kart_id" />
-          <ScalarProperty Name="soyad" ColumnName="soyad" />
-          <ScalarProperty Name="ad" ColumnName="ad" />
-          <ScalarProperty Name="kullanici_id" ColumnName="kullanici_id" />
-          <ScalarProperty Name="kayit_tarihi" ColumnName="kayit_tarihi" />
-          <ScalarProperty Name="log_id" ColumnName="log_id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="sysdiagrams">
-      <EntityTypeMapping TypeName="YEMEKHANEModel.sysdiagrams">
-        <MappingFragment StoreEntitySet="sysdiagrams">
-          <ScalarProperty Name="definition" ColumnName="definition" />
-          <ScalarProperty Name="version" ColumnName="version" />
-          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-          <ScalarProperty Name="name" ColumnName="name" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="view_sistem_loglari">
-      <EntityTypeMapping TypeName="YEMEKHANEModel.view_sistem_loglari">
-        <MappingFragment StoreEntitySet="view_sistem_loglari">
-          <ScalarProperty Name="mesaj" ColumnName="mesaj" />
-          <ScalarProperty Name="islem_tarihi" ColumnName="islem_tarihi" />
-          <ScalarProperty Name="islem_adi" ColumnName="islem_adi" />
-          <ScalarProperty Name="soyad" ColumnName="soyad" />
-          <ScalarProperty Name="ad" ColumnName="ad" />
-          <ScalarProperty Name="id" ColumnName="id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="sistem_log">
-      <EntityTypeMapping TypeName="YEMEKHANEModel.sistem_log">
-        <MappingFragment StoreEntitySet="sistem_log">
-          <ScalarProperty Name="mesaj" ColumnName="mesaj" />
-          <ScalarProperty Name="islem_tipi_id" ColumnName="islem_tipi_id" />
-          <ScalarProperty Name="islem_tarihi" ColumnName="islem_tarihi" />
-          <ScalarProperty Name="kullanici_id" ColumnName="kullanici_id" />
-          <ScalarProperty Name="id" ColumnName="id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <FunctionImportMapping FunctionImportName="SP_KisiGecisRapor" FunctionName="YEMEKHANEModel.Store.SP_KisiGecisRapor">
-      <ResultMapping>
-        <ComplexTypeMapping TypeName="YEMEKHANEModel.SP_KisiGecisRapor_Result">
-          <ScalarProperty Name="tc" ColumnName="tc" />
-          <ScalarProperty Name="ad_soyad" ColumnName="ad_soyad" />
-          <ScalarProperty Name="kart_tipi" ColumnName="kart_tipi" />
-          <ScalarProperty Name="gecis_sayisi" ColumnName="gecis_sayisi" />
-          <ScalarProperty Name="ucret" ColumnName="ucret" />
-        </ComplexTypeMapping>
-      </ResultMapping>
-    </FunctionImportMapping>
   </EntityContainerMapping>
 </Mapping>
