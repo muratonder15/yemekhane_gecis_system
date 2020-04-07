@@ -497,10 +497,6 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
           </AssociationSet>
           <EntitySet Name="view_kullanicilar" EntityType="YEMEKHANEModel.view_kullanicilar" />
           <EntitySet Name="view_sistem_log" EntityType="YEMEKHANEModel.view_sistem_log" />
-          <FunctionImport Name="SP_KISI_GECIS_RAPORU" ReturnType="Collection(YEMEKHANEModel.SP_KISI_GECIS_RAPORU_Result)">
-            <Parameter Name="baslangic_tarihi" Mode="In" Type="String" />
-            <Parameter Name="bitis_tarihi" Mode="In" Type="String" />
-          </FunctionImport>
           <EntitySet Name="view_gecis_loglari" EntityType="YEMEKHANEModel.view_gecis_loglari" />
           <EntitySet Name="duyurular" EntityType="YEMEKHANEModel.duyurular" />
           <EntitySet Name="yetkiler" EntityType="YEMEKHANEModel.yetkiler" />
@@ -547,6 +543,10 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
             <End Role="kullanicilar" EntitySet="kullanicilar" />
             <End Role="sistem_log" EntitySet="sistem_log" />
           </AssociationSet>
+          <FunctionImport Name="SP_KISI_GECIS_RAPORU" ReturnType="Collection(YEMEKHANEModel.SP_KISI_GECIS_RAPORU_Result)">
+            <Parameter Name="baslangic_tarihi" Mode="In" Type="String" />
+            <Parameter Name="bitis_tarihi" Mode="In" Type="String" />
+          </FunctionImport>
           </EntityContainer>
         <EntityType Name="birimler">
           <Key>
@@ -727,6 +727,7 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
           <Property Type="String" Name="ad" Nullable="true" MaxLength="30" />
           <Property Type="String" Name="soyad" Nullable="true" MaxLength="30" />
           <Property Type="Int32" Name="gecis_sayisi" Nullable="true" />
+          <Property Type="String" Name="kart_tipi" Nullable="true" MaxLength="50" />
         </ComplexType>
         <ComplexType Name="SP_KISI_GECIS_RAPOR1_Result">
           <Property Type="Int32" Name="kullanici_id" Nullable="false" />
@@ -966,6 +967,62 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="SP_KISI_GECIS_RAPORU1_Result1">
+          <Property Type="Int32" Name="kullanici_id" Nullable="false" />
+          <Property Type="String" Name="ad" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="soyad" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="kart_tipi" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ucret" Nullable="true" MaxLength="15" />
+          <Property Type="Int32" Name="gecis_sayisi" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="SP_KISI_GECIS_RAPORU_Result2">
+          <Property Type="Int32" Name="kullanici_id" Nullable="false" />
+          <Property Type="String" Name="ad" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="soyad" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="kart_tipi" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ucret" Nullable="true" MaxLength="15" />
+          <Property Type="Int32" Name="gecis_sayisi" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="SP_KISI_GECIS_RAPORU_Result3">
+          <Property Type="Int32" Name="kullanici_id" Nullable="false" />
+          <Property Type="String" Name="ad" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="soyad" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="kart_tipi" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ucret" Nullable="true" MaxLength="15" />
+          <Property Type="Int32" Name="gecis_sayisi" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="SP_KISI_GECIS_RAPORU_Result4">
+          <Property Type="Int32" Name="kullanici_id" Nullable="false" />
+          <Property Type="String" Name="ad" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="soyad" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="kart_tipi" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ucret" Nullable="true" MaxLength="15" />
+          <Property Type="Int32" Name="gecis_sayisi" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="SP_KISI_GECIS_RAPORU_Result5">
+          <Property Type="Int32" Name="kullanici_id" Nullable="false" />
+          <Property Type="String" Name="ad" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="soyad" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="kart_tipi" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ucret" Nullable="true" MaxLength="15" />
+          <Property Type="Int32" Name="gecis_sayisi" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="SP_KISI_GECIS_RAPORU1_Result2">
+          <Property Type="Int32" Name="kullanici_id" Nullable="false" />
+          <Property Type="String" Name="ad" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="soyad" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="kart_tipi" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ucret" Nullable="true" MaxLength="15" />
+          <Property Type="Int32" Name="gecis_sayisi" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="SP_KISI_GECIS_RAPORU_Result6">
+          <Property Type="Int32" Name="kullanici_id" Nullable="false" />
+          <Property Type="String" Name="ad" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="soyad" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="kart_tipi" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ucret" Nullable="true" MaxLength="15" />
+          <Property Type="Int32" Name="gecis_sayisi" Nullable="true" />
+        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1079,17 +1136,6 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="SP_KISI_GECIS_RAPORU" FunctionName="YEMEKHANEModel.Store.SP_KISI_GECIS_RAPORU">
-          <ResultMapping>
-              <ComplexTypeMapping TypeName="YEMEKHANEModel.SP_KISI_GECIS_RAPORU_Result">
-                <ScalarProperty Name="kullanici_id" ColumnName="kullanici_id" />
-                <ScalarProperty Name="ucret" ColumnName="ucret" />
-                <ScalarProperty Name="ad" ColumnName="ad" />
-                <ScalarProperty Name="soyad" ColumnName="soyad" />
-                <ScalarProperty Name="gecis_sayisi" ColumnName="gecis_sayisi" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <EntitySetMapping Name="view_gecis_loglari">
             <EntityTypeMapping TypeName="YEMEKHANEModel.view_gecis_loglari">
               <MappingFragment StoreEntitySet="view_gecis_loglari">
@@ -1171,6 +1217,18 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SP_KISI_GECIS_RAPORU" FunctionName="YEMEKHANEModel.Store.SP_KISI_GECIS_RAPORU">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="YEMEKHANEModel.SP_KISI_GECIS_RAPORU_Result">
+                <ScalarProperty Name="kullanici_id" ColumnName="kullanici_id" />
+                <ScalarProperty Name="ucret" ColumnName="ucret" />
+                <ScalarProperty Name="ad" ColumnName="ad" />
+                <ScalarProperty Name="soyad" ColumnName="soyad" />
+                <ScalarProperty Name="gecis_sayisi" ColumnName="gecis_sayisi" />
+                <ScalarProperty Name="kart_tipi" ColumnName="kart_tipi" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>

@@ -27,10 +27,6 @@
     </AssociationSet>
     <EntitySet Name="view_kullanicilar" EntityType="YEMEKHANEModel.view_kullanicilar" />
     <EntitySet Name="view_sistem_log" EntityType="YEMEKHANEModel.view_sistem_log" />
-    <FunctionImport Name="SP_KISI_GECIS_RAPORU" ReturnType="Collection(YEMEKHANEModel.SP_KISI_GECIS_RAPORU_Result)">
-      <Parameter Name="baslangic_tarihi" Mode="In" Type="String" />
-      <Parameter Name="bitis_tarihi" Mode="In" Type="String" />
-    </FunctionImport>
     <EntitySet Name="view_gecis_loglari" EntityType="YEMEKHANEModel.view_gecis_loglari" />
     <EntitySet Name="duyurular" EntityType="YEMEKHANEModel.duyurular" />
     <EntitySet Name="yetkiler" EntityType="YEMEKHANEModel.yetkiler" />
@@ -77,6 +73,10 @@
       <End Role="kullanicilar" EntitySet="kullanicilar" />
       <End Role="sistem_log" EntitySet="sistem_log" />
     </AssociationSet>
+    <FunctionImport Name="SP_KISI_GECIS_RAPORU" ReturnType="Collection(YEMEKHANEModel.SP_KISI_GECIS_RAPORU_Result)">
+      <Parameter Name="baslangic_tarihi" Mode="In" Type="String" />
+      <Parameter Name="bitis_tarihi" Mode="In" Type="String" />
+    </FunctionImport>
   </EntityContainer>
   <EntityType Name="birimler">
     <Key>
@@ -257,6 +257,7 @@
     <Property Type="String" Name="ad" Nullable="true" MaxLength="30" />
     <Property Type="String" Name="soyad" Nullable="true" MaxLength="30" />
     <Property Type="Int32" Name="gecis_sayisi" Nullable="true" />
+    <Property Type="String" Name="kart_tipi" Nullable="true" MaxLength="50" />
   </ComplexType>
   <ComplexType Name="SP_KISI_GECIS_RAPOR1_Result">
     <Property Type="Int32" Name="kullanici_id" Nullable="false" />
@@ -496,4 +497,60 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <ComplexType Name="SP_KISI_GECIS_RAPORU1_Result1">
+    <Property Type="Int32" Name="kullanici_id" Nullable="false" />
+    <Property Type="String" Name="ad" Nullable="true" MaxLength="30" />
+    <Property Type="String" Name="soyad" Nullable="true" MaxLength="30" />
+    <Property Type="String" Name="kart_tipi" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="ucret" Nullable="true" MaxLength="15" />
+    <Property Type="Int32" Name="gecis_sayisi" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="SP_KISI_GECIS_RAPORU_Result2">
+    <Property Type="Int32" Name="kullanici_id" Nullable="false" />
+    <Property Type="String" Name="ad" Nullable="true" MaxLength="30" />
+    <Property Type="String" Name="soyad" Nullable="true" MaxLength="30" />
+    <Property Type="String" Name="kart_tipi" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="ucret" Nullable="true" MaxLength="15" />
+    <Property Type="Int32" Name="gecis_sayisi" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="SP_KISI_GECIS_RAPORU_Result3">
+    <Property Type="Int32" Name="kullanici_id" Nullable="false" />
+    <Property Type="String" Name="ad" Nullable="true" MaxLength="30" />
+    <Property Type="String" Name="soyad" Nullable="true" MaxLength="30" />
+    <Property Type="String" Name="kart_tipi" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="ucret" Nullable="true" MaxLength="15" />
+    <Property Type="Int32" Name="gecis_sayisi" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="SP_KISI_GECIS_RAPORU_Result4">
+    <Property Type="Int32" Name="kullanici_id" Nullable="false" />
+    <Property Type="String" Name="ad" Nullable="true" MaxLength="30" />
+    <Property Type="String" Name="soyad" Nullable="true" MaxLength="30" />
+    <Property Type="String" Name="kart_tipi" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="ucret" Nullable="true" MaxLength="15" />
+    <Property Type="Int32" Name="gecis_sayisi" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="SP_KISI_GECIS_RAPORU_Result5">
+    <Property Type="Int32" Name="kullanici_id" Nullable="false" />
+    <Property Type="String" Name="ad" Nullable="true" MaxLength="30" />
+    <Property Type="String" Name="soyad" Nullable="true" MaxLength="30" />
+    <Property Type="String" Name="kart_tipi" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="ucret" Nullable="true" MaxLength="15" />
+    <Property Type="Int32" Name="gecis_sayisi" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="SP_KISI_GECIS_RAPORU1_Result2">
+    <Property Type="Int32" Name="kullanici_id" Nullable="false" />
+    <Property Type="String" Name="ad" Nullable="true" MaxLength="30" />
+    <Property Type="String" Name="soyad" Nullable="true" MaxLength="30" />
+    <Property Type="String" Name="kart_tipi" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="ucret" Nullable="true" MaxLength="15" />
+    <Property Type="Int32" Name="gecis_sayisi" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="SP_KISI_GECIS_RAPORU_Result6">
+    <Property Type="Int32" Name="kullanici_id" Nullable="false" />
+    <Property Type="String" Name="ad" Nullable="true" MaxLength="30" />
+    <Property Type="String" Name="soyad" Nullable="true" MaxLength="30" />
+    <Property Type="String" Name="kart_tipi" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="ucret" Nullable="true" MaxLength="15" />
+    <Property Type="Int32" Name="gecis_sayisi" Nullable="true" />
+  </ComplexType>
 </Schema>

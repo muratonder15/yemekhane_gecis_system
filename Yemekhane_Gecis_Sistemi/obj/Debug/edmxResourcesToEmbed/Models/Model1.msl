@@ -108,17 +108,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <FunctionImportMapping FunctionImportName="SP_KISI_GECIS_RAPORU" FunctionName="YEMEKHANEModel.Store.SP_KISI_GECIS_RAPORU">
-      <ResultMapping>
-        <ComplexTypeMapping TypeName="YEMEKHANEModel.SP_KISI_GECIS_RAPORU_Result">
-          <ScalarProperty Name="kullanici_id" ColumnName="kullanici_id" />
-          <ScalarProperty Name="ucret" ColumnName="ucret" />
-          <ScalarProperty Name="ad" ColumnName="ad" />
-          <ScalarProperty Name="soyad" ColumnName="soyad" />
-          <ScalarProperty Name="gecis_sayisi" ColumnName="gecis_sayisi" />
-        </ComplexTypeMapping>
-      </ResultMapping>
-    </FunctionImportMapping>
     <EntitySetMapping Name="view_gecis_loglari">
       <EntityTypeMapping TypeName="YEMEKHANEModel.view_gecis_loglari">
         <MappingFragment StoreEntitySet="view_gecis_loglari">
@@ -200,5 +189,17 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="SP_KISI_GECIS_RAPORU" FunctionName="YEMEKHANEModel.Store.SP_KISI_GECIS_RAPORU">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="YEMEKHANEModel.SP_KISI_GECIS_RAPORU_Result">
+          <ScalarProperty Name="kullanici_id" ColumnName="kullanici_id" />
+          <ScalarProperty Name="ucret" ColumnName="ucret" />
+          <ScalarProperty Name="ad" ColumnName="ad" />
+          <ScalarProperty Name="soyad" ColumnName="soyad" />
+          <ScalarProperty Name="gecis_sayisi" ColumnName="gecis_sayisi" />
+          <ScalarProperty Name="kart_tipi" ColumnName="kart_tipi" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
   </EntityContainerMapping>
 </Mapping>
