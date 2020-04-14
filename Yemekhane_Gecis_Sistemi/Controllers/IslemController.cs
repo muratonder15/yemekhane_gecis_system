@@ -31,7 +31,7 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
 
             gecis_loglari gecisLog = new gecis_loglari(); 
 
-                var kullanici_kodu = (from a in db.kart_bilgileri where a.kart_no == kartno 
+                var kullanici_kodu = (from a in db.kart_bilgileri where a.kart_no == kartno && a.durum==1
                                       select new { a.kullanici_id,a.ID }).FirstOrDefault();
             if (islem_tipi == 2 && islem_sonuc==1)
             {
@@ -83,34 +83,56 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
 
         public void GecisYap(string kartno)
         {
-            var kart_bilgisi = (from a in db.kart_bilgileri where a.kart_no == kartno select a).FirstOrDefault();
-           
-            if (kart_bilgisi!=null)
+            var kart_kontrol = (from a in db.kart_bilgileri where a.kart_no == kartno select a).FirstOrDefault();
+
+            if (kart_kontrol != null)
             {
-                var kullanici = (from k in db.kullanicilar where k.kullanici_id == kart_bilgisi.kullanici_id select k).FirstOrDefault();
-                var ucret = (from a in db.kart_bilgileri
-                             join b in db.kart_tipleri
-                             on a.kart_tipi_id equals b.kart_tipi_id
-                             where a.kart_no==kartno
-                             select b.ucret).FirstOrDefault();
-                //var kart_bilgisi = (from a in db.kart_bilgileri where a.kart_no == kartno select a).FirstOrDefault();
-                if (Convert.ToDouble(kullanici.bakiye) >= Convert.ToDouble(ucret))
+                var kart_bilgisi = (from a in db.kart_bilgileri where 
+                                    a.kart_no == kartno && 
+                                    a.durum == 1 && 
+                                    a.son_gecerlilik_tarihi>DateTime.Now
+                                    select a).FirstOrDefault();
+                var son_kullanma_tarihi = (from a in db.kart_bilgileri where
+                          a.kart_no == kartno &&
+                          a.durum == 1 &&
+                          a.son_gecerlilik_tarihi < DateTime.Now
+                                           select a).FirstOrDefault();
+                if (kart_bilgisi != null)
                 {
-                    kullanici.bakiye = (Convert.ToDouble(kullanici.bakiye) - Convert.ToDouble(ucret)).ToString(); 
-                db.SaveChanges();
-                LogTut(kartno,2,1, Convert.ToDouble(ucret),Convert.ToDouble(kullanici.bakiye));
+                    var kullanici = (from k in db.kullanicilar where k.kullanici_id == kart_bilgisi.kullanici_id select k).FirstOrDefault();
+                    var ucret = (from a in db.kart_bilgileri
+                                 join b in db.kart_tipleri
+                                 on a.kart_tipi_id equals b.kart_tipi_id
+                                 where a.kart_no == kartno && a.durum == 1
+                                 select b.ucret).FirstOrDefault();
+                    //var kart_bilgisi = (from a in db.kart_bilgileri where a.kart_no == kartno select a).FirstOrDefault();
+                    if (Convert.ToDouble(kullanici.bakiye) >= Convert.ToDouble(ucret))
+                    {
+                        kullanici.bakiye = (Convert.ToDouble(kullanici.bakiye) - Convert.ToDouble(ucret)).ToString();
+                        db.SaveChanges();
+                        LogTut(kartno, 2, 1, Convert.ToDouble(ucret), Convert.ToDouble(kullanici.bakiye));
+                    }
+                    else
+                    {
+                        LogTut(kartno, 2, 2, Convert.ToDouble(ucret), Convert.ToDouble(kullanici.bakiye));
+                    }
+
+                }
+
+                else if (son_kullanma_tarihi != null)
+                {
+                    ViewData["KullaniciMesaji"] = "Son kullanma tarihi geçmiş!!";
                 }
                 else
                 {
-                    LogTut(kartno, 2,2, Convert.ToDouble(ucret), Convert.ToDouble(kullanici.bakiye));
+                    ViewData["KullaniciMesaji"] = "Kart İptal!!";
                 }
-                              
+            } 
                 
-                
-            }
+            
             else
             {
-                ViewData["KullaniciMesaji"] = "kayıt bulunamadı";
+                ViewData["KullaniciMesaji"] = "Geçersiz Kart!!";
             }
         }
 

@@ -12,28 +12,33 @@
 namespace Yemekhane_Gecis_Sistemi.Models
 {
 
-using System;
+    using System;
     using System.Collections.Generic;
-    
-public partial class duyurular
-{
+    using System.ComponentModel.DataAnnotations;
 
-    public int id { get; set; }
+    public partial class duyurular
+    {
 
-    public Nullable<int> gonderen_id { get; set; }
+        public int id { get; set; }
 
-    public Nullable<int> kart_tipi_id { get; set; }
+        public Nullable<int> gonderen_id { get; set; }
 
-    public string konu { get; set; }
+        public Nullable<int> kart_tipi_id { get; set; }
 
-    public string mesaj { get; set; }
+        [Required(ErrorMessage = "Konu baþlýðýný boþ býrakmayýnýz...!")]
 
-    public Nullable<System.DateTime> kayit_tarihi { get; set; }
+        public string konu { get; set; }
+
+        [Required(ErrorMessage = "Mesaj alanýný boþ býrakmayýnýz...!")]
+
+        public string mesaj { get; set; }
+
+        public Nullable<System.DateTime> kayit_tarihi { get; set; }
 
 
 
-    public virtual kullanicilar kullanicilar { get; set; }
+        public virtual kullanicilar kullanicilar { get; set; }
 
-}
+    }
 
 }

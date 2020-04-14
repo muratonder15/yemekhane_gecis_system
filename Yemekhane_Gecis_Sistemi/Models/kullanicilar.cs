@@ -26,9 +26,9 @@ public partial class kullanicilar
 
         this.gecis_loglari = new HashSet<gecis_loglari>();
 
-        this.kart_bilgileri = new HashSet<kart_bilgileri>();
-
         this.sistem_log = new HashSet<sistem_log>();
+
+        this.kart_bilgileri = new HashSet<kart_bilgileri>();
 
     }
 
@@ -75,10 +75,6 @@ public partial class kullanicilar
 
     public virtual ICollection<gecis_loglari> gecis_loglari { get; set; }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-
-    public virtual ICollection<kart_bilgileri> kart_bilgileri { get; set; }
-
     public virtual unvanlar unvanlar { get; set; }
 
     public virtual yetkiler yetkiler { get; set; }
@@ -86,6 +82,10 @@ public partial class kullanicilar
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
     public virtual ICollection<sistem_log> sistem_log { get; set; }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+    public virtual ICollection<kart_bilgileri> kart_bilgileri { get; set; }
 
 }
 

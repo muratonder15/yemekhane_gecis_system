@@ -10,9 +10,15 @@
 @using (Html.BeginForm("IslemLog", "Home", FormMethod.Post))
 {
     <div class="form-group">
-
+       @if (@ViewData["mesaj"] != null)
+       {
+        <div class="alert alert-success" role="alert">
+            @ViewData["mesaj"]
+        </div>
+       }
         <div class="col-md-2">
             @Html.TextBox("tckimlikno", null, new { @class = "form-control", @placeholder = "Tc Kimlik No Giriniz" })
+            @Html.ValidationMessage("tckimlikno")
         </div>
     </div>
     <input type="submit" value="göster" class="btn btn-primary" />
@@ -40,7 +46,7 @@
                     </tr>
                     <tr>
                         <th>Bakiye:</th>
-                        <td>@ViewData["bakiye"]</td>
+                        <td>@ViewData["bakiye"] TL</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -62,6 +68,7 @@
                         <th>İşlem Tarihi</th>
                         <th>İşlem Mesajı</th>
                         <th>İşlem Adı</th>
+                        <th>Kart Tipi</th>
                         <th>Ücret</th>
                         <th>Mesaj</th>
 
@@ -75,7 +82,8 @@
                             <td>@a.kayit_tarihi</td>
                             <td>@a.islem_mesaji</td>
                             <td>@a.islem_adi</td>
-                            <td>@a.ucret</td>
+                            <td>@a.kart_tipi</td>
+                            <td>@a.ucret TL</td>
                             <td>@a.mesaj</td>
                         </tr>
                     }

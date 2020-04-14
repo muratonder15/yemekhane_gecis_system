@@ -18,13 +18,18 @@
     </script>
 @using (Html.BeginForm("KartTipiGuncelle", "Home", FormMethod.Post))
 {
-    <div class="alert alert-success" role="alert">       
-        @ViewData["KullaniciMesaji"]
-    </div>
+    
     <div class="form-group">
+        @if (ViewData["KullaniciMesaji"] != null)
+        {
+            <div class="alert alert-success" role="alert">
+                @ViewData["KullaniciMesaji"]
+                <a href="/Home/KartTipiListesi" >Geri Dön</a>
+            </div>
+        }
         <div>
             @Html.LabelFor(x => x.kart_tipi_id)
-            @Html.TextBoxFor(x => x.kart_tipi_id, new { @class = "form-control" })
+            @Html.TextBoxFor(x => x.kart_tipi_id, new { @class = "form-control", @readonly = "readonly" })
         </div>
     </div>
     <div class="form-group">

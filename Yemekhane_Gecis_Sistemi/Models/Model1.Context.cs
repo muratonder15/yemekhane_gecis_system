@@ -63,9 +63,9 @@ public partial class DB : DbContext
 
     public virtual DbSet<kart_durumlari> kart_durumlari { get; set; }
 
-    public virtual DbSet<kart_bilgileri> kart_bilgileri { get; set; }
-
     public virtual DbSet<kullanicilar> kullanicilar { get; set; }
+
+    public virtual DbSet<kart_bilgileri> kart_bilgileri { get; set; }
 
 
     public virtual ObjectResult<SP_KISI_GECIS_RAPORU_Result> SP_KISI_GECIS_RAPORU(string baslangic_tarihi, string bitis_tarihi)

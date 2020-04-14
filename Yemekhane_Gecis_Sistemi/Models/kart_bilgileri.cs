@@ -43,6 +43,8 @@ public partial class kart_bilgileri
 
     public Nullable<System.DateTime> kayit_tarihi { get; set; }
 
+    public Nullable<System.DateTime> guncelleme_tarihi { get; set; }
+
 
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

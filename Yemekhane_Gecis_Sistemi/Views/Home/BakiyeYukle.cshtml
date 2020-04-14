@@ -19,6 +19,12 @@
 @using (Html.BeginForm("BakiyeYukle", "Home", FormMethod.Post))
 {
     <div class="row">
+        @if (TempData["mesaj"] != null)
+        {
+            <div class="alert alert-success" role="alert">
+                @TempData["mesaj"]
+            </div>
+        }
         <div class="col-md-3">
             @Html.TextBoxFor(x => x.tc, new { @class = "form-control", @type = "number", @placeholder = "Tc Kimlik No Giriniz" })
         </div>

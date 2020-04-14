@@ -41,8 +41,11 @@
                     <td>@a.kart_no</td>
                     <td>@a.kart_durumlari.durum_adi</td>
                     <td>@a.son_gecerlilik_tarihi</td>
-                    <td><a href="#" data-toggle="modal" data-target="#m_modal" onclick="OrtakDuzenle(@a.kullanici_id)">İptal Et <i class="la la-gear"></i></a></td>
-
+                    @if (a.durum == 1)
+                    {
+                    <td><a href="/Home/KartIptal/@a.ID" id="kart_iptal">İptal Et <i class="la la-gear"></i></a></td>
+               
+                    }
                 </tr>
 
 
@@ -53,17 +56,22 @@
 
     <script>
         $('#gonder').click(function () {
-            alert('Fotoğraf güncellendi!');
+            alert("Fotoğraf Güncellendi");
         });
     </script>
                 }
 
 
+@*@if (TempData["mesaj"]!=null)
+{
     <script type="text/javascript">
-        function OrtakDuzenle(ortakId) {
-
-            var url = '/Home/KartDetaylari/' + ortakId;
-
-            $(".modal-body").load(url);
-        }
+        alert(TempData["mesaj"]);
     </script>
+}*@
+
+<script>
+        $('#kart_iptal').click(function () {
+            alert('Kart İptal Edildi.!');
+        });
+</script>
+

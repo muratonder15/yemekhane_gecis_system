@@ -154,20 +154,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="kart_bilgileri">
-      <EntityTypeMapping TypeName="YEMEKHANEModel.kart_bilgileri">
-        <MappingFragment StoreEntitySet="kart_bilgileri">
-          <ScalarProperty Name="kayit_tarihi" ColumnName="kayit_tarihi" />
-          <ScalarProperty Name="bakiye" ColumnName="bakiye" />
-          <ScalarProperty Name="son_gecerlilik_tarihi" ColumnName="son_gecerlilik_tarihi" />
-          <ScalarProperty Name="durum" ColumnName="durum" />
-          <ScalarProperty Name="kart_tipi_id" ColumnName="kart_tipi_id" />
-          <ScalarProperty Name="kart_no" ColumnName="kart_no" />
-          <ScalarProperty Name="kullanici_id" ColumnName="kullanici_id" />
-          <ScalarProperty Name="ID" ColumnName="ID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="kullanicilar">
       <EntityTypeMapping TypeName="YEMEKHANEModel.kullanicilar">
         <MappingFragment StoreEntitySet="kullanicilar">
@@ -201,5 +187,20 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
+    <EntitySetMapping Name="kart_bilgileri">
+      <EntityTypeMapping TypeName="YEMEKHANEModel.kart_bilgileri">
+        <MappingFragment StoreEntitySet="kart_bilgileri">
+          <ScalarProperty Name="guncelleme_tarihi" ColumnName="guncelleme_tarihi" />
+          <ScalarProperty Name="kayit_tarihi" ColumnName="kayit_tarihi" />
+          <ScalarProperty Name="bakiye" ColumnName="bakiye" />
+          <ScalarProperty Name="son_gecerlilik_tarihi" ColumnName="son_gecerlilik_tarihi" />
+          <ScalarProperty Name="durum" ColumnName="durum" />
+          <ScalarProperty Name="kart_tipi_id" ColumnName="kart_tipi_id" />
+          <ScalarProperty Name="kart_no" ColumnName="kart_no" />
+          <ScalarProperty Name="kullanici_id" ColumnName="kullanici_id" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

@@ -58,6 +58,7 @@
     <Property Name="son_gecerlilik_tarihi" Type="datetime" />
     <Property Name="bakiye" Type="nvarchar" MaxLength="25" />
     <Property Name="kayit_tarihi" Type="datetime" />
+    <Property Name="guncelleme_tarihi" Type="datetime" />
   </EntityType>
   <EntityType Name="kart_durumlari">
     <Key>

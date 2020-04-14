@@ -42,9 +42,9 @@ public partial class gecis_loglari
 
     public virtual islem_tipleri islem_tipleri { get; set; }
 
-    public virtual kart_bilgileri kart_bilgileri { get; set; }
-
     public virtual kullanicilar kullanicilar { get; set; }
+
+    public virtual kart_bilgileri kart_bilgileri { get; set; }
 
 }
 

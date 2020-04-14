@@ -14,20 +14,18 @@ namespace Yemekhane_Gecis_Sistemi.Models
 
 using System;
     
-public partial class SP_KISI_GECIS_RAPORU_Result
+public partial class SP_KisiGecisRapor_Result
 {
 
-    public int kullanici_id { get; set; }
+    public string tc { get; set; }
 
-    public string ucret { get; set; }
+    public string ad_soyad { get; set; }
 
-    public string ad { get; set; }
-
-    public string soyad { get; set; }
+    public string kart_tipi { get; set; }
 
     public Nullable<int> gecis_sayisi { get; set; }
 
-    public string kart_tipi { get; set; }
+    public string ucret { get; set; }
 
 }
 

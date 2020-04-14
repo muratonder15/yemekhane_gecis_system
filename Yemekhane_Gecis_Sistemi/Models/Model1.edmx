@@ -63,6 +63,7 @@
           <Property Name="son_gecerlilik_tarihi" Type="datetime" />
           <Property Name="bakiye" Type="nvarchar" MaxLength="25" />
           <Property Name="kayit_tarihi" Type="datetime" />
+          <Property Name="guncelleme_tarihi" Type="datetime" />
         </EntityType>
         <EntityType Name="kart_durumlari">
           <Key>
@@ -501,19 +502,6 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
           <EntitySet Name="duyurular" EntityType="YEMEKHANEModel.duyurular" />
           <EntitySet Name="yetkiler" EntityType="YEMEKHANEModel.yetkiler" />
           <EntitySet Name="kart_durumlari" EntityType="YEMEKHANEModel.kart_durumlari" />
-          <EntitySet Name="kart_bilgileri" EntityType="YEMEKHANEModel.kart_bilgileri" />
-          <AssociationSet Name="FK_gecis_loglari_kart_bilgileri" Association="YEMEKHANEModel.FK_gecis_loglari_kart_bilgileri">
-            <End Role="kart_bilgileri" EntitySet="kart_bilgileri" />
-            <End Role="gecis_loglari" EntitySet="gecis_loglari" />
-          </AssociationSet>
-          <AssociationSet Name="FK_kart_bilgileri_kart_bilgileri" Association="YEMEKHANEModel.FK_kart_bilgileri_kart_bilgileri">
-            <End Role="kart_tipleri" EntitySet="kart_tipleri" />
-            <End Role="kart_bilgileri" EntitySet="kart_bilgileri" />
-          </AssociationSet>
-          <AssociationSet Name="FK_kart_bilgileri_kart_durumlari" Association="YEMEKHANEModel.FK_kart_bilgileri_kart_durumlari">
-            <End Role="kart_durumlari" EntitySet="kart_durumlari" />
-            <End Role="kart_bilgileri" EntitySet="kart_bilgileri" />
-          </AssociationSet>
           <EntitySet Name="kullanicilar" EntityType="YEMEKHANEModel.kullanicilar" />
           <AssociationSet Name="FK_kullanicilar_birimler" Association="YEMEKHANEModel.FK_kullanicilar_birimler">
             <End Role="birimler" EntitySet="birimler" />
@@ -526,10 +514,6 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
           <AssociationSet Name="FK_gecis_loglari_kullanicilar" Association="YEMEKHANEModel.FK_gecis_loglari_kullanicilar">
             <End Role="kullanicilar" EntitySet="kullanicilar" />
             <End Role="gecis_loglari" EntitySet="gecis_loglari" />
-          </AssociationSet>
-          <AssociationSet Name="FK_kart_bilgileri_kullancilar" Association="YEMEKHANEModel.FK_kart_bilgileri_kullancilar">
-            <End Role="kullanicilar" EntitySet="kullanicilar" />
-            <End Role="kart_bilgileri" EntitySet="kart_bilgileri" />
           </AssociationSet>
           <AssociationSet Name="FK_kullanicilar_unvanlar" Association="YEMEKHANEModel.FK_kullanicilar_unvanlar">
             <End Role="unvanlar" EntitySet="unvanlar" />
@@ -547,6 +531,23 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
             <Parameter Name="baslangic_tarihi" Mode="In" Type="String" />
             <Parameter Name="bitis_tarihi" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="kart_bilgileri" EntityType="YEMEKHANEModel.kart_bilgileri" />
+          <AssociationSet Name="FK_gecis_loglari_kart_bilgileri" Association="YEMEKHANEModel.FK_gecis_loglari_kart_bilgileri">
+            <End Role="kart_bilgileri" EntitySet="kart_bilgileri" />
+            <End Role="gecis_loglari" EntitySet="gecis_loglari" />
+          </AssociationSet>
+          <AssociationSet Name="FK_kart_bilgileri_kart_bilgileri" Association="YEMEKHANEModel.FK_kart_bilgileri_kart_bilgileri">
+            <End Role="kart_tipleri" EntitySet="kart_tipleri" />
+            <End Role="kart_bilgileri" EntitySet="kart_bilgileri" />
+          </AssociationSet>
+          <AssociationSet Name="FK_kart_bilgileri_kart_durumlari" Association="YEMEKHANEModel.FK_kart_bilgileri_kart_durumlari">
+            <End Role="kart_durumlari" EntitySet="kart_durumlari" />
+            <End Role="kart_bilgileri" EntitySet="kart_bilgileri" />
+          </AssociationSet>
+          <AssociationSet Name="FK_kart_bilgileri_kullancilar" Association="YEMEKHANEModel.FK_kart_bilgileri_kullancilar">
+            <End Role="kullanicilar" EntitySet="kullanicilar" />
+            <End Role="kart_bilgileri" EntitySet="kart_bilgileri" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="birimler">
           <Key>
@@ -571,8 +572,8 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
           <Property Name="kayit_tarihi" Type="DateTime" Precision="3" />
           <NavigationProperty Name="islem_sonuc" Relationship="YEMEKHANEModel.FK_gecis_loglari_islem_sonuc" FromRole="gecis_loglari" ToRole="islem_sonuc" />
           <NavigationProperty Name="islem_tipleri" Relationship="YEMEKHANEModel.FK_gecis_loglari_islem_tipleri" FromRole="gecis_loglari" ToRole="islem_tipleri" />
-          <NavigationProperty Name="kart_bilgileri" Relationship="YEMEKHANEModel.FK_gecis_loglari_kart_bilgileri" FromRole="gecis_loglari" ToRole="kart_bilgileri" />
           <NavigationProperty Name="kullanicilar" Relationship="YEMEKHANEModel.FK_gecis_loglari_kullanicilar" FromRole="gecis_loglari" ToRole="kullanicilar" />
+          <NavigationProperty Name="kart_bilgileri" Relationship="YEMEKHANEModel.FK_gecis_loglari_kart_bilgileri" FromRole="gecis_loglari" ToRole="kart_bilgileri" />
         </EntityType>
         <EntityType Name="islem_sonuc">
           <Key>
@@ -803,59 +804,6 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
           <Property Name="durum_adi" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="kart_bilgileri" Relationship="YEMEKHANEModel.FK_kart_bilgileri_kart_durumlari" FromRole="kart_durumlari" ToRole="kart_bilgileri" />
         </EntityType>
-        <EntityType Name="kart_bilgileri">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="kullanici_id" Type="Int32" />
-          <Property Name="kart_no" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="kart_tipi_id" Type="Int32" />
-          <Property Name="durum" Type="Int32" />
-          <Property Name="son_gecerlilik_tarihi" Type="DateTime" Precision="3" />
-          <Property Name="bakiye" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-          <Property Name="kayit_tarihi" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="gecis_loglari" Relationship="YEMEKHANEModel.FK_gecis_loglari_kart_bilgileri" FromRole="kart_bilgileri" ToRole="gecis_loglari" />
-          <NavigationProperty Name="kart_tipleri" Relationship="YEMEKHANEModel.FK_kart_bilgileri_kart_bilgileri" FromRole="kart_bilgileri" ToRole="kart_tipleri" />
-          <NavigationProperty Name="kart_durumlari" Relationship="YEMEKHANEModel.FK_kart_bilgileri_kart_durumlari" FromRole="kart_bilgileri" ToRole="kart_durumlari" />
-          <NavigationProperty Name="kullanicilar" Relationship="YEMEKHANEModel.FK_kart_bilgileri_kullancilar" FromRole="kart_bilgileri" ToRole="kullanicilar" />
-        </EntityType>
-        <Association Name="FK_gecis_loglari_kart_bilgileri">
-          <End Type="YEMEKHANEModel.kart_bilgileri" Role="kart_bilgileri" Multiplicity="0..1" />
-          <End Type="YEMEKHANEModel.gecis_loglari" Role="gecis_loglari" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="kart_bilgileri">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="gecis_loglari">
-              <PropertyRef Name="kart_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_kart_bilgileri_kart_bilgileri">
-          <End Type="YEMEKHANEModel.kart_tipleri" Role="kart_tipleri" Multiplicity="0..1" />
-          <End Type="YEMEKHANEModel.kart_bilgileri" Role="kart_bilgileri" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="kart_tipleri">
-              <PropertyRef Name="kart_tipi_id" />
-            </Principal>
-            <Dependent Role="kart_bilgileri">
-              <PropertyRef Name="kart_tipi_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_kart_bilgileri_kart_durumlari">
-          <End Type="YEMEKHANEModel.kart_durumlari" Role="kart_durumlari" Multiplicity="0..1" />
-          <End Type="YEMEKHANEModel.kart_bilgileri" Role="kart_bilgileri" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="kart_durumlari">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="kart_bilgileri">
-              <PropertyRef Name="durum" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="kullanicilar">
           <Key>
             <PropertyRef Name="kullanici_id" />
@@ -878,10 +826,10 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
           <NavigationProperty Name="birimler" Relationship="YEMEKHANEModel.FK_kullanicilar_birimler" FromRole="kullanicilar" ToRole="birimler" />
           <NavigationProperty Name="duyurular" Relationship="YEMEKHANEModel.FK_duyurular_kullanicilar" FromRole="kullanicilar" ToRole="duyurular" />
           <NavigationProperty Name="gecis_loglari" Relationship="YEMEKHANEModel.FK_gecis_loglari_kullanicilar" FromRole="kullanicilar" ToRole="gecis_loglari" />
-          <NavigationProperty Name="kart_bilgileri" Relationship="YEMEKHANEModel.FK_kart_bilgileri_kullancilar" FromRole="kullanicilar" ToRole="kart_bilgileri" />
           <NavigationProperty Name="unvanlar" Relationship="YEMEKHANEModel.FK_kullanicilar_unvanlar" FromRole="kullanicilar" ToRole="unvanlar" />
           <NavigationProperty Name="yetkiler" Relationship="YEMEKHANEModel.FK_kullanicilar_yetkiler" FromRole="kullanicilar" ToRole="yetkiler" />
           <NavigationProperty Name="sistem_log" Relationship="YEMEKHANEModel.FK_sistem_log_kullanicilar" FromRole="kullanicilar" ToRole="sistem_log" />
+          <NavigationProperty Name="kart_bilgileri" Relationship="YEMEKHANEModel.FK_kart_bilgileri_kullancilar" FromRole="kullanicilar" ToRole="kart_bilgileri" />
         </EntityType>
         <Association Name="FK_kullanicilar_birimler">
           <End Type="YEMEKHANEModel.birimler" Role="birimler" Multiplicity="0..1" />
@@ -915,18 +863,6 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
               <PropertyRef Name="kullanici_id" />
             </Principal>
             <Dependent Role="gecis_loglari">
-              <PropertyRef Name="kullanici_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_kart_bilgileri_kullancilar">
-          <End Type="YEMEKHANEModel.kullanicilar" Role="kullanicilar" Multiplicity="0..1" />
-          <End Type="YEMEKHANEModel.kart_bilgileri" Role="kart_bilgileri" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="kullanicilar">
-              <PropertyRef Name="kullanici_id" />
-            </Principal>
-            <Dependent Role="kart_bilgileri">
               <PropertyRef Name="kullanici_id" />
             </Dependent>
           </ReferentialConstraint>
@@ -1023,6 +959,72 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
           <Property Type="String" Name="ucret" Nullable="true" MaxLength="15" />
           <Property Type="Int32" Name="gecis_sayisi" Nullable="true" />
         </ComplexType>
+        <EntityType Name="kart_bilgileri">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="kullanici_id" Type="Int32" />
+          <Property Name="kart_no" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="kart_tipi_id" Type="Int32" />
+          <Property Name="durum" Type="Int32" />
+          <Property Name="son_gecerlilik_tarihi" Type="DateTime" Precision="3" />
+          <Property Name="bakiye" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="kayit_tarihi" Type="DateTime" Precision="3" />
+          <Property Name="guncelleme_tarihi" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="gecis_loglari" Relationship="YEMEKHANEModel.FK_gecis_loglari_kart_bilgileri" FromRole="kart_bilgileri" ToRole="gecis_loglari" />
+          <NavigationProperty Name="kart_tipleri" Relationship="YEMEKHANEModel.FK_kart_bilgileri_kart_bilgileri" FromRole="kart_bilgileri" ToRole="kart_tipleri" />
+          <NavigationProperty Name="kart_durumlari" Relationship="YEMEKHANEModel.FK_kart_bilgileri_kart_durumlari" FromRole="kart_bilgileri" ToRole="kart_durumlari" />
+          <NavigationProperty Name="kullanicilar" Relationship="YEMEKHANEModel.FK_kart_bilgileri_kullancilar" FromRole="kart_bilgileri" ToRole="kullanicilar" />
+        </EntityType>
+        <Association Name="FK_gecis_loglari_kart_bilgileri">
+          <End Type="YEMEKHANEModel.kart_bilgileri" Role="kart_bilgileri" Multiplicity="0..1" />
+          <End Type="YEMEKHANEModel.gecis_loglari" Role="gecis_loglari" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="kart_bilgileri">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="gecis_loglari">
+              <PropertyRef Name="kart_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_kart_bilgileri_kart_bilgileri">
+          <End Type="YEMEKHANEModel.kart_tipleri" Role="kart_tipleri" Multiplicity="0..1" />
+          <End Type="YEMEKHANEModel.kart_bilgileri" Role="kart_bilgileri" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="kart_tipleri">
+              <PropertyRef Name="kart_tipi_id" />
+            </Principal>
+            <Dependent Role="kart_bilgileri">
+              <PropertyRef Name="kart_tipi_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_kart_bilgileri_kart_durumlari">
+          <End Type="YEMEKHANEModel.kart_durumlari" Role="kart_durumlari" Multiplicity="0..1" />
+          <End Type="YEMEKHANEModel.kart_bilgileri" Role="kart_bilgileri" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="kart_durumlari">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="kart_bilgileri">
+              <PropertyRef Name="durum" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_kart_bilgileri_kullancilar">
+          <End Type="YEMEKHANEModel.kullanicilar" Role="kullanicilar" Multiplicity="0..1" />
+          <End Type="YEMEKHANEModel.kart_bilgileri" Role="kart_bilgileri" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="kullanicilar">
+              <PropertyRef Name="kullanici_id" />
+            </Principal>
+            <Dependent Role="kart_bilgileri">
+              <PropertyRef Name="kullanici_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1182,20 +1184,6 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="kart_bilgileri">
-            <EntityTypeMapping TypeName="YEMEKHANEModel.kart_bilgileri">
-              <MappingFragment StoreEntitySet="kart_bilgileri">
-                <ScalarProperty Name="kayit_tarihi" ColumnName="kayit_tarihi" />
-                <ScalarProperty Name="bakiye" ColumnName="bakiye" />
-                <ScalarProperty Name="son_gecerlilik_tarihi" ColumnName="son_gecerlilik_tarihi" />
-                <ScalarProperty Name="durum" ColumnName="durum" />
-                <ScalarProperty Name="kart_tipi_id" ColumnName="kart_tipi_id" />
-                <ScalarProperty Name="kart_no" ColumnName="kart_no" />
-                <ScalarProperty Name="kullanici_id" ColumnName="kullanici_id" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="kullanicilar">
             <EntityTypeMapping TypeName="YEMEKHANEModel.kullanicilar">
               <MappingFragment StoreEntitySet="kullanicilar">
@@ -1229,6 +1217,21 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="kart_bilgileri">
+            <EntityTypeMapping TypeName="YEMEKHANEModel.kart_bilgileri">
+              <MappingFragment StoreEntitySet="kart_bilgileri">
+                <ScalarProperty Name="guncelleme_tarihi" ColumnName="guncelleme_tarihi" />
+                <ScalarProperty Name="kayit_tarihi" ColumnName="kayit_tarihi" />
+                <ScalarProperty Name="bakiye" ColumnName="bakiye" />
+                <ScalarProperty Name="son_gecerlilik_tarihi" ColumnName="son_gecerlilik_tarihi" />
+                <ScalarProperty Name="durum" ColumnName="durum" />
+                <ScalarProperty Name="kart_tipi_id" ColumnName="kart_tipi_id" />
+                <ScalarProperty Name="kart_no" ColumnName="kart_no" />
+                <ScalarProperty Name="kullanici_id" ColumnName="kullanici_id" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>

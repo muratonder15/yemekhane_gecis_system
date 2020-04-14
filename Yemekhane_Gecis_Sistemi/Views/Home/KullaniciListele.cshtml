@@ -5,72 +5,94 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<table class="table table-hover">
-    <thead>
-        <tr>
 
-            <th>ID</th>
-            <th>Kullanıcı Adı</th>
-            <th>Ad</th>
-            <th>Soyad</th>
-            <th>Email</th>
-            <th>Tc Kimlik No</th>
-            <th>Bakiye</th>
-            <th>Detay</th>
-            <th>Güncelle</th>
-            <th>Sİl</th>
-        </tr>
+<div class="form-group">
+    @if (TempData["mesaj"] != null)
+    {
+        <div class="alert alert-success" role="alert">
+            @TempData["mesaj"]
+        </div>
+    }
+    </div>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Kullanıcı Adı</th>
+                <th>Ad</th>
+                <th>Soyad</th>
+                <th>Email</th>
+                <th>Tc Kimlik No</th>
+                <th>Bakiye</th>
+                <th>Detay</th>
+                <th>Güncelle</th>
+                <th>Sİl</th>
+            </tr>
         </thead>
-    <tbody>
-        @foreach (var a in Model)
-        {
-        <tr>
-            <td>@a.kullanici_id</td>
-            <td>@a.kullanici_adi</td>
-            <td>@a.ad</td>
-            <td>@a.soyad</td>
-            <td>@a.email</td>
-            <td>@a.tc</td>
-            <td>@a.bakiye TL</td>
-            
-            <td><a href="#" class="btn btn-primary" data-toggle="modal" data-target="#m_modal" onclick="OrtakDuzenle(@a.kullanici_id)">Detay <i class="la la-gear"></i></a></td>
-            <td><a href="/Home/KullaniciGetir/@a.kullanici_id" class="btn btn-success">Güncelle</a> </td>
-            <td><a href="/Home/KullaniciGetir/@a.kullanici_id" class="btn btn-danger">Sil</a> </td>
-            
-        </tr>
+        <tbody>
+            @foreach (var a in Model)
+            {
+                <tr>
+                    <td>@a.kullanici_id</td>
+                    <td>@a.kullanici_adi</td>
+                    <td>@a.ad</td>
+                    <td>@a.soyad</td>
+                    <td>@a.email</td>
+                    <td>@a.tc</td>
+                    <td>@a.bakiye TL</td>
+
+                    <td><a href="#" class="btn btn-primary" data-toggle="modal" data-target="#m_modal" onclick="OrtakDuzenle(@a.kullanici_id)">Detay <i class="la la-gear"></i></a></td>
+                    <td><a href="/Home/KullaniciGetir/@a.kullanici_id" class="btn btn-success">Güncelle</a> </td>
+                    <td><a href="/Home/KullaniciSil/@a.kullanici_id" class="btn btn-danger" id="sil" onclick="return silOnay();">Sil</a> </td>
+
+                </tr>
 
 
-        }
-    </tbody>
-</table>
+            }
+        </tbody>
+    </table>
 
 
-
-<!-- Modal -->
-<div class="modal fade" id="m_modal" tabindex="-1" role="dialog" aria-labelledby="">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Kart Detayları</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <!-- İçerik buraya gelecek -->
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+    <!-- Modal -->
+    <div class="modal fade" id="m_modal" tabindex="-1" role="dialog" aria-labelledby="">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Kart Detayları</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- İçerik buraya gelecek -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<script type="text/javascript">
-    function OrtakDuzenle(ortakId) {
+    <script type="text/javascript">
+        function OrtakDuzenle(ortakId) {
 
-        var url = '/Home/KartDetaylari/'+ortakId;
-       
-        $(".modal-body").load(url);
-    }
-</script>
+            var url = '/Home/KartDetaylari/' + ortakId;
+
+            $(".modal-body").load(url);
+        }
+    </script>
+
+    <script>
+        function silOnay() {
+            var onay=confirm('Bu kullanıcıyı silmek istediğinize emin misiniz?');
+            if (onay) {
+                
+                return true;
+                
+            }
+            else{
+                return false;
+            }
+            
+        }
+    </script>

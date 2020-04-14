@@ -12,6 +12,7 @@
         <tr>
             <th>Birim Id</th>
             <th>Birim Adı</th>
+            <th>Birim Güncelle</th>
         </tr>
 
         @foreach (var a in Model)
@@ -19,6 +20,7 @@
     <tr>
         <td>@a.birim_id</td>
         <td>@a.birim_adi</td>
+        <td><a href="/Home/BirimGuncelle/@a.birim_id">Güncelle</a></td>
     </tr>
         }                
     </thead>
