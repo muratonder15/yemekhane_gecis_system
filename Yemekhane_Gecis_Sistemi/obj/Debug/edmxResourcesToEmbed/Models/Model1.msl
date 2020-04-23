@@ -202,5 +202,13 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="SP_GUNLUK_YUKLENEN_BAKIYE" FunctionName="YEMEKHANEModel.Store.SP_GUNLUK_YUKLENEN_BAKIYE">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="YEMEKHANEModel.SP_GUNLUK_YUKLENEN_BAKIYE_Result">
+          <ScalarProperty Name="tarih" ColumnName="tarih" />
+          <ScalarProperty Name="toplam_yuklenen" ColumnName="toplam_yuklenen" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
   </EntityContainerMapping>
 </Mapping>

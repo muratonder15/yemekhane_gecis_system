@@ -15,8 +15,8 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
             return View();
         }
         DB db = new DB();
-
-        public void SistemLog(int kullanici_id,int islem_tipi_id,string mesaj)
+        private AKS.ReaderManager mDevice = new AKS.ReaderManager();
+        public void SistemLog(int kullanici_id, int islem_tipi_id, string mesaj)
         {
             sistem_log sistem_log_model = new sistem_log();
             sistem_log_model.islem_tarihi = DateTime.Now;
@@ -26,14 +26,15 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
             db.sistem_log.Add(sistem_log_model);
             db.SaveChanges();
         }
-        public void LogTut(string kartno,int islem_tipi,int islem_sonuc,double ucret,double kalan)
+        public void LogTut(string kartno, int islem_tipi, int islem_sonuc, double ucret, double kalan)
         {
 
-            gecis_loglari gecisLog = new gecis_loglari(); 
+            gecis_loglari gecisLog = new gecis_loglari();
 
-                var kullanici_kodu = (from a in db.kart_bilgileri where a.kart_no == kartno && a.durum==1
-                                      select new { a.kullanici_id,a.ID }).FirstOrDefault();
-            if (islem_tipi == 2 && islem_sonuc==1)
+            var kullanici_kodu = (from a in db.kart_bilgileri
+                                  where a.kart_no == kartno && a.durum == 1
+                                  select new { a.kullanici_id, a.ID }).FirstOrDefault();
+            if (islem_tipi == 2 && islem_sonuc == 1)
             {
                 gecisLog.kullanici_id = kullanici_kodu.kullanici_id;
                 gecisLog.kart_id = kullanici_kodu.ID;
@@ -46,8 +47,8 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
                 gecisLog.kayit_tarihi = DateTime.Now;
                 db.gecis_loglari.Add(gecisLog);
                 db.SaveChanges();
-            }           
-            else if (islem_tipi==2 && islem_sonuc==2)
+            }
+            else if (islem_tipi == 2 && islem_sonuc == 2)
             {
                 gecisLog.kullanici_id = kullanici_kodu.kullanici_id;
                 gecisLog.kart_id = kullanici_kodu.ID;
@@ -87,15 +88,17 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
 
             if (kart_kontrol != null)
             {
-                var kart_bilgisi = (from a in db.kart_bilgileri where 
-                                    a.kart_no == kartno && 
-                                    a.durum == 1 && 
-                                    a.son_gecerlilik_tarihi>DateTime.Now
+                var kart_bilgisi = (from a in db.kart_bilgileri
+                                    where
+        a.kart_no == kartno &&
+        a.durum == 1 &&
+        a.son_gecerlilik_tarihi > DateTime.Now
                                     select a).FirstOrDefault();
-                var son_kullanma_tarihi = (from a in db.kart_bilgileri where
-                          a.kart_no == kartno &&
-                          a.durum == 1 &&
-                          a.son_gecerlilik_tarihi < DateTime.Now
+                var son_kullanma_tarihi = (from a in db.kart_bilgileri
+                                           where
+a.kart_no == kartno &&
+a.durum == 1 &&
+a.son_gecerlilik_tarihi < DateTime.Now
                                            select a).FirstOrDefault();
                 if (kart_bilgisi != null)
                 {
@@ -127,9 +130,9 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
                 {
                     ViewData["KullaniciMesaji"] = "Kart İptal!!";
                 }
-            } 
-                
-            
+            }
+
+
             else
             {
                 ViewData["KullaniciMesaji"] = "Geçersiz Kart!!";
@@ -148,8 +151,65 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
             GecisYap(kartno.kart_no);
             return View();
         }
-        
 
-        
+        public string KartOku()
+        {
+            string txtBaudrate = "115200";
+            string txtComport = "";
+            string txtKartNo = "";
+            if (!mDevice.IsReady)
+            {
+                for (int i = 1; i < 17; i++)
+                {
+
+                    txtComport = "COM" + i.ToString();
+                    if (mDevice.OpenPort(txtComport, Convert.ToInt32(txtBaudrate)))
+                    {
+
+                        txtKartNo = KartDataGonder(txtComport);
+                        //TempData["KartNo"]= txtKartNo;                                           
+                        mDevice.Close();
+                        //return Redirect("/Home/KullaniciEkle");
+                        return txtKartNo;
+                        //break;
+                    }
+                }
+
+            }
+            return "0";
+            //return Redirect("/Home/KullaniciEkle");
+        }
+
+        private string KartDataGonder(string port)
+        {
+            AKS.Reader mSelectedReader = null;
+
+            if (mDevice.Readers.Contains(port)) mSelectedReader = mDevice.Readers[port];
+
+            else return "0";
+
+            string txtReceiveData = "";
+            string RetValue = "";
+            string txtReaderId = "150";
+            string txtCommand = "11";
+            string txtParameter = "";
+            string txtTimeOut = "500";
+            if (mSelectedReader.SendData(Convert.ToByte(txtReaderId), Convert.ToByte(txtCommand), txtParameter, out RetValue, Convert.ToInt32(txtTimeOut)))
+            {
+                if (RetValue != "a11")
+                {
+                    txtReceiveData = RetValue.Substring(3, 8);
+                }
+                //txtReceiveData.Text = RetValue.Substring(3,8); //3. karakterden sonraki kart id'sini çeker.
+                return txtReceiveData;
+
+            }
+            else
+            {
+
+                return txtReceiveData = "Error";
+            }
+        }
+
     }
 }

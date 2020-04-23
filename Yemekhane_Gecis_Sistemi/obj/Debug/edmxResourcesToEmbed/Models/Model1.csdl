@@ -77,6 +77,10 @@
       <End Role="kullanicilar" EntitySet="kullanicilar" />
       <End Role="kart_bilgileri" EntitySet="kart_bilgileri" />
     </AssociationSet>
+    <FunctionImport Name="SP_GUNLUK_YUKLENEN_BAKIYE" ReturnType="Collection(YEMEKHANEModel.SP_GUNLUK_YUKLENEN_BAKIYE_Result)">
+      <Parameter Name="baslangic_tarihi" Mode="In" Type="String" />
+      <Parameter Name="bitis_tarihi" Mode="In" Type="String" />
+    </FunctionImport>
   </EntityContainer>
   <EntityType Name="birimler">
     <Key>
@@ -554,4 +558,8 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <ComplexType Name="SP_GUNLUK_YUKLENEN_BAKIYE_Result">
+    <Property Type="DateTime" Name="tarih" Nullable="true" />
+    <Property Type="Decimal" Name="toplam_yuklenen" Nullable="true" Precision="19" />
+  </ComplexType>
 </Schema>

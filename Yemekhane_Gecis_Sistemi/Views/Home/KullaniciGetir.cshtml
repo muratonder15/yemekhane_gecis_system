@@ -91,7 +91,16 @@
         <div>
             @Html.LabelFor(x => x.kart_no)
             @Html.TextBoxFor(x => x.kart_no, new { @class = "form-control", @placeholder = "Kart No Giriniz" })
+            <a href="/Home/KullaniciGetir/@Model.kullanici_id" class="btn btn-primary">Kart No Çek</a>
+        </div>
 
+    </div>
+    <div class="form-group">
+       
+        <div>
+            @Html.LabelFor(x => x.son_gecerlilik_tarihi)
+            @Html.TextBoxFor(x => x.son_gecerlilik_tarihi, new { @class = "form-control", @placeholder = "Tarih Giriniz", @type = "date" })
+           
         </div>
     </div>
     <br />

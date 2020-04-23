@@ -6,11 +6,15 @@
 
 @using (Html.BeginForm("UnvanEkle", "Home", FormMethod.Post, new { @class = "form-horizontal" }))
 {
-    <div class="alert alert-success" role="alert">
-        @Model.KullaniciMesaji
-    </div>
+    
     <div class="form-group">
-
+        @if (Model.KullaniciMesaji != null)
+        {
+            <div class="alert alert-success" role="alert">
+                @Model.KullaniciMesaji
+                <a href="/Home/UnvanListesi">Geri Dön</a>
+            </div>
+        }
         <label for="default" class="col-sm-1 control-label">Unvan Adı</label>
         <div class="col-sm-5">
             @Html.TextBoxFor(x => x.UnvanAdi, new { @class = "form-control", @placeholder = "Unvan Adını Giriniz" })

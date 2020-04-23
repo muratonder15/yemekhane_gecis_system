@@ -84,6 +84,23 @@ public partial class DB : DbContext
         return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_KISI_GECIS_RAPORU_Result>("SP_KISI_GECIS_RAPORU", baslangic_tarihiParameter, bitis_tarihiParameter);
     }
 
+
+    public virtual ObjectResult<SP_GUNLUK_YUKLENEN_BAKIYE_Result> SP_GUNLUK_YUKLENEN_BAKIYE(string baslangic_tarihi, string bitis_tarihi)
+    {
+
+        var baslangic_tarihiParameter = baslangic_tarihi != null ?
+            new ObjectParameter("baslangic_tarihi", baslangic_tarihi) :
+            new ObjectParameter("baslangic_tarihi", typeof(string));
+
+
+        var bitis_tarihiParameter = bitis_tarihi != null ?
+            new ObjectParameter("bitis_tarihi", bitis_tarihi) :
+            new ObjectParameter("bitis_tarihi", typeof(string));
+
+
+        return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GUNLUK_YUKLENEN_BAKIYE_Result>("SP_GUNLUK_YUKLENEN_BAKIYE", baslangic_tarihiParameter, bitis_tarihiParameter);
+    }
+
 }
 
 }

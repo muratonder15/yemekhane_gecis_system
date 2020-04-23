@@ -1,0 +1,73 @@
+﻿
+@{
+    ViewBag.Title = "BakiyeYuklemeRaporu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("BakiyeYuklemeRaporu", "Home", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    <div class="form-group">
+        @if (ViewData["mesaj"] != null)
+        {
+            <div class="alert alert-success" role="alert">
+                @ViewData["mesaj"]
+
+            </div>
+        }
+        <label for="text" class="col-sm-1 control-label">Başlangıç Tarihi</label>
+        <div class="col-sm-2">
+
+            <input type="text" class="form-control" id="baslangic_tarihi" name="baslangic_tarihi" readonly>
+
+        </div>
+
+    </div>
+    <div class="form-group">
+
+        <label for="text" class="col-sm-1 control-label">Bitiş Tarihi</label>
+        <div class="col-sm-2">
+
+            <input type="text" class="form-control" id="bitis_tarihi" name="bitis_tarihi" readonly>
+
+        </div>
+
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-1 col-sm-5">
+            <button type="submit" class="btn btn-primary">Rapor Al</button>
+        </div>
+
+    </div>
+}
+
+@if (Model != null)
+{
+    using (Html.BeginForm("BakiyeYuklemeRaporu", "Home", FormMethod.Post, new { @class = "form-horizontal" }))
+    {
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Tarih</th>
+                <th>Toplam Yüklenen</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var a in Model)
+            {
+                <tr>
+                    <td>@a.tarih</td>
+                    <td>@a.toplam_yuklenen TL</td>
+
+
+                </tr>
+
+
+            }
+        </tbody>
+    </table>
+    @*<input type="submit" value="Excel'e Aktar" class="btn btn-primary" />*@
+        }
+    }
+
+

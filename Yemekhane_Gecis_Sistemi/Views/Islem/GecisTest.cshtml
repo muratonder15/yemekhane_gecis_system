@@ -4,17 +4,20 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>GecisTest</h2>
+
 
 
 @using (Html.BeginForm("GecisTest", "Islem", FormMethod.Post))
 {
 
-<div class="alert alert-success" role="alert">
-    @ViewData["KullaniciMesaji"] 
-</div>
-    <div class="form-group">
 
+    <div class="form-group">
+        @if (@ViewData["KullaniciMesaji"] != null)
+        {
+            <div class="alert alert-success" role="alert">
+                @ViewData["KullaniciMesaji"]  
+            </div>
+        }
         <label for="default" class="col-sm-1 control-label">kartno gir</label>
         <div class="col-sm-5">
             @Html.TextBoxFor(x => x.kart_no, new { @class = "form-control", @placeholder = "Kart No Giriniz" })

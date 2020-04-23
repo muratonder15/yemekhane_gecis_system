@@ -353,6 +353,10 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="SP_GUNLUK_YUKLENEN_BAKIYE" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="baslangic_tarihi" Type="nvarchar" Mode="In" />
+          <Parameter Name="bitis_tarihi" Type="nvarchar" Mode="In" />
+        </Function>
         <Function Name="SP_KISI_GECIS_RAPORU" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="baslangic_tarihi" Type="nvarchar" Mode="In" />
           <Parameter Name="bitis_tarihi" Type="nvarchar" Mode="In" />
@@ -548,6 +552,10 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
             <End Role="kullanicilar" EntitySet="kullanicilar" />
             <End Role="kart_bilgileri" EntitySet="kart_bilgileri" />
           </AssociationSet>
+          <FunctionImport Name="SP_GUNLUK_YUKLENEN_BAKIYE" ReturnType="Collection(YEMEKHANEModel.SP_GUNLUK_YUKLENEN_BAKIYE_Result)">
+            <Parameter Name="baslangic_tarihi" Mode="In" Type="String" />
+            <Parameter Name="bitis_tarihi" Mode="In" Type="String" />
+          </FunctionImport>
           </EntityContainer>
         <EntityType Name="birimler">
           <Key>
@@ -1025,6 +1033,10 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="SP_GUNLUK_YUKLENEN_BAKIYE_Result">
+          <Property Type="DateTime" Name="tarih" Nullable="true" />
+          <Property Type="Decimal" Name="toplam_yuklenen" Nullable="true" Precision="19" />
+        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1232,6 +1244,14 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SP_GUNLUK_YUKLENEN_BAKIYE" FunctionName="YEMEKHANEModel.Store.SP_GUNLUK_YUKLENEN_BAKIYE">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="YEMEKHANEModel.SP_GUNLUK_YUKLENEN_BAKIYE_Result">
+                <ScalarProperty Name="tarih" ColumnName="tarih" />
+                <ScalarProperty Name="toplam_yuklenen" ColumnName="toplam_yuklenen" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>

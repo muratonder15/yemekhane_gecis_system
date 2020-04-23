@@ -348,6 +348,10 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Function Name="SP_GUNLUK_YUKLENEN_BAKIYE" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="baslangic_tarihi" Type="nvarchar" Mode="In" />
+    <Parameter Name="bitis_tarihi" Type="nvarchar" Mode="In" />
+  </Function>
   <Function Name="SP_KISI_GECIS_RAPORU" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="baslangic_tarihi" Type="nvarchar" Mode="In" />
     <Parameter Name="bitis_tarihi" Type="nvarchar" Mode="In" />

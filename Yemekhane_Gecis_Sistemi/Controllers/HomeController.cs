@@ -6,16 +6,57 @@ using System.Web;
 using System.Web.Mvc;
 using Yemekhane_Gecis_Sistemi.Models;
 using Yemekhane_Gecis_Sistemi.ViewModels;
+using PagedList;
+using PagedList.Mvc;
 namespace Yemekhane_Gecis_Sistemi.Controllers
 {
     public class HomeController : Controller
     {
         DB db = new DB();
         IslemController islem = new IslemController();
-        int session_kullanici_kodu = 1;
+
+
+        public ActionResult Login()
+        {
+            Session.Abandon();
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Login(string username, string password)
+        {
+
+            var login_kontrol = (from k in db.kullanicilar where k.kullanici_adi == username && !string.IsNullOrEmpty(password) select k).FirstOrDefault();
+            if (login_kontrol != null)
+            {
+                var kart_bilgi = (from kb in db.kart_bilgileri where kb.kullanici_id == login_kontrol.kullanici_id && kb.durum == 1 select kb).FirstOrDefault();
+                Session["ad"] = login_kontrol.ad;
+                Session["soyad"] = login_kontrol.soyad;
+                Session["yetki_id"] = login_kontrol.yetki_id;
+                Session["bakiye"] = login_kontrol.bakiye;
+                Session["kart_tipi_id"] = kart_bilgi.kart_tipi_id;
+                Session["kullanici_id"] = login_kontrol.kullanici_id;
+
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                ViewData["mesaj"] = "Kullanıcı Adı Veya Şifre Hatalı!!";
+                return View();
+            }
+
+        }
+
         public ActionResult Index()
         {
-            return View();
+            if (Session["yetki_id"] != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
+
         }
 
 
@@ -35,19 +76,34 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
         }
 
 
+       
+
         //[HttpGet]
         public ActionResult KullaniciEkle()
         {
-            KartKullanicilari model = GetData();
-            model.Baslik = "Kayıt Ekleme";
-            return View(model);
+            if (Session["yetki_id"] != null)
+            {
+                KartKullanicilari model = GetData();
+                model.Baslik = "Kayıt Ekleme";
+                string txtKartNo = islem.KartOku();
+                if (txtKartNo != "0" && txtKartNo != "")
+                {
+                    //model.KartNo = TempData["KartNo"].ToString();
+                    model.KartNo = txtKartNo;
+
+                }
+
+
+                return View(model);
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
         }
         [HttpPost]
         public ActionResult KullaniciEkle(KartKullanicilari model)
         {
-            //DB db = new DB();
-
-
 
             var tc_kontrol = (from k in db.kullanicilar where k.tc == model.TcKimlikNo || k.email == model.EMail select k).FirstOrDefault();
             var kartno_kontrol = (from kb in db.kart_bilgileri where kb.kart_no == model.KartNo select kb).FirstOrDefault();
@@ -60,7 +116,7 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
                 ViewBag.KullaniciMesaji = "Girilen Kart Numarası Sistemde Kayıtlı!!!";
             }
 
-            
+
             else
             {
 
@@ -79,31 +135,30 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
                 kullanicilarModel.guncelleme_tarihi = DateTime.Now;
                 kullanicilarModel.aktif_mi = 1;
                 db.kullanicilar.Add(kullanicilarModel);
-                //db.SaveChanges();
+
                 kart_bilgileri kartBilgileriModel = new kart_bilgileri();
                 kartBilgileriModel.kullanici_id = (from a in db.kullanicilar where a.tc == model.TcKimlikNo select a.kullanici_id).FirstOrDefault();
                 kartBilgileriModel.kart_tipi_id = model.KartTipiId;
                 kartBilgileriModel.kart_no = model.KartNo;
                 kartBilgileriModel.bakiye = "0";
                 kartBilgileriModel.durum = 1;
-                
                 if (model.SonGecerlilikTarihi == null)
                 {
-                kartBilgileriModel.son_gecerlilik_tarihi = DateTime.Now.AddYears(4);
+                    kartBilgileriModel.son_gecerlilik_tarihi = DateTime.Now.AddYears(4);
                 }
                 else
                 {
-                    
+
                     kartBilgileriModel.son_gecerlilik_tarihi = Convert.ToDateTime(model.SonGecerlilikTarihi);
 
                 }
-                
+
                 db.kart_bilgileri.Add(kartBilgileriModel);
                 db.SaveChanges();
 
 
 
-                islem.SistemLog(session_kullanici_kodu, 3, model.TcKimlikNo + " tc numaralı " + model.Ad + " " + model.Soyad + " kişisi sisteme eklendi");
+                islem.SistemLog(Convert.ToInt32(Session["kullanici_id"]), 3, model.TcKimlikNo + " tc numaralı " + model.Ad + " " + model.Soyad + " kişisi sisteme eklendi");
 
                 ViewBag.KullaniciMesaji = "Kayıt Başarıyla Gerçekleşti";
             }
@@ -114,9 +169,16 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
 
         public ActionResult BirimEkle()
         {
-            Birimler model = new Birimler();
-            model.Baslik = "Birim Ekleme";
-            return View(model);
+            if (Session["yetki_id"] != null)
+            {
+                Birimler model = new Birimler();
+                model.Baslik = "Birim Ekleme";
+                return View(model);
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
         }
 
         [HttpPost]
@@ -128,19 +190,33 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
             db.birimler.Add(birimlerModel);
             db.SaveChanges();
             model.KullaniciMesaji = "Birim Başarıyla Eklendi";
-            islem.SistemLog(session_kullanici_kodu, 3, model.BirimAdi + " birimi sisteme eklendi");
+            islem.SistemLog(Convert.ToInt32(Session["kullanici_id"]), 3, model.BirimAdi + " birimi sisteme eklendi");
             return View(model);
         }
 
         public ActionResult BirimListesi()
         {
-            var model = db.birimler.ToList();
-            return View(model);
+            if (Session["yetki_id"] != null)
+            {
+                var model = db.birimler.ToList();
+                return View(model);
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
         }
         public ActionResult BirimGuncelle(int id)
         {
-            var model = db.birimler.Find(id);
-            return View("BirimGuncelle",model);
+            if (Session["yetki_id"] != null)
+            {
+                var model = db.birimler.Find(id);
+                return View("BirimGuncelle", model);
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
         }
         [HttpPost]
         public ActionResult BirimGuncelle(birimler a)
@@ -153,9 +229,13 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
         }
         public ActionResult UnvanEkle()
         {
-            Unvanlar model = new Unvanlar();
-            model.Baslik = "Birim Ekleme";
-            return View(model);
+            if (Session["yetki_id"] != null)
+            {
+                Unvanlar model = new Unvanlar();
+                model.Baslik = "Birim Ekleme";
+                return View(model);
+            }
+            return RedirectToAction("Login");
         }
 
         [HttpPost]
@@ -167,21 +247,34 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
             db.unvanlar.Add(unvanlarModel);
             db.SaveChanges();
             model.KullaniciMesaji = "Unvan Başarıyla Eklendi";
-            islem.SistemLog(session_kullanici_kodu, 3, model.UnvanAdi + " unvanı sisteme eklendi");
+            islem.SistemLog(Convert.ToInt32(Session["kullanici_id"]), 3, model.UnvanAdi + " unvanı sisteme eklendi");
             return View(model);
         }
 
         public ActionResult UnvanListesi()
         {
-            var model = db.unvanlar.ToList();
-            return View(model);
+            if (Session["yetki_id"] != null)
+            {
+                var model = db.unvanlar.ToList();
+                return View(model);
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
 
         }
         public ActionResult UnvanGuncelle(int id)
         {
-            var model = db.unvanlar.Find(id);
-            return View("UnvanGuncelle",model);
-
+            if (Session["yetki_id"] != null)
+            {
+                var model = db.unvanlar.Find(id);
+                return View("UnvanGuncelle", model);
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
         }
         [HttpPost]
         public ActionResult UnvanGuncelle(unvanlar a)
@@ -196,18 +289,25 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
 
         public ActionResult IslemLog()
         {
-            return View();
+            if (Session["yetki_id"] != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
         }
 
         [HttpPost]
-         
+
         public ActionResult IslemLog(string tckimlikno)
         {
             var kullanici_id = (from a in db.kullanicilar where a.tc == tckimlikno select a).FirstOrDefault();
 
             if (kullanici_id != null)
             {
-                
+
                 var gecis_loglari_model = (from a in db.view_gecis_loglari where a.kullanici_id == kullanici_id.kullanici_id select a).ToList();
                 var kart_bilgileri = (from a in db.view_kullanicilar where a.kullanici_id == kullanici_id.kullanici_id select a).FirstOrDefault();
                 ViewData["ad"] = kullanici_id.ad;
@@ -218,7 +318,7 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
             }
             else
             {
-                
+
                 ViewData["mesaj"] = "Kullanıcı bulunamadı!";
                 return View();
             }
@@ -226,9 +326,17 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
         }
         public ActionResult KullaniciListele()
         {
-            //DB db = new DB();
-            var model = db.kullanicilar.Where(x => x.aktif_mi == 1).ToList();
-            return View(model);
+            if (Session["yetki_id"] != null)
+            {
+                var model = db.kullanicilar.Where(x => x.aktif_mi == 1).ToList();
+                return View(model);
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
+
+
         }
         [HttpPost]
         public ActionResult KullaniciListele(string model)
@@ -239,70 +347,89 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
         public ActionResult KullaniciGetir(int id)
 
         {
-           
+            if (Session["yetki_id"] != null)
+            {
+                string txtKartNo = islem.KartOku();
 
-            var model = (from kb in db.kart_bilgileri where kb.kullanici_id == id orderby kb.guncelleme_tarihi descending,kb.ID descending select kb).FirstOrDefault();
+                var model = (from kb in db.kart_bilgileri where kb.kullanici_id == id orderby kb.guncelleme_tarihi descending, kb.ID descending select kb).FirstOrDefault();
+                if (txtKartNo != "0" && txtKartNo!="")
+                {
 
+                    model.kart_no = txtKartNo;
 
-            var kullanici_model = (from k in db.kullanicilar where k.kullanici_id == id && k.aktif_mi==1 select k).FirstOrDefault();
+                }
 
-            List<SelectListItem> kartListesi = (from a in db.kart_tipleri
-                                                select new SelectListItem
-                                                {
-                                                    Text = a.kart_tipi,
-                                                    Value = a.kart_tipi_id.ToString(),
-                                                    Selected = (a.kart_tipi_id == model.kart_tipi_id)
+                var kullanici_model = (from k in db.kullanicilar where k.kullanici_id == id && k.aktif_mi == 1 select k).FirstOrDefault();
 
-                                                }).ToList();
-            ViewBag.secim = model.kart_tipi_id;
-            ViewBag.kartList = kartListesi;
+                List<SelectListItem> kartListesi = (from a in db.kart_tipleri
+                                                    select new SelectListItem
+                                                    {
+                                                        Text = a.kart_tipi,
+                                                        Value = a.kart_tipi_id.ToString(),
+                                                        Selected = (a.kart_tipi_id == model.kart_tipi_id)
 
-            List<SelectListItem> birimListesi = (from a in db.birimler
-                                                 select new SelectListItem
-                                                 {
-                                                     Text = a.birim_adi,
-                                                     Value = a.birim_id.ToString(),
-                                                     Selected = (a.birim_id == kullanici_model.birim_id)
+                                                    }).ToList();
+                ViewBag.secim = model.kart_tipi_id;
+                ViewBag.kartList = kartListesi;
 
-                                                 }).ToList();
+                List<SelectListItem> birimListesi = (from a in db.birimler
+                                                     select new SelectListItem
+                                                     {
+                                                         Text = a.birim_adi,
+                                                         Value = a.birim_id.ToString(),
+                                                         Selected = (a.birim_id == kullanici_model.birim_id)
 
-            ViewBag.birim_secim = kullanici_model.birim_id;
-            ViewBag.birimList = birimListesi;
+                                                     }).ToList();
 
-            List<SelectListItem> unvanListesi = (from a in db.unvanlar
-                                                 select new SelectListItem
-                                                 {
-                                                     Text = a.unvan_adi,
-                                                     Value = a.unvan_id.ToString(),
-                                                     Selected = (a.unvan_id == kullanici_model.unvan_id)
+                ViewBag.birim_secim = kullanici_model.birim_id;
+                ViewBag.birimList = birimListesi;
 
-                                                 }).ToList();
+                List<SelectListItem> unvanListesi = (from a in db.unvanlar
+                                                     select new SelectListItem
+                                                     {
+                                                         Text = a.unvan_adi,
+                                                         Value = a.unvan_id.ToString(),
+                                                         Selected = (a.unvan_id == kullanici_model.unvan_id)
 
-            ViewBag.unvan_secim = kullanici_model.unvan_id;
-            ViewBag.unvanList = unvanListesi;
+                                                     }).ToList();
 
-            return View("KullaniciGetir", model);
+                ViewBag.unvan_secim = kullanici_model.unvan_id;
+                ViewBag.unvanList = unvanListesi;
+
+                return View("KullaniciGetir", model);
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
         }
 
 
         public ActionResult KartDetaylari(int? id)
         {
-            var model = (from kb in db.kart_bilgileri where kb.kullanici_id == id select kb).ToList();
-            string ad = (from k in db.kullanicilar where k.kullanici_id == id select k.ad).FirstOrDefault();
-            string soyad = (from k in db.kullanicilar where k.kullanici_id == id select k.soyad).FirstOrDefault();
-            ViewBag.AdSoyad = ad + " " + soyad + " kart detayları";
-            ViewBag.kullanici_kodu = id;
-            string resim = (from k in db.kullanicilar where k.kullanici_id == id select k.resim).FirstOrDefault();
-            if (resim != null)
+            if (Session["yetki_id"] != null)
             {
-                ViewBag.resim = resim;
+                var model = (from kb in db.kart_bilgileri where kb.kullanici_id == id select kb).ToList();
+                string ad = (from k in db.kullanicilar where k.kullanici_id == id select k.ad).FirstOrDefault();
+                string soyad = (from k in db.kullanicilar where k.kullanici_id == id select k.soyad).FirstOrDefault();
+                ViewBag.AdSoyad = ad + " " + soyad + " kart detayları";
+                ViewBag.kullanici_kodu = id;
+                string resim = (from k in db.kullanicilar where k.kullanici_id == id select k.resim).FirstOrDefault();
+                if (resim != null)
+                {
+                    ViewBag.resim = resim;
+                }
+                else
+                {
+                    ViewBag.resim = "empty.jpg";
+                }
+
+                return PartialView("KartDetaylari", model);
             }
             else
             {
-                ViewBag.resim = "empty.jpg";
+                return RedirectToAction("Login");
             }
-
-            return PartialView("KartDetaylari", model);
         }
 
 
@@ -310,20 +437,20 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
         {
             if (resim_yol != null && resim_yol.ContentLength > 0)
             {
-                string[] resimUzantilari = new string[]{"image/bmp","image/jpeg","image/gif","image/png"};
+                string[] resimUzantilari = new string[] { "image/bmp", "image/jpeg", "image/gif", "image/png" };
                 if (resimUzantilari.Contains(resim_yol.ContentType))
                 {
-                resim_yol.SaveAs(Server.MapPath("~/images/" + id + ".jpg"));
-                var kullanicilar = db.kullanicilar.Find(id);
-                kullanicilar.resim = id + ".jpg";
-                db.SaveChanges();
+                    resim_yol.SaveAs(Server.MapPath("~/images/" + id + ".jpg"));
+                    var kullanicilar = db.kullanicilar.Find(id);
+                    kullanicilar.resim = id + ".jpg";
+                    db.SaveChanges();
                     ViewData["mesaj"] = "Fotoğraf güncellendi";
                 }
                 else
                 {
                     ViewData["mesaj"] = "Fotoğraf uygun formatta olmalıdır.";
                 }
-                
+
             }
             return RedirectToAction("KullaniciListele");
 
@@ -331,89 +458,99 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
 
         public ActionResult Guncelle(kart_bilgileri a)
         {
-
-            var kullanicilar = db.kullanicilar.Find(a.kullanici_id);
-            kullanicilar.ad = a.kullanicilar.ad;
-            kullanicilar.soyad = a.kullanicilar.soyad.Trim();
-            kullanicilar.email = a.kullanicilar.email.Trim();
-            kullanicilar.tc = a.kullanicilar.tc.Trim();
-            kullanicilar.kullanici_adi = a.kullanicilar.email.Trim();
-            kullanicilar.guncelleme_tarihi = DateTime.Now;
-
-            var kart_kontrol = (from kb in db.kart_bilgileri where kb.kart_no == a.kart_no && kb.kullanici_id != a.kullanici_id select kb).FirstOrDefault();
-            if (kart_kontrol == null)
+            if (Session["yetki_id"] != null)
             {
+                var kullanicilar = db.kullanicilar.Find(a.kullanici_id);
+                kullanicilar.ad = a.kullanicilar.ad;
+                kullanicilar.soyad = a.kullanicilar.soyad.Trim();
+                kullanicilar.email = a.kullanicilar.email.Trim();
+                kullanicilar.tc = a.kullanicilar.tc.Trim();
+                kullanicilar.kullanici_adi = a.kullanicilar.email.Trim();
+                kullanicilar.guncelleme_tarihi = DateTime.Now;
 
-                var aktif_kartlar = (from kt in db.kart_bilgileri
-                               where
-                                kt.kullanici_id == a.kullanici_id &&
-                                kt.durum == 1 &&
-                                kt.kart_tipi_id == a.kart_tipi_id &&
-                                kt.kart_no != a.kart_no
-                               select kt).ToList();
-
-                
-
-
-                
-
-                var kart_varmi = (from kt in db.kart_bilgileri
-                                     where
-                                      kt.kullanici_id == a.kullanici_id &&
-                                      kt.kart_no == a.kart_no &&
-                                      kt.durum == 1  
-                                     select kt).ToList();
-
-                if ((aktif_kartlar.Count > 0 || kart_varmi.Count<1) && kart_varmi.Count<1)
+                var kart_kontrol = (from kb in db.kart_bilgileri where kb.kart_no == a.kart_no && kb.kullanici_id != a.kullanici_id select kb).FirstOrDefault();
+                if (kart_kontrol == null)
                 {
 
-                    foreach (var kart_listesi in aktif_kartlar)
+                    var aktif_kartlar = (from kt in db.kart_bilgileri
+                                         where
+                                          kt.kullanici_id == a.kullanici_id &&
+                                          kt.durum == 1 &&
+                                          kt.kart_tipi_id == a.kart_tipi_id &&
+                                          kt.kart_no != a.kart_no
+                                         select kt).ToList();
+
+
+
+
+
+
+                    var kart_varmi = (from kt in db.kart_bilgileri
+                                      where
+                                       kt.kullanici_id == a.kullanici_id &&
+                                       kt.kart_no == a.kart_no &&
+                                       kt.durum == 1
+                                      select kt).ToList();
+
+                    if ((aktif_kartlar.Count > 0 || kart_varmi.Count < 1) && kart_varmi.Count < 1)
                     {
 
-                        kart_listesi.durum = 2;
-                        kart_listesi.guncelleme_tarihi = DateTime.Now;
+                        foreach (var kart_listesi in aktif_kartlar)
+                        {
+
+                            kart_listesi.durum = 2;
+                            kart_listesi.guncelleme_tarihi = DateTime.Now;
+
+                        }
+
+                        kart_bilgileri kart_bilgileri_model = new kart_bilgileri();
+                        kart_bilgileri_model.kullanici_id = a.kullanici_id;
+                        kart_bilgileri_model.kart_no = a.kart_no;
+                        kart_bilgileri_model.bakiye = "0";
+                        kart_bilgileri_model.kart_tipi_id = a.kart_tipi_id;
+                        kart_bilgileri_model.durum = 1;
+                        kart_bilgileri_model.son_gecerlilik_tarihi = a.son_gecerlilik_tarihi;
+                        kart_bilgileri_model.kayit_tarihi = DateTime.Now;
+                        kart_bilgileri_model.guncelleme_tarihi = DateTime.Now;
+                        db.kart_bilgileri.Add(kart_bilgileri_model);
+                        TempData["mesaj"] = "Kart Eklendi";
+                        ViewBag.KullaniciMesaji = "Kart Eklendi";
+                        ViewBag.UyariRengi = "";
 
                     }
+                    else
+                    {
+                        if (a.son_gecerlilik_tarihi != null)
+                        {
+                            kart_varmi.FirstOrDefault().son_gecerlilik_tarihi = a.son_gecerlilik_tarihi;
+                        }
 
-                    kart_bilgileri kart_bilgileri_model = new kart_bilgileri();
-                    kart_bilgileri_model.kullanici_id = a.kullanici_id;
-                    kart_bilgileri_model.kart_no = a.kart_no;
-                    kart_bilgileri_model.bakiye = "0";
-                    kart_bilgileri_model.kart_tipi_id = a.kart_tipi_id;
-                    kart_bilgileri_model.durum = 1;
-                    kart_bilgileri_model.son_gecerlilik_tarihi = DateTime.Now.AddYears(4);
-                    kart_bilgileri_model.kayit_tarihi = DateTime.Now;
-                    kart_bilgileri_model.guncelleme_tarihi = DateTime.Now;
-                    db.kart_bilgileri.Add(kart_bilgileri_model);
-                    TempData["mesaj"] = "Kart Eklendi";
-                    ViewBag.KullaniciMesaji = "Kart Eklendi";
-                    ViewBag.UyariRengi = "";
+                        TempData["mesaj"] = "Kişi Bilgisi Guncellendi";
+                        ViewBag.KullaniciMesaji = "Kişi Bilgisi Güncellendi";
+                        ViewBag.UyariRengi = "";
+                    }
+
 
                 }
                 else
                 {
-                    
-                    TempData["mesaj"] = "Kişi Bilgisi Guncellendi";
-                    ViewBag.KullaniciMesaji = "Kişi Bilgisi Güncellendi";
+                    TempData["mesaj"] = "Bu Kart Numarası Başka Bir Kullanıcıya Aittir!!";
+                    ViewBag.KullaniciMesaji = "Bu Kart Numarası Başka Bir Kullanıcıya Aittir!!";
                     ViewBag.UyariRengi = "";
                 }
 
+                db.SaveChanges();
 
+
+                islem.SistemLog(Convert.ToInt32(Session["kullanici_id"]), 4, a.kullanicilar.tc + " tc numaralı " + a.kullanicilar.ad + " " + a.kullanicilar.soyad + " kişisi güncellendi");
+
+                //return RedirectToAction("KullaniciListele");
+                return RedirectToAction("KullaniciGetir/" + a.kullanici_id);
             }
             else
             {
-                TempData["mesaj"] = "Bu Kart Numarası Başka Bir Kullanıcıya Aittir!!";
-                ViewBag.KullaniciMesaji = "Bu Kart Numarası Başka Bir Kullanıcıya Aittir!!";
-                ViewBag.UyariRengi = "";
+                return RedirectToAction("Login");
             }
-
-            db.SaveChanges();
-
-
-            islem.SistemLog(session_kullanici_kodu, 4, a.kullanicilar.tc + " tc numaralı " + a.kullanicilar.ad + " " + a.kullanicilar.soyad + " kişisi güncellendi");
-
-            //return RedirectToAction("KullaniciListele");
-            return RedirectToAction("KullaniciGetir/" + a.kullanici_id);
         }
 
         public ActionResult KullaniciSil(int id)
@@ -425,6 +562,8 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
                 kullanici.aktif_mi = 0;
                 //db.kullanicilar.Remove(kullanici);
                 db.SaveChanges();
+                TempData["mesaj"] = "Kişi silindi.";
+                islem.SistemLog(Convert.ToInt32(Session["kullanici_id"]), 5, kullanici.tc + " tc numaralı " + kullanici.ad + " " + kullanici.soyad + " kişisi silindi.");
             }
             else
             {
@@ -435,22 +574,29 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
 
         public ActionResult KartIptal(int id)
         {
-            var kart = (from kb in db.kart_bilgileri where kb.ID == id && kb.durum == 1 select kb).FirstOrDefault();  
-                kart.durum = 2;
-                db.SaveChanges();
-                TempData["mesaj"] = "Kart İptal Edildi.";
-           
+            var kart = (from kb in db.kart_bilgileri where kb.ID == id && kb.durum == 1 select kb).FirstOrDefault();
+            kart.durum = 2;
+            db.SaveChanges();
+            TempData["mesaj"] = "Kart İptal Edildi.";
+            islem.SistemLog(Convert.ToInt32(Session["kullanici_id"]), 7, kart.kart_no + " numaralı " + kart.kart_tipleri.kart_tipi + " kartı iptal edildi.");
             return RedirectToAction("KullaniciListele");
         }
         public ActionResult BakiyeYukle()
         {
-            return View();
+            if (Session["yetki_id"] != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
         }
         [HttpPost]
         public ActionResult BakiyeYukle(kullanicilar a)
         {
 
-            kullanicilar model = db.kullanicilar.Where(x => x.tc.Equals(a.tc) && x.aktif_mi==1).FirstOrDefault();
+            kullanicilar model = db.kullanicilar.Where(x => x.tc.Equals(a.tc) && x.aktif_mi == 1).FirstOrDefault();
             if (model == null)
             {
                 TempData["mesaj"] = "Kullanıcı bulunamadı";
@@ -461,22 +607,22 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
                 var kart_no = (from kb in db.kart_bilgileri where kb.kullanici_id == model.kullanici_id && kb.durum == 1 select kb.kart_no).FirstOrDefault();
                 if (kart_no != null)
                 {
-                    
-                model.bakiye = (Convert.ToDouble(model.bakiye) + Convert.ToDouble(a.bakiye)).ToString();
-                db.SaveChanges();
-                islem.LogTut(kart_no.ToString(), 1, 1, Convert.ToDouble(a.bakiye), Convert.ToDouble(model.bakiye));
-                islem.SistemLog(session_kullanici_kodu, 1, a.tc + " tc numaralı " + model.ad + " " + model.soyad + " kişisine " + a.bakiye + " TL yüklendi.");
+
+                    model.bakiye = (Convert.ToDouble(model.bakiye) + Convert.ToDouble(a.bakiye)).ToString();
+                    db.SaveChanges();
+                    islem.LogTut(kart_no.ToString(), 1, 1, Convert.ToDouble(a.bakiye), Convert.ToDouble(model.bakiye));
+                    islem.SistemLog(Convert.ToInt32(Session["kullanici_id"]), 1, a.tc + " tc numaralı " + model.ad + " " + model.soyad + " kişisine " + a.bakiye + " TL yüklendi.");
                     TempData["mesaj"] = a.tc + " tc numaralı " + model.ad + " " + model.soyad + " kişisine " + a.bakiye + " TL yüklendi.";
                     //return Redirect("KullaniciListele");
-                    
+
                 }
                 else
                 {
-                    TempData["mesaj"] = "Kişiye ait aktif kart bulunmamaktadır";
+                    TempData["mesaj"] = "Kişiye ait aktif kart bulunmamaktadır. Lütfen kişiye ait kartları kontrol ediniz.";
                 }
-                
+
             }
-           
+
 
             return View(model);
         }
@@ -485,25 +631,32 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
 
         public ActionResult KisiGecisRaporu()
         {
-            return View();
+            if (Session["yetki_id"] != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
         }
         [HttpPost]
         public ActionResult KisiGecisRaporu(string baslangic_tarihi, string bitis_tarihi)
         {
 
-            if(baslangic_tarihi!=null || bitis_tarihi != null)
+            if (baslangic_tarihi != "" && bitis_tarihi != "")
             {
                 if (Convert.ToDateTime(baslangic_tarihi) <= Convert.ToDateTime(bitis_tarihi))
                 {
-                List<SP_KISI_GECIS_RAPORU_Result> kisi = db.SP_KISI_GECIS_RAPORU(baslangic_tarihi, bitis_tarihi + " 23:59:59").ToList();
-                    if (kisi.Count >0)
+                    List<SP_KISI_GECIS_RAPORU_Result> kisi = db.SP_KISI_GECIS_RAPORU(baslangic_tarihi, bitis_tarihi + " 23:59:59").ToList();
+                    if (kisi.Count > 0)
                     {
 
                         ExportToExcelFile<SP_KISI_GECIS_RAPORU_Result, List<SP_KISI_GECIS_RAPORU_Result>> excelExport = new
                         ExportToExcelFile<SP_KISI_GECIS_RAPORU_Result, List<SP_KISI_GECIS_RAPORU_Result>>();
                         excelExport.dataToPrint = kisi;
                         excelExport.GenerateReport();
-                        islem.SistemLog(session_kullanici_kodu, 6, "Kişi geçiş raporu alındı.");
+                        islem.SistemLog(Convert.ToInt32(Session["kullanici_id"]), 6, "Kişi geçiş raporu alındı.");
                         return View(kisi);
                     }
                     else
@@ -517,9 +670,9 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
                     ViewData["mesaj"] = "Başlangıç tarihi bitiş tarihinden büyük olamaz!";
                     return View();
                 }
-            
-                
-            
+
+
+
 
             }
             else
@@ -528,44 +681,91 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
                 return View();
             }
 
-            
-            
 
-           
+
+
+
 
         }
         public ActionResult GunlukGecisRaporu()
         {
-            List<GunlukRapor> grapor = new List<GunlukRapor>();
-            var gunluk_gecisler = (from a in db.view_gecis_loglari
-                                   where a.islem_mesaji == "Başarılı" && a.islem_adi == "Yemek Geçişi"
-                                   && a.kayit_tarihi >= DateTime.Today && a.kayit_tarihi < DateTime.Now
-                                   group a by a.kart_tipi into grp
-                                   select new { krt = grp.Key, cnt = grp.Count() }).ToList();
-            if (gunluk_gecisler.Count >0)
+            if (Session["yetki_id"] != null)
             {
-                foreach (var a in gunluk_gecisler)
+                List<GunlukRapor> grapor = new List<GunlukRapor>();
+                var gunluk_gecisler = (from a in db.view_gecis_loglari
+                                       where a.islem_mesaji == "Başarılı" && a.islem_adi == "Yemek Geçişi"
+                                       && a.kayit_tarihi >= DateTime.Today && a.kayit_tarihi < DateTime.Now
+                                       group a by a.kart_tipi into grp
+                                       select new { krt = grp.Key, cnt = grp.Count() }).ToList();
+                if (gunluk_gecisler.Count > 0)
                 {
-
-                    grapor.Add(new GunlukRapor()
+                    foreach (var a in gunluk_gecisler)
                     {
-                        kart_tipi = a.krt,
-                        gecis_sayisi = Convert.ToInt32(a.cnt)
-                    });
+
+                        grapor.Add(new GunlukRapor()
+                        {
+                            kart_tipi = a.krt,
+                            gecis_sayisi = Convert.ToInt32(a.cnt)
+                        });
+                    }
                 }
+                return View(grapor);
             }
-            return View(grapor);
+            else
+            {
+                return RedirectToAction("Login");
+            }
         }
         [HttpPost]
         public ActionResult GunlukGecisRaporu(string model)
         {
             return View(model);
         }
+
+
+        public ActionResult BakiyeYuklemeRaporu()
+        {
+            if (Session["yetki_id"] != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
+        }
+        [HttpPost]
+        public ActionResult BakiyeYuklemeRaporu(string baslangic_tarihi, string bitis_tarihi)
+        {
+            List<SP_GUNLUK_YUKLENEN_BAKIYE_Result> yuklenen_bakiye = new List<SP_GUNLUK_YUKLENEN_BAKIYE_Result>();
+            if (baslangic_tarihi != "" && bitis_tarihi != "")
+            {
+
+                yuklenen_bakiye = db.SP_GUNLUK_YUKLENEN_BAKIYE(baslangic_tarihi, bitis_tarihi + " 23:59:59").ToList();
+
+            }
+            else
+            {
+                ViewData["mesaj"] = "Tarih alanını boş bırakmayınız!!";
+            }
+
+            return View(yuklenen_bakiye);
+        }
+
+
+
         public ActionResult SistemLog()
         {
-            var sistem_loglari = db.view_sistem_log.ToList();
+            if (Session["yetki_id"] != null)
+            {
+                var sistem_loglari = db.view_sistem_log.ToList();
 
-            return View(sistem_loglari);
+                return View(sistem_loglari);
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
         }
         [HttpPost]
         public ActionResult SistemLog(string model)
@@ -575,11 +775,18 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
 
         public ActionResult KartTipiEkle()
         {
-            KartTipiBilgileri model = new KartTipiBilgileri();
-            model.KullaniciMesaji = "";
-            //KartTipiBilgileri model = new KartTipiBilgileri();
-            //return View(model);
-            return View(model);
+            if (Session["yetki_id"] != null)
+            {
+                KartTipiBilgileri model = new KartTipiBilgileri();
+                //model.KullaniciMesaji = "";
+                //KartTipiBilgileri model = new KartTipiBilgileri();
+                //return View(model);
+                return View(model);
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
         }
         [HttpPost]
         public ActionResult KartTipiEkle(KartTipiBilgileri model)
@@ -593,20 +800,34 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
             db.kart_tipleri.Add(kartTipleriModel);
             db.SaveChanges();
             model.KullaniciMesaji = "Kart Tipi Başarıyla Eklendi";
-            islem.SistemLog(session_kullanici_kodu, 3, model.KartTipi + " kartı sisteme eklendi");
+            islem.SistemLog(Convert.ToInt32(Session["kullanici_id"]), 3, model.KartTipi + " kartı sisteme eklendi");
             return View(model);
         }
 
         public ActionResult KartTipiListesi()
         {
-            var model = db.kart_tipleri.ToList();
-            return View(model);
+            if (Session["yetki_id"] != null)
+            {
+                var model = db.kart_tipleri.ToList();
+                return View(model);
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
         }
 
         public ActionResult KartTipiGuncelle(int id)
         {
-            kart_tipleri modelDB = db.kart_tipleri.Find(id);
-            return View("KartTipiGuncelle", modelDB);
+            if (Session["yetki_id"] != null)
+            {
+                kart_tipleri modelDB = db.kart_tipleri.Find(id);
+                return View("KartTipiGuncelle", modelDB);
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
         }
 
         [HttpPost]
@@ -618,24 +839,32 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
             modelDB.guncelleme_tarihi = DateTime.Now;
             db.SaveChanges();
             ViewData["KullaniciMesaji"] = "Kart Tipi Güncellendi";
-            islem.SistemLog(session_kullanici_kodu, 4, model.kart_tipi + " kartı güncellendi");
+            islem.SistemLog(Convert.ToInt32(Session["kullanici_id"]), 4, model.kart_tipi + " kartı güncellendi");
             return View();
         }
 
-        
+
         public ActionResult Duyurular()
         {
-            ViewBag.kart_tipi_listesi = db.kart_tipleri.Select(x => new SelectListItem
-            { Value = x.kart_tipi_id.ToString(), Text = x.kart_tipi }).ToList();
-            return View();
+            if (Session["yetki_id"] != null)
+            {
+                ViewBag.kart_tipi_listesi = db.kart_tipleri.Select(x => new SelectListItem
+                { Value = x.kart_tipi_id.ToString(), Text = x.kart_tipi }).ToList();
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
         }
+
+
 
         [HttpPost]
         public ActionResult Duyurular(duyurular model)
         {
-            model.gonderen_id = session_kullanici_kodu;
+            model.gonderen_id = Convert.ToInt32(Session["kullanici_id"]);
             model.kayit_tarihi = DateTime.Now;
-            //duyurular duyurular_model = new duyurular();
             db.duyurular.Add(model);
             db.SaveChanges();
             ViewBag.kart_tipi_listesi = db.kart_tipleri.Select(x => new SelectListItem
@@ -644,7 +873,20 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
             return View();
         }
 
+        public ActionResult DuyurulariGoruntule()
+        {
+            if (Session["yetki_id"] != null)
+            {
+                string kart_tipi_id = Session["kart_tipi_id"].ToString();
+                var mesajlar = (from d in db.duyurular where d.kart_tipi_id.ToString() == kart_tipi_id orderby d.id descending select d).ToList();
+                return View(mesajlar);
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
 
+        }
 
         private KartKullanicilari GetData()
         {

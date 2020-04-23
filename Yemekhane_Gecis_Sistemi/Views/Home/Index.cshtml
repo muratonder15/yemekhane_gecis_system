@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "Home Page";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    string bakiye = Session["bakiye"].ToString();
 }
 
 
@@ -10,10 +11,10 @@
         <div class="panel-heading">
             <div class="row">
                 <div class="col-xs-3">
-                    <i class="fa fa-edit fa-5x"></i>
+                    <i class="fa fa-tasks fa-5x"></i>
                 </div>
                 <div class="col-xs-9 text-right">
-                    <div class="huge">26</div>
+                    <div class="fa-2x">@bakiye TL</div>
                     <div>Bakiyeniz</div>
                 </div>
             </div>

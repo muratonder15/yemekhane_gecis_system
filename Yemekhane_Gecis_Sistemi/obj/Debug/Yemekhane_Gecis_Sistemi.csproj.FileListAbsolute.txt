@@ -313,3 +313,8 @@ C:\Users\mrton\OneDrive\Belgeler\GitHub\yemekhane_gecis_system-master\Yemekhane_
 C:\Users\mrton\OneDrive\Belgeler\GitHub\yemekhane_gecis_system-master\Yemekhane_Gecis_Sistemi\obj\Debug\Yemekhane_Gecis_Sistemi.pdb
 C:\Users\mrton\OneDrive\Belgeler\GitHub\yemekhane_gecis_system-master\Yemekhane_Gecis_Sistemi\obj\Debug\Yemekhane_Gecis_Sistemi.csprojResolveAssemblyReference.cache
 C:\Users\mrton\OneDrive\Belgeler\GitHub\yemekhane_gecis_system-master\Yemekhane_Gecis_Sistemi\obj\Debug\Yemekhane_Gecis_Sistemi.csproj.ResolveComReference.cache
+C:\Users\mrton\OneDrive\Belgeler\GitHub\yemekhane_gecis_system-master\Yemekhane_Gecis_Sistemi\bin\PagedList.dll
+C:\Users\mrton\OneDrive\Belgeler\GitHub\yemekhane_gecis_system-master\Yemekhane_Gecis_Sistemi\bin\PagedList.Mvc.dll
+C:\Users\mrton\OneDrive\Belgeler\GitHub\yemekhane_gecis_system-master\Yemekhane_Gecis_Sistemi\bin\PagedList.xml
+C:\Users\mrton\OneDrive\Belgeler\GitHub\yemekhane_gecis_system-master\Yemekhane_Gecis_Sistemi\bin\PagedList.Mvc.xml
+C:\Users\mrton\OneDrive\Belgeler\GitHub\yemekhane_gecis_system-master\Yemekhane_Gecis_Sistemi\bin\AksReader Library 3.0.dll

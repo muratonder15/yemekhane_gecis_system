@@ -23,6 +23,17 @@
         }
     </div>
     <div class="form-group">
+        <label for="predefined" class="col-sm-1 control-label">Kart No</label>
+        <div class="col-sm-4">
+            @Html.TextBoxFor(x => x.KartNo, new { @class = "form-control", @placeholder = "Kart No Giriniz" })
+            @Html.ValidationMessageFor(x => x.KartNo)
+        </div>
+        <div>
+            <a href="/Home/KullaniciEkle" class="btn btn-warning">Kart No Çek</a>
+            @*<input type="button" value="Kart No Çek" onclick="location.href='@Url.Action("KullaniciEkle", "Home")'" class="btn btn-warning" />*@
+        </div>
+    </div>
+    <div class="form-group">
        
         <label for="default" class="col-sm-1 control-label">TC Kimlik No</label>
         <div class="col-sm-5">
@@ -76,18 +87,12 @@
         </div>
     </div>
 
-    <div class="form-group">
-        <label for="predefined" class="col-sm-1 control-label">Kart No</label>
-        <div class="col-sm-5">
-            @Html.TextBoxFor(x => x.KartNo, new { @class = "form-control", @placeholder = "Kart No Giriniz" })
-            @Html.ValidationMessageFor(x => x.KartNo)
-        </div>
-    </div>
+
 
     <div class="form-group">
         <label for="predefined" class="col-sm-1 control-label">Son Geçerlilik Tarihi</label>
         <div class="col-sm-5">
-            @Html.TextBoxFor(x => x.SonGecerlilikTarihi, new { @class = "form-control", @placeholder = "Kart No Giriniz",@type="date" })
+            @Html.TextBoxFor(x => x.SonGecerlilikTarihi, new { @class = "form-control", @placeholder = "Tarih Giriniz",@type="date" })
             @Html.ValidationMessageFor(x => x.SonGecerlilikTarihi)
         </div>
     </div>
