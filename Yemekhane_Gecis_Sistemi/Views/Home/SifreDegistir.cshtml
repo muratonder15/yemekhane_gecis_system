@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewBag.Title = "SifreDegistir";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("SifreDegistir", "Home", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+
+    <div class="form-group">
+        
+        
+        <div class="col-sm-3">
+            @Html.TextBox("eski_sifre",null, new { @class = "form-control", @placeholder = "Eski Şifreniz", @type = "password" }) <br />
+            @Html.TextBox("yeni_sifre",null, new { @class = "form-control", @placeholder = "Yeni Şifreniz", @type="password" })
+            
+            
+        </div>
+    </div>
+    <div style="text-align:right" class="form-group col-sm-3">
+        @if (ViewData["mesaj"] != null)
+        {
+            <div class="alert alert-success" role="alert" style="text-align:left">
+                @ViewData["mesaj"]
+            </div>
+        }
+        <button type="submit" class="btn btn-primary">Kaydet</button>
+    </div>
+            
+        
+    
+}
+

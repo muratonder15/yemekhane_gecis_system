@@ -61,7 +61,6 @@
           <Property Name="kart_tipi_id" Type="int" />
           <Property Name="durum" Type="int" />
           <Property Name="son_gecerlilik_tarihi" Type="datetime" />
-          <Property Name="bakiye" Type="nvarchar" MaxLength="25" />
           <Property Name="kayit_tarihi" Type="datetime" />
           <Property Name="guncelleme_tarihi" Type="datetime" />
         </EntityType>
@@ -111,16 +110,7 @@
           <Property Name="islem_tarihi" Type="datetime" />
           <Property Name="islem_tipi_id" Type="int" />
           <Property Name="mesaj" Type="nvarchar" MaxLength="100" />
-        </EntityType>
-        <EntityType Name="ucretler">
-          <Key>
-            <PropertyRef Name="ucret_id" />
-          </Key>
-          <Property Name="ucret_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="kart_tipi_id" Type="int" />
-          <Property Name="ucret" Type="nvarchar" MaxLength="10" />
-          <Property Name="kayit_tarihi" Type="datetime" />
-          <Property Name="guncelleme_tarihi" Type="datetime" />
+          <Property Name="ip" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="unvanlar">
           <Key>
@@ -168,7 +158,7 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_kullanicilar' does not have a p
           <Property Name="soyad" Type="nvarchar" MaxLength="30" />
           <Property Name="email" Type="nvarchar" MaxLength="25" />
           <Property Name="tc" Type="nvarchar" MaxLength="11" />
-          <Property Name="kart_no" Type="nvarchar" MaxLength="8" />
+          <Property Name="kart_no" Type="nvarchar" MaxLength="15" />
           <Property Name="kart_tipi" Type="nvarchar" MaxLength="50" />
           <Property Name="bakiye" Type="nvarchar" MaxLength="25" />
         </EntityType>
@@ -184,6 +174,7 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
           <Property Name="islem_tarihi" Type="datetime" />
           <Property Name="islem_adi" Type="nvarchar" MaxLength="50" />
           <Property Name="mesaj" Type="nvarchar" MaxLength="100" />
+          <Property Name="ip" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <Association Name="FK_duyurular_kullanicilar">
           <End Role="kullanicilar" Type="Self.kullanicilar" Multiplicity="0..1" />
@@ -341,18 +332,6 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ucretler_kart_tipleri">
-          <End Role="kart_tipleri" Type="Self.kart_tipleri" Multiplicity="0..1" />
-          <End Role="ucretler" Type="Self.ucretler" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="kart_tipleri">
-              <PropertyRef Name="kart_tipi_id" />
-            </Principal>
-            <Dependent Role="ucretler">
-              <PropertyRef Name="kart_tipi_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Function Name="SP_GUNLUK_YUKLENEN_BAKIYE" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="baslangic_tarihi" Type="nvarchar" Mode="In" />
           <Parameter Name="bitis_tarihi" Type="nvarchar" Mode="In" />
@@ -372,7 +351,6 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
           <EntitySet Name="kart_tipleri" EntityType="Self.kart_tipleri" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="kullanicilar" EntityType="Self.kullanicilar" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sistem_log" EntityType="Self.sistem_log" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ucretler" EntityType="Self.ucretler" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="unvanlar" EntityType="Self.unvanlar" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="yetkiler" EntityType="Self.yetkiler" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="view_gecis_loglari" EntityType="Self.view_gecis_loglari" store:Type="Views" store:Schema="dbo">
@@ -411,7 +389,8 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
     [view_sistem_log].[soyad] AS [soyad], 
     [view_sistem_log].[islem_tarihi] AS [islem_tarihi], 
     [view_sistem_log].[islem_adi] AS [islem_adi], 
-    [view_sistem_log].[mesaj] AS [mesaj]
+    [view_sistem_log].[mesaj] AS [mesaj], 
+    [view_sistem_log].[ip] AS [ip]
     FROM [dbo].[view_sistem_log] AS [view_sistem_log]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_duyurular_kullanicilar" Association="Self.FK_duyurular_kullanicilar">
@@ -466,10 +445,6 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
             <End Role="kullanicilar" EntitySet="kullanicilar" />
             <End Role="sistem_log" EntitySet="sistem_log" />
           </AssociationSet>
-          <AssociationSet Name="FK_ucretler_kart_tipleri" Association="Self.FK_ucretler_kart_tipleri">
-            <End Role="kart_tipleri" EntitySet="kart_tipleri" />
-            <End Role="ucretler" EntitySet="ucretler" />
-          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -481,7 +456,6 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
           <EntitySet Name="islem_sonuc" EntityType="YEMEKHANEModel.islem_sonuc" />
           <EntitySet Name="islem_tipleri" EntityType="YEMEKHANEModel.islem_tipleri" />
           <EntitySet Name="kart_tipleri" EntityType="YEMEKHANEModel.kart_tipleri" />
-          <EntitySet Name="ucretler" EntityType="YEMEKHANEModel.ucretler" />
           <EntitySet Name="unvanlar" EntityType="YEMEKHANEModel.unvanlar" />
           <AssociationSet Name="FK_gecis_loglari_islem_sonuc" Association="YEMEKHANEModel.FK_gecis_loglari_islem_sonuc">
             <End Role="islem_sonuc" EntitySet="islem_sonuc" />
@@ -491,17 +465,7 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
             <End Role="islem_tipleri" EntitySet="islem_tipleri" />
             <End Role="gecis_loglari" EntitySet="gecis_loglari" />
           </AssociationSet>
-          <AssociationSet Name="FK_ucretler_kart_tipleri" Association="YEMEKHANEModel.FK_ucretler_kart_tipleri">
-            <End Role="kart_tipleri" EntitySet="kart_tipleri" />
-            <End Role="ucretler" EntitySet="ucretler" />
-          </AssociationSet>
-          <EntitySet Name="sistem_log" EntityType="YEMEKHANEModel.sistem_log" />
-          <AssociationSet Name="FK_sistem_log_islem_tipleri" Association="YEMEKHANEModel.FK_sistem_log_islem_tipleri">
-            <End Role="islem_tipleri" EntitySet="islem_tipleri" />
-            <End Role="sistem_log" EntitySet="sistem_log" />
-          </AssociationSet>
           <EntitySet Name="view_kullanicilar" EntityType="YEMEKHANEModel.view_kullanicilar" />
-          <EntitySet Name="view_sistem_log" EntityType="YEMEKHANEModel.view_sistem_log" />
           <EntitySet Name="view_gecis_loglari" EntityType="YEMEKHANEModel.view_gecis_loglari" />
           <EntitySet Name="duyurular" EntityType="YEMEKHANEModel.duyurular" />
           <EntitySet Name="yetkiler" EntityType="YEMEKHANEModel.yetkiler" />
@@ -527,11 +491,11 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
             <End Role="yetkiler" EntitySet="yetkiler" />
             <End Role="kullanicilar" EntitySet="kullanicilar" />
           </AssociationSet>
-          <AssociationSet Name="FK_sistem_log_kullanicilar" Association="YEMEKHANEModel.FK_sistem_log_kullanicilar">
-            <End Role="kullanicilar" EntitySet="kullanicilar" />
-            <End Role="sistem_log" EntitySet="sistem_log" />
-          </AssociationSet>
           <FunctionImport Name="SP_KISI_GECIS_RAPORU" ReturnType="Collection(YEMEKHANEModel.SP_KISI_GECIS_RAPORU_Result)">
+            <Parameter Name="baslangic_tarihi" Mode="In" Type="String" />
+            <Parameter Name="bitis_tarihi" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_GUNLUK_YUKLENEN_BAKIYE" ReturnType="Collection(YEMEKHANEModel.SP_GUNLUK_YUKLENEN_BAKIYE_Result)">
             <Parameter Name="baslangic_tarihi" Mode="In" Type="String" />
             <Parameter Name="bitis_tarihi" Mode="In" Type="String" />
           </FunctionImport>
@@ -552,10 +516,16 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
             <End Role="kullanicilar" EntitySet="kullanicilar" />
             <End Role="kart_bilgileri" EntitySet="kart_bilgileri" />
           </AssociationSet>
-          <FunctionImport Name="SP_GUNLUK_YUKLENEN_BAKIYE" ReturnType="Collection(YEMEKHANEModel.SP_GUNLUK_YUKLENEN_BAKIYE_Result)">
-            <Parameter Name="baslangic_tarihi" Mode="In" Type="String" />
-            <Parameter Name="bitis_tarihi" Mode="In" Type="String" />
-          </FunctionImport>
+          <EntitySet Name="sistem_log" EntityType="YEMEKHANEModel.sistem_log" />
+          <AssociationSet Name="FK_sistem_log_islem_tipleri" Association="YEMEKHANEModel.FK_sistem_log_islem_tipleri">
+            <End Role="islem_tipleri" EntitySet="islem_tipleri" />
+            <End Role="sistem_log" EntitySet="sistem_log" />
+          </AssociationSet>
+          <AssociationSet Name="FK_sistem_log_kullanicilar" Association="YEMEKHANEModel.FK_sistem_log_kullanicilar">
+            <End Role="kullanicilar" EntitySet="kullanicilar" />
+            <End Role="sistem_log" EntitySet="sistem_log" />
+          </AssociationSet>
+          <EntitySet Name="view_sistem_log" EntityType="YEMEKHANEModel.view_sistem_log" />
           </EntityContainer>
         <EntityType Name="birimler">
           <Key>
@@ -609,19 +579,7 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
           <Property Name="ucret" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
           <Property Name="kayit_tarihi" Type="DateTime" Precision="3" />
           <Property Name="guncelleme_tarihi" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="ucretler" Relationship="YEMEKHANEModel.FK_ucretler_kart_tipleri" FromRole="kart_tipleri" ToRole="ucretler" />
           <NavigationProperty Name="kart_bilgileri" Relationship="YEMEKHANEModel.FK_kart_bilgileri_kart_bilgileri" FromRole="kart_tipleri" ToRole="kart_bilgileri" />
-        </EntityType>
-        <EntityType Name="ucretler">
-          <Key>
-            <PropertyRef Name="ucret_id" />
-          </Key>
-          <Property Name="ucret_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="kart_tipi_id" Type="Int32" />
-          <Property Name="ucret" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="kayit_tarihi" Type="DateTime" Precision="3" />
-          <Property Name="guncelleme_tarihi" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="kart_tipleri" Relationship="YEMEKHANEModel.FK_ucretler_kart_tipleri" FromRole="ucretler" ToRole="kart_tipleri" />
         </EntityType>
         <EntityType Name="unvanlar">
           <Key>
@@ -655,42 +613,6 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ucretler_kart_tipleri">
-          <End Type="YEMEKHANEModel.kart_tipleri" Role="kart_tipleri" Multiplicity="0..1" />
-          <End Type="YEMEKHANEModel.ucretler" Role="ucretler" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="kart_tipleri">
-              <PropertyRef Name="kart_tipi_id" />
-            </Principal>
-            <Dependent Role="ucretler">
-              <PropertyRef Name="kart_tipi_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="sistem_log">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="kullanici_id" Type="Int32" />
-          <Property Name="islem_tarihi" Type="DateTime" Precision="3" />
-          <Property Name="islem_tipi_id" Type="Int32" />
-          <Property Name="mesaj" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="islem_tipleri" Relationship="YEMEKHANEModel.FK_sistem_log_islem_tipleri" FromRole="sistem_log" ToRole="islem_tipleri" />
-          <NavigationProperty Name="kullanicilar" Relationship="YEMEKHANEModel.FK_sistem_log_kullanicilar" FromRole="sistem_log" ToRole="kullanicilar" />
-        </EntityType>
-        <Association Name="FK_sistem_log_islem_tipleri">
-          <End Type="YEMEKHANEModel.islem_tipleri" Role="islem_tipleri" Multiplicity="0..1" />
-          <End Type="YEMEKHANEModel.sistem_log" Role="sistem_log" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="islem_tipleri">
-              <PropertyRef Name="islem_tipi_id" />
-            </Principal>
-            <Dependent Role="sistem_log">
-              <PropertyRef Name="islem_tipi_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <ComplexType Name="SP_KisiGecisRapor_Result">
           <Property Type="String" Name="tc" Nullable="true" MaxLength="11" />
           <Property Type="String" Name="ad_soyad" Nullable="true" MaxLength="61" />
@@ -708,20 +630,9 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
           <Property Name="soyad" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
           <Property Name="email" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
           <Property Name="tc" Type="String" MaxLength="11" FixedLength="false" Unicode="true" />
-          <Property Name="kart_no" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
+          <Property Name="kart_no" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
           <Property Name="kart_tipi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="bakiye" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="view_sistem_log">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" />
-          <Property Name="ad" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="soyad" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="islem_tarihi" Type="DateTime" Precision="3" />
-          <Property Name="islem_adi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="mesaj" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <ComplexType Name="SP_KISI_GECIS_RAPOR_Result">
           <Property Type="Int32" Name="kullanici_id" Nullable="false" />
@@ -836,8 +747,8 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
           <NavigationProperty Name="gecis_loglari" Relationship="YEMEKHANEModel.FK_gecis_loglari_kullanicilar" FromRole="kullanicilar" ToRole="gecis_loglari" />
           <NavigationProperty Name="unvanlar" Relationship="YEMEKHANEModel.FK_kullanicilar_unvanlar" FromRole="kullanicilar" ToRole="unvanlar" />
           <NavigationProperty Name="yetkiler" Relationship="YEMEKHANEModel.FK_kullanicilar_yetkiler" FromRole="kullanicilar" ToRole="yetkiler" />
-          <NavigationProperty Name="sistem_log" Relationship="YEMEKHANEModel.FK_sistem_log_kullanicilar" FromRole="kullanicilar" ToRole="sistem_log" />
           <NavigationProperty Name="kart_bilgileri" Relationship="YEMEKHANEModel.FK_kart_bilgileri_kullancilar" FromRole="kullanicilar" ToRole="kart_bilgileri" />
+          <NavigationProperty Name="sistem_log" Relationship="YEMEKHANEModel.FK_sistem_log_kullanicilar" FromRole="kullanicilar" ToRole="sistem_log" />
         </EntityType>
         <Association Name="FK_kullanicilar_birimler">
           <End Type="YEMEKHANEModel.birimler" Role="birimler" Multiplicity="0..1" />
@@ -899,18 +810,6 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_sistem_log_kullanicilar">
-          <End Type="YEMEKHANEModel.kullanicilar" Role="kullanicilar" Multiplicity="0..1" />
-          <End Type="YEMEKHANEModel.sistem_log" Role="sistem_log" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="kullanicilar">
-              <PropertyRef Name="kullanici_id" />
-            </Principal>
-            <Dependent Role="sistem_log">
-              <PropertyRef Name="kullanici_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <ComplexType Name="SP_KISI_GECIS_RAPORU1_Result1">
           <Property Type="Int32" Name="kullanici_id" Nullable="false" />
           <Property Type="String" Name="ad" Nullable="true" MaxLength="30" />
@@ -967,6 +866,10 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
           <Property Type="String" Name="ucret" Nullable="true" MaxLength="15" />
           <Property Type="Int32" Name="gecis_sayisi" Nullable="true" />
         </ComplexType>
+        <ComplexType Name="SP_GUNLUK_YUKLENEN_BAKIYE_Result">
+          <Property Type="DateTime" Name="tarih" Nullable="true" />
+          <Property Type="Decimal" Name="toplam_yuklenen" Nullable="true" Precision="19" />
+        </ComplexType>
         <EntityType Name="kart_bilgileri">
           <Key>
             <PropertyRef Name="ID" />
@@ -977,7 +880,6 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
           <Property Name="kart_tipi_id" Type="Int32" />
           <Property Name="durum" Type="Int32" />
           <Property Name="son_gecerlilik_tarihi" Type="DateTime" Precision="3" />
-          <Property Name="bakiye" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
           <Property Name="kayit_tarihi" Type="DateTime" Precision="3" />
           <Property Name="guncelleme_tarihi" Type="DateTime" Precision="3" />
           <NavigationProperty Name="gecis_loglari" Relationship="YEMEKHANEModel.FK_gecis_loglari_kart_bilgileri" FromRole="kart_bilgileri" ToRole="gecis_loglari" />
@@ -1033,10 +935,55 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <ComplexType Name="SP_GUNLUK_YUKLENEN_BAKIYE_Result">
-          <Property Type="DateTime" Name="tarih" Nullable="true" />
-          <Property Type="Decimal" Name="toplam_yuklenen" Nullable="true" Precision="19" />
-        </ComplexType>
+        <EntityType Name="sistem_log">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="kullanici_id" Type="Int32" />
+          <Property Name="islem_tarihi" Type="DateTime" Precision="3" />
+          <Property Name="islem_tipi_id" Type="Int32" />
+          <Property Name="mesaj" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ip" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="islem_tipleri" Relationship="YEMEKHANEModel.FK_sistem_log_islem_tipleri" FromRole="sistem_log" ToRole="islem_tipleri" />
+          <NavigationProperty Name="kullanicilar" Relationship="YEMEKHANEModel.FK_sistem_log_kullanicilar" FromRole="sistem_log" ToRole="kullanicilar" />
+        </EntityType>
+        <Association Name="FK_sistem_log_islem_tipleri">
+          <End Type="YEMEKHANEModel.islem_tipleri" Role="islem_tipleri" Multiplicity="0..1" />
+          <End Type="YEMEKHANEModel.sistem_log" Role="sistem_log" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="islem_tipleri">
+              <PropertyRef Name="islem_tipi_id" />
+            </Principal>
+            <Dependent Role="sistem_log">
+              <PropertyRef Name="islem_tipi_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_sistem_log_kullanicilar">
+          <End Type="YEMEKHANEModel.kullanicilar" Role="kullanicilar" Multiplicity="0..1" />
+          <End Type="YEMEKHANEModel.sistem_log" Role="sistem_log" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="kullanicilar">
+              <PropertyRef Name="kullanici_id" />
+            </Principal>
+            <Dependent Role="sistem_log">
+              <PropertyRef Name="kullanici_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="view_sistem_log">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="ad" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="soyad" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="islem_tarihi" Type="DateTime" Precision="3" />
+          <Property Name="islem_adi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="mesaj" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ip" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1093,33 +1040,11 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="ucretler">
-      <EntityTypeMapping TypeName="IsTypeOf(YEMEKHANEModel.ucretler)">
-        <MappingFragment StoreEntitySet="ucretler">
-          <ScalarProperty Name="ucret_id" ColumnName="ucret_id" />
-          <ScalarProperty Name="kart_tipi_id" ColumnName="kart_tipi_id" />
-          <ScalarProperty Name="ucret" ColumnName="ucret" />
-          <ScalarProperty Name="kayit_tarihi" ColumnName="kayit_tarihi" />
-          <ScalarProperty Name="guncelleme_tarihi" ColumnName="guncelleme_tarihi" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="unvanlar">
       <EntityTypeMapping TypeName="IsTypeOf(YEMEKHANEModel.unvanlar)">
         <MappingFragment StoreEntitySet="unvanlar">
           <ScalarProperty Name="unvan_id" ColumnName="unvan_id" />
           <ScalarProperty Name="unvan_adi" ColumnName="unvan_adi" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="sistem_log">
-      <EntityTypeMapping TypeName="IsTypeOf(YEMEKHANEModel.sistem_log)">
-        <MappingFragment StoreEntitySet="sistem_log">
-          <ScalarProperty Name="id" ColumnName="id" />
-          <ScalarProperty Name="kullanici_id" ColumnName="kullanici_id" />
-          <ScalarProperty Name="islem_tarihi" ColumnName="islem_tarihi" />
-          <ScalarProperty Name="islem_tipi_id" ColumnName="islem_tipi_id" />
-          <ScalarProperty Name="mesaj" ColumnName="mesaj" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1135,18 +1060,6 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
                 <ScalarProperty Name="ad" ColumnName="ad" />
                 <ScalarProperty Name="kullanici_adi" ColumnName="kullanici_adi" />
                 <ScalarProperty Name="kullanici_id" ColumnName="kullanici_id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="view_sistem_log">
-            <EntityTypeMapping TypeName="YEMEKHANEModel.view_sistem_log">
-              <MappingFragment StoreEntitySet="view_sistem_log">
-                <ScalarProperty Name="mesaj" ColumnName="mesaj" />
-                <ScalarProperty Name="islem_adi" ColumnName="islem_adi" />
-                <ScalarProperty Name="islem_tarihi" ColumnName="islem_tarihi" />
-                <ScalarProperty Name="soyad" ColumnName="soyad" />
-                <ScalarProperty Name="ad" ColumnName="ad" />
-                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1229,12 +1142,19 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_GUNLUK_YUKLENEN_BAKIYE" FunctionName="YEMEKHANEModel.Store.SP_GUNLUK_YUKLENEN_BAKIYE">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="YEMEKHANEModel.SP_GUNLUK_YUKLENEN_BAKIYE_Result">
+                <ScalarProperty Name="tarih" ColumnName="tarih" />
+                <ScalarProperty Name="toplam_yuklenen" ColumnName="toplam_yuklenen" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <EntitySetMapping Name="kart_bilgileri">
             <EntityTypeMapping TypeName="YEMEKHANEModel.kart_bilgileri">
               <MappingFragment StoreEntitySet="kart_bilgileri">
                 <ScalarProperty Name="guncelleme_tarihi" ColumnName="guncelleme_tarihi" />
                 <ScalarProperty Name="kayit_tarihi" ColumnName="kayit_tarihi" />
-                <ScalarProperty Name="bakiye" ColumnName="bakiye" />
                 <ScalarProperty Name="son_gecerlilik_tarihi" ColumnName="son_gecerlilik_tarihi" />
                 <ScalarProperty Name="durum" ColumnName="durum" />
                 <ScalarProperty Name="kart_tipi_id" ColumnName="kart_tipi_id" />
@@ -1244,14 +1164,31 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="SP_GUNLUK_YUKLENEN_BAKIYE" FunctionName="YEMEKHANEModel.Store.SP_GUNLUK_YUKLENEN_BAKIYE">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="YEMEKHANEModel.SP_GUNLUK_YUKLENEN_BAKIYE_Result">
-                <ScalarProperty Name="tarih" ColumnName="tarih" />
-                <ScalarProperty Name="toplam_yuklenen" ColumnName="toplam_yuklenen" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
+          <EntitySetMapping Name="sistem_log">
+            <EntityTypeMapping TypeName="YEMEKHANEModel.sistem_log">
+              <MappingFragment StoreEntitySet="sistem_log">
+                <ScalarProperty Name="ip" ColumnName="ip" />
+                <ScalarProperty Name="mesaj" ColumnName="mesaj" />
+                <ScalarProperty Name="islem_tipi_id" ColumnName="islem_tipi_id" />
+                <ScalarProperty Name="islem_tarihi" ColumnName="islem_tarihi" />
+                <ScalarProperty Name="kullanici_id" ColumnName="kullanici_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_sistem_log">
+            <EntityTypeMapping TypeName="YEMEKHANEModel.view_sistem_log">
+              <MappingFragment StoreEntitySet="view_sistem_log">
+                <ScalarProperty Name="ip" ColumnName="ip" />
+                <ScalarProperty Name="mesaj" ColumnName="mesaj" />
+                <ScalarProperty Name="islem_adi" ColumnName="islem_adi" />
+                <ScalarProperty Name="islem_tarihi" ColumnName="islem_tarihi" />
+                <ScalarProperty Name="soyad" ColumnName="soyad" />
+                <ScalarProperty Name="ad" ColumnName="ad" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>

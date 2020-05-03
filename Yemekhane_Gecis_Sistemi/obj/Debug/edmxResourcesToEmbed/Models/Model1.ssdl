@@ -56,7 +56,6 @@
     <Property Name="kart_tipi_id" Type="int" />
     <Property Name="durum" Type="int" />
     <Property Name="son_gecerlilik_tarihi" Type="datetime" />
-    <Property Name="bakiye" Type="nvarchar" MaxLength="25" />
     <Property Name="kayit_tarihi" Type="datetime" />
     <Property Name="guncelleme_tarihi" Type="datetime" />
   </EntityType>
@@ -106,16 +105,7 @@
     <Property Name="islem_tarihi" Type="datetime" />
     <Property Name="islem_tipi_id" Type="int" />
     <Property Name="mesaj" Type="nvarchar" MaxLength="100" />
-  </EntityType>
-  <EntityType Name="ucretler">
-    <Key>
-      <PropertyRef Name="ucret_id" />
-    </Key>
-    <Property Name="ucret_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="kart_tipi_id" Type="int" />
-    <Property Name="ucret" Type="nvarchar" MaxLength="10" />
-    <Property Name="kayit_tarihi" Type="datetime" />
-    <Property Name="guncelleme_tarihi" Type="datetime" />
+    <Property Name="ip" Type="nvarchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="unvanlar">
     <Key>
@@ -163,7 +153,7 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_kullanicilar' does not have a p
     <Property Name="soyad" Type="nvarchar" MaxLength="30" />
     <Property Name="email" Type="nvarchar" MaxLength="25" />
     <Property Name="tc" Type="nvarchar" MaxLength="11" />
-    <Property Name="kart_no" Type="nvarchar" MaxLength="8" />
+    <Property Name="kart_no" Type="nvarchar" MaxLength="15" />
     <Property Name="kart_tipi" Type="nvarchar" MaxLength="50" />
     <Property Name="bakiye" Type="nvarchar" MaxLength="25" />
   </EntityType>
@@ -179,6 +169,7 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
     <Property Name="islem_tarihi" Type="datetime" />
     <Property Name="islem_adi" Type="nvarchar" MaxLength="50" />
     <Property Name="mesaj" Type="nvarchar" MaxLength="100" />
+    <Property Name="ip" Type="nvarchar" MaxLength="50" />
   </EntityType>
   <Association Name="FK_duyurular_kullanicilar">
     <End Role="kullanicilar" Type="Self.kullanicilar" Multiplicity="0..1" />
@@ -336,18 +327,6 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_ucretler_kart_tipleri">
-    <End Role="kart_tipleri" Type="Self.kart_tipleri" Multiplicity="0..1" />
-    <End Role="ucretler" Type="Self.ucretler" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="kart_tipleri">
-        <PropertyRef Name="kart_tipi_id" />
-      </Principal>
-      <Dependent Role="ucretler">
-        <PropertyRef Name="kart_tipi_id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Function Name="SP_GUNLUK_YUKLENEN_BAKIYE" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="baslangic_tarihi" Type="nvarchar" Mode="In" />
     <Parameter Name="bitis_tarihi" Type="nvarchar" Mode="In" />
@@ -367,7 +346,6 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
     <EntitySet Name="kart_tipleri" EntityType="Self.kart_tipleri" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="kullanicilar" EntityType="Self.kullanicilar" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="sistem_log" EntityType="Self.sistem_log" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="ucretler" EntityType="Self.ucretler" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="unvanlar" EntityType="Self.unvanlar" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="yetkiler" EntityType="Self.yetkiler" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="view_gecis_loglari" EntityType="Self.view_gecis_loglari" store:Type="Views" store:Schema="dbo">
@@ -406,7 +384,8 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
     [view_sistem_log].[soyad] AS [soyad], 
     [view_sistem_log].[islem_tarihi] AS [islem_tarihi], 
     [view_sistem_log].[islem_adi] AS [islem_adi], 
-    [view_sistem_log].[mesaj] AS [mesaj]
+    [view_sistem_log].[mesaj] AS [mesaj], 
+    [view_sistem_log].[ip] AS [ip]
     FROM [dbo].[view_sistem_log] AS [view_sistem_log]</DefiningQuery>
     </EntitySet>
     <AssociationSet Name="FK_duyurular_kullanicilar" Association="Self.FK_duyurular_kullanicilar">
@@ -460,10 +439,6 @@ warning 6002: The table/view 'YEMEKHANE.dbo.view_sistem_log' does not have a pri
     <AssociationSet Name="FK_sistem_log_kullanicilar" Association="Self.FK_sistem_log_kullanicilar">
       <End Role="kullanicilar" EntitySet="kullanicilar" />
       <End Role="sistem_log" EntitySet="sistem_log" />
-    </AssociationSet>
-    <AssociationSet Name="FK_ucretler_kart_tipleri" Association="Self.FK_ucretler_kart_tipleri">
-      <End Role="kart_tipleri" EntitySet="kart_tipleri" />
-      <End Role="ucretler" EntitySet="ucretler" />
     </AssociationSet>
   </EntityContainer>
 </Schema>

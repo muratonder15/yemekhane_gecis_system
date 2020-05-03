@@ -39,8 +39,6 @@ public partial class kart_bilgileri
 
     public Nullable<System.DateTime> son_gecerlilik_tarihi { get; set; }
 
-    public string bakiye { get; set; }
-
     public Nullable<System.DateTime> kayit_tarihi { get; set; }
 
     public Nullable<System.DateTime> guncelleme_tarihi { get; set; }

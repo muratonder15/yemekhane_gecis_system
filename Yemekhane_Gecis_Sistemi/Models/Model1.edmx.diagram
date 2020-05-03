@@ -10,15 +10,10 @@
         <EntityTypeShape EntityType="YEMEKHANEModel.islem_sonuc" Width="1.5" PointX="3" PointY="11.75" />
         <EntityTypeShape EntityType="YEMEKHANEModel.islem_tipleri" Width="1.5" PointX="3" PointY="2.375" />
         <EntityTypeShape EntityType="YEMEKHANEModel.kart_tipleri" Width="1.5" PointX="0.75" PointY="5.125" />
-        <EntityTypeShape EntityType="YEMEKHANEModel.ucretler" Width="1.5" PointX="3" PointY="8.75" />
         <EntityTypeShape EntityType="YEMEKHANEModel.unvanlar" Width="1.5" PointX="7.75" PointY="5.75" />
         <AssociationConnector Association="YEMEKHANEModel.FK_gecis_loglari_islem_sonuc" />
         <AssociationConnector Association="YEMEKHANEModel.FK_gecis_loglari_islem_tipleri" />
-        <AssociationConnector Association="YEMEKHANEModel.FK_ucretler_kart_tipleri" />
-        <EntityTypeShape EntityType="YEMEKHANEModel.sistem_log" Width="1.5" PointX="5.25" PointY="1.25" />
-        <AssociationConnector Association="YEMEKHANEModel.FK_sistem_log_islem_tipleri" />
         <EntityTypeShape EntityType="YEMEKHANEModel.view_kullanicilar" Width="1.5" PointX="6.75" PointY="9" />
-        <EntityTypeShape EntityType="YEMEKHANEModel.view_sistem_log" Width="1.5" PointX="10.375" PointY="0.75" />
         <EntityTypeShape EntityType="YEMEKHANEModel.view_gecis_loglari" Width="1.5" PointX="9.375" PointY="8.75" />
         <EntityTypeShape EntityType="YEMEKHANEModel.duyurular" Width="1.5" PointX="3" PointY="14.375" />
         <EntityTypeShape EntityType="YEMEKHANEModel.yetkiler" Width="1.5" PointX="10.25" PointY="13.125" />
@@ -29,12 +24,15 @@
         <AssociationConnector Association="YEMEKHANEModel.FK_gecis_loglari_kullanicilar" />
         <AssociationConnector Association="YEMEKHANEModel.FK_kullanicilar_unvanlar" />
         <AssociationConnector Association="YEMEKHANEModel.FK_kullanicilar_yetkiler" />
-        <AssociationConnector Association="YEMEKHANEModel.FK_sistem_log_kullanicilar" />
-        <EntityTypeShape EntityType="YEMEKHANEModel.kart_bilgileri" Width="1.5" PointX="14.75" PointY="4.375" />
+        <EntityTypeShape EntityType="YEMEKHANEModel.kart_bilgileri" Width="1.5" PointX="14.75" PointY="4.5" />
         <AssociationConnector Association="YEMEKHANEModel.FK_gecis_loglari_kart_bilgileri" />
         <AssociationConnector Association="YEMEKHANEModel.FK_kart_bilgileri_kart_bilgileri" />
         <AssociationConnector Association="YEMEKHANEModel.FK_kart_bilgileri_kart_durumlari" />
         <AssociationConnector Association="YEMEKHANEModel.FK_kart_bilgileri_kullancilar" />
+        <EntityTypeShape EntityType="YEMEKHANEModel.sistem_log" Width="1.5" PointX="14.75" PointY="8.625" />
+        <AssociationConnector Association="YEMEKHANEModel.FK_sistem_log_islem_tipleri" />
+        <AssociationConnector Association="YEMEKHANEModel.FK_sistem_log_kullanicilar" />
+        <EntityTypeShape EntityType="YEMEKHANEModel.view_sistem_log" Width="1.5" PointX="5.375" PointY="12.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

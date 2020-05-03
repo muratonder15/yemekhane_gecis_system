@@ -71,10 +71,14 @@
                     </a>
                     @{
                         DB db = new DB();
+                        string kullanici_id = Session["kullanici_id"].ToString();
+                        var kullanici_kart_tipleri = (from kb in db.kart_bilgileri
+                                                      where kb.kullanici_id.ToString() == kullanici_id && kb.durum == 1
+                                                      select kb.kart_tipi_id).ToList();
                         string kart_tipi_id = Session["kart_tipi_id"].ToString();
-                        var mesajlar = db.duyurular.Where(x => x.kart_tipi_id.ToString() ==kart_tipi_id).OrderByDescending(x=>x.id).Take(3);
+                        var mesajlar = (from d in db.duyurular where kullanici_kart_tipleri.Contains(d.kart_tipi_id) orderby d.id descending select d).Take(3);
 
-                    } 
+                    }
                     <ul class="dropdown-menu dropdown-messages">
                         @foreach (var a in mesajlar)
                         {
@@ -86,7 +90,7 @@
                                             <em>@a.kayit_tarihi</em>
                                         </span>
                                     </div>
-                                    <div>@a.konu</div>
+                                    <div><b>Konu:</b> @a.konu</div>
                                 </a>
                             </li>
                             <li class="divider"></li>
@@ -97,8 +101,8 @@
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         </li>
-                        </ul>
-                        @*<ul class="dropdown-menu dropdown-messages">
+                    </ul>
+                    @*<ul class="dropdown-menu dropdown-messages">
                             <li>
                                 <a href="#">
                                     <div>
@@ -142,8 +146,8 @@
                                 </a>
                             </li>
                         </ul>*@
-                        <!-- /.dropdown-messages -->
-</li>
+                    <!-- /.dropdown-messages -->
+                </li>
 
                 <!-- /.dropdown -->
                 <!-- /.dropdown -->
@@ -152,9 +156,9 @@
                         <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        
+
                         <li>
-                            <a href="#"><i class="fa fa-gear fa-fw"></i> Parola Değiştir</a>
+                            <a href="/Home/SifreDegistir"><i class="fa fa-gear fa-fw"></i> Parola Değiştir</a>
                         </li>
                         <li class="divider"></li>
                         <li>
@@ -177,7 +181,7 @@
                         </li>
                     </ul>
                     <ul class="nav" id="side-menu">
-                        @if (Session["yetki_id"].ToString() == "1" || Session["yetki_id"].ToString()=="3")
+                        @if (Session["yetki_id"].ToString() == "1" || Session["yetki_id"].ToString() == "3")
                         {
                             <li>
                                 <a href="#"><i class="fa fa-users fa-fw"></i> <span class="ttspan-fill">Kullanicilar</span><span class="fa arrow ttspan-fill"></span></a>
@@ -294,20 +298,20 @@
     @* <script src="~/Scripts/bootstrap-datetimepicker.min.js"></script>*@
 
     @Scripts.Render("~/bundles/datepickerJS")
-    <script>
-        $(document).ready(function () {
-            $("#baslangic_tarihi").datepicker({
-                format: 'yyyy-mm-dd'
-            });
-        })
-    </script>
-    <script>
+    @*<script>
+            $(document).ready(function () {
+                $("#baslangic_tarihi").datepicker({
+                    format: 'yyyy-mm-dd'
+                });
+            })
+        </script>
+        <script>
 
-        $(document).ready(function () {
-            $("#bitis_tarihi").datepicker({
-                format: 'yyyy-mm-dd'
-            });
-        })
-    </script>
+            $(document).ready(function () {
+                $("#bitis_tarihi").datepicker({
+                    format: 'yyyy-mm-dd'
+                });
+            })
+        </script>*@
 </body>
 </html>

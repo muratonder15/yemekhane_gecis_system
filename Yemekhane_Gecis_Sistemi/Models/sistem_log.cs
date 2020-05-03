@@ -28,6 +28,8 @@ public partial class sistem_log
 
     public string mesaj { get; set; }
 
+    public string ip { get; set; }
+
 
 
     public virtual islem_tipleri islem_tipleri { get; set; }

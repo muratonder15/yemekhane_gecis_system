@@ -22,8 +22,6 @@ public partial class kart_tipleri
     public kart_tipleri()
     {
 
-        this.ucretler = new HashSet<ucretler>();
-
         this.kart_bilgileri = new HashSet<kart_bilgileri>();
 
     }
@@ -40,10 +38,6 @@ public partial class kart_tipleri
     public Nullable<System.DateTime> guncelleme_tarihi { get; set; }
 
 
-
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-
-    public virtual ICollection<ucretler> ucretler { get; set; }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 

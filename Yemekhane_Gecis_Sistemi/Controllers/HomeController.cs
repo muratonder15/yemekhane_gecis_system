@@ -8,6 +8,8 @@ using Yemekhane_Gecis_Sistemi.Models;
 using Yemekhane_Gecis_Sistemi.ViewModels;
 using PagedList;
 using PagedList.Mvc;
+using System.Net.Mail;
+
 namespace Yemekhane_Gecis_Sistemi.Controllers
 {
     public class HomeController : Controller
@@ -25,7 +27,7 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
         public ActionResult Login(string username, string password)
         {
 
-            var login_kontrol = (from k in db.kullanicilar where k.kullanici_adi == username && !string.IsNullOrEmpty(password) select k).FirstOrDefault();
+            var login_kontrol = (from k in db.kullanicilar where k.kullanici_adi == username && !string.IsNullOrEmpty(password) && k.aktif_mi == 1 select k).FirstOrDefault();
             if (login_kontrol != null)
             {
                 var kart_bilgi = (from kb in db.kart_bilgileri where kb.kullanici_id == login_kontrol.kullanici_id && kb.durum == 1 select kb).FirstOrDefault();
@@ -33,14 +35,15 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
                 Session["soyad"] = login_kontrol.soyad;
                 Session["yetki_id"] = login_kontrol.yetki_id;
                 Session["bakiye"] = login_kontrol.bakiye;
-                Session["kart_tipi_id"] = kart_bilgi.kart_tipi_id;
+                if (kart_bilgi == null) Session["kart_tipi_id"] = 0;
+                else Session["kart_tipi_id"] = kart_bilgi.kart_tipi_id;
                 Session["kullanici_id"] = login_kontrol.kullanici_id;
-
+                islem.SistemLog(login_kontrol.kullanici_id, 8, "Giriş Başarılı");
                 return RedirectToAction("Index");
             }
             else
             {
-                ViewData["mesaj"] = "Kullanıcı Adı Veya Şifre Hatalı!!";
+                ViewData["mesaj"] = "Kullanıcı Adı Veya Şifre Hatalı!!";               
                 return View();
             }
 
@@ -50,6 +53,9 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
         {
             if (Session["yetki_id"] != null)
             {
+                string kart_tipi_id = Session["kart_tipi_id"].ToString();
+                var mesajlar = (from d in db.duyurular where d.kart_tipi_id.ToString() == kart_tipi_id orderby d.id descending select d).ToList();
+                TempData["mesaj_sayisi"] = mesajlar.Count();
                 return View();
             }
             else
@@ -76,7 +82,7 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
         }
 
 
-       
+
 
         //[HttpGet]
         public ActionResult KullaniciEkle()
@@ -140,7 +146,7 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
                 kartBilgileriModel.kullanici_id = (from a in db.kullanicilar where a.tc == model.TcKimlikNo select a.kullanici_id).FirstOrDefault();
                 kartBilgileriModel.kart_tipi_id = model.KartTipiId;
                 kartBilgileriModel.kart_no = model.KartNo;
-                kartBilgileriModel.bakiye = "0";
+                //kartBilgileriModel.bakiye = "0";
                 kartBilgileriModel.durum = 1;
                 if (model.SonGecerlilikTarihi == null)
                 {
@@ -352,7 +358,7 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
                 string txtKartNo = islem.KartOku();
 
                 var model = (from kb in db.kart_bilgileri where kb.kullanici_id == id orderby kb.guncelleme_tarihi descending, kb.ID descending select kb).FirstOrDefault();
-                if (txtKartNo != "0" && txtKartNo!="")
+                if (txtKartNo != "0" && txtKartNo != "")
                 {
 
                     model.kart_no = txtKartNo;
@@ -506,10 +512,18 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
                         kart_bilgileri kart_bilgileri_model = new kart_bilgileri();
                         kart_bilgileri_model.kullanici_id = a.kullanici_id;
                         kart_bilgileri_model.kart_no = a.kart_no;
-                        kart_bilgileri_model.bakiye = "0";
+                        //kart_bilgileri_model.bakiye = "0";
                         kart_bilgileri_model.kart_tipi_id = a.kart_tipi_id;
                         kart_bilgileri_model.durum = 1;
-                        kart_bilgileri_model.son_gecerlilik_tarihi = a.son_gecerlilik_tarihi;
+                        if (a.son_gecerlilik_tarihi != null)
+                        {
+                            kart_bilgileri_model.son_gecerlilik_tarihi = a.son_gecerlilik_tarihi;
+                        }
+                        else
+                        {
+                            kart_bilgileri_model.son_gecerlilik_tarihi = DateTime.Now.AddYears(4);
+                        }
+
                         kart_bilgileri_model.kayit_tarihi = DateTime.Now;
                         kart_bilgileri_model.guncelleme_tarihi = DateTime.Now;
                         db.kart_bilgileri.Add(kart_bilgileri_model);
@@ -877,8 +891,14 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
         {
             if (Session["yetki_id"] != null)
             {
+                string kullanici_id = Session["kullanici_id"].ToString();
+                var kullanici_kart_tipleri = (from kb in db.kart_bilgileri where
+                                              kb.kullanici_id.ToString() == kullanici_id &&
+                                              kb.durum==1 
+                                              select kb.kart_tipi_id).ToList();
                 string kart_tipi_id = Session["kart_tipi_id"].ToString();
-                var mesajlar = (from d in db.duyurular where d.kart_tipi_id.ToString() == kart_tipi_id orderby d.id descending select d).ToList();
+                var mesajlar = (from d in db.duyurular where kullanici_kart_tipleri.Contains(d.kart_tipi_id) orderby d.id descending select d).ToList();
+                //TempData["mesaj_sayisi"] = mesajlar.Count();
                 return View(mesajlar);
             }
             else
@@ -886,6 +906,106 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
                 return RedirectToAction("Login");
             }
 
+        }
+
+        public ActionResult KisiGecisleri(int id)
+        {
+            if (Session["yetki_id"] != null)
+            {
+                var gecisler = (from vgs in db.view_gecis_loglari where vgs.kullanici_id == id select vgs).ToList();
+                return View(gecisler);
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
+
+        }
+
+        public ActionResult MailSifreGonder()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult MailSifreGonder(string username)
+        {
+            var kullanici = (from k in db.kullanicilar where k.email == username && k.aktif_mi == 1 select k).FirstOrDefault();
+            if (kullanici != null)
+            {
+
+                if (kullanici.sifre == null)
+                {
+                    Random rastgele = new Random();
+                    int sayi = rastgele.Next(10000000, 99999999);
+                    kullanici.sifre = sayi.ToString();
+                    db.SaveChanges();
+                }
+                SmtpClient sc = new SmtpClient();
+                sc.UseDefaultCredentials = false;
+                sc.Port = 587;
+                sc.Host = "smtp.live.com";
+                sc.EnableSsl = true;
+                sc.Credentials = new NetworkCredential("sifre_gonderme_hesabi@hotmail.com", "09003101344p");
+
+                MailMessage mail = new MailMessage();
+
+                mail.From = new MailAddress("sifre_gonderme_hesabi@hotmail.com", "Şifre Gönderme Sistemi");
+                mail.To.Add(kullanici.email);
+                mail.Subject = "Şifreniz"; mail.IsBodyHtml = true; mail.Body = "Kullanıcı Adınız: " + kullanici.kullanici_adi + "<br>Şifreniz:" + kullanici.sifre;
+                sc.Send(mail);
+
+                ViewData["mesaj"] = "Şifreniz e posta adresinize gönderildi.";
+            }
+            else
+            {
+                ViewData["mesaj"] = "Sistemde böyle bir e posta adresi bulunmamaktadır.";
+            }
+            return View();
+        }
+
+        public ActionResult SifreDegistir()
+        {
+            if (Session["yetki_id"] != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
+        }
+        [HttpPost]
+        public ActionResult SifreDegistir(string eski_sifre, string yeni_sifre)
+        {
+            if (Session["yetki_id"] != null)
+            {
+                int id = Convert.ToInt32(Session["kullanici_id"].ToString());
+                if (!string.IsNullOrEmpty(eski_sifre) && !string.IsNullOrEmpty(yeni_sifre))
+                {
+                    var kullanici = (from k in db.kullanicilar where k.kullanici_id == id && k.sifre == eski_sifre select k).FirstOrDefault();
+                    if (kullanici != null)
+                    {
+                        kullanici.sifre = yeni_sifre;
+                        db.SaveChanges();
+                        ViewData["mesaj"] = "Sifre Değiştirme Başarıyla Gerçekleşti.";
+                        islem.SistemLog(id, 9, " Şifre değiştirildi.");
+                    }
+                    else
+                    {
+                        ViewData["mesaj"] = "Eski Şifrenizi Doğru Giriniz!!!.";
+                    }
+                }
+                else
+                {
+                    ViewData["mesaj"] = "Boş Değer Girilemez !!!.";
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
+
+            return View();
         }
 
         private KartKullanicilari GetData()

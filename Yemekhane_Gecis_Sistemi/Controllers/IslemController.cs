@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using Yemekhane_Gecis_Sistemi.Models;
@@ -23,8 +25,19 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
             sistem_log_model.kullanici_id = kullanici_id;
             sistem_log_model.islem_tipi_id = islem_tipi_id;
             sistem_log_model.mesaj = mesaj;
+            sistem_log_model.ip = IpCek();
             db.sistem_log.Add(sistem_log_model);
             db.SaveChanges();
+        }
+        private string IpCek()
+        {
+            var webClient = new WebClient();
+
+            string dnsString = webClient.DownloadString("http://checkip.dyndns.org");
+            dnsString = (new Regex(@"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b")).Match(dnsString).Value;
+
+            webClient.Dispose();
+            return dnsString;
         }
         public void LogTut(string kartno, int islem_tipi, int islem_sonuc, double ucret, double kalan)
         {
@@ -90,15 +103,15 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
             {
                 var kart_bilgisi = (from a in db.kart_bilgileri
                                     where
-        a.kart_no == kartno &&
-        a.durum == 1 &&
-        a.son_gecerlilik_tarihi > DateTime.Now
+                                     a.kart_no == kartno &&
+                                     a.durum == 1 &&
+                                     a.son_gecerlilik_tarihi > DateTime.Now
                                     select a).FirstOrDefault();
                 var son_kullanma_tarihi = (from a in db.kart_bilgileri
                                            where
-a.kart_no == kartno &&
-a.durum == 1 &&
-a.son_gecerlilik_tarihi < DateTime.Now
+                                            a.kart_no == kartno &&
+                                            a.durum == 1 &&
+                                            a.son_gecerlilik_tarihi < DateTime.Now
                                            select a).FirstOrDefault();
                 if (kart_bilgisi != null)
                 {

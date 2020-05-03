@@ -235,9 +235,6 @@
     <Compile Include="Models\SP_KISI_GECIS_RAPOR_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ucretler.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\unvanlar.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -921,6 +918,9 @@
     <Content Include="vendor\bootstrap\css\bootstrap.css.map" />
     <Content Include="vendor\bootstrap\css\bootstrap.min.css.map" />
     <Content Include="Views\Home\DuyurulariGoruntule.cshtml" />
+    <Content Include="Views\Home\KisiGecisleri.cshtml" />
+    <Content Include="Views\Home\MailSifreGonder.cshtml" />
+    <Content Include="Views\Home\SifreDegistir.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

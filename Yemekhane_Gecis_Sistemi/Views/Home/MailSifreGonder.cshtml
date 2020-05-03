@@ -7,7 +7,7 @@
 <html lang="tr">
 
 <head>
-    <title>Giriş</title>
+    <title>Şifremi Unuttum</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
@@ -39,44 +39,26 @@
     <div class="limiter">
         <div class="container-login100">
             <div class="wrap-login100 p-t-50 p-b-90">
-                @using (Html.BeginForm("Login", "Home", FormMethod.Post,new { @class = "login100-form validate-form flex-sb flex-w" }))
-                { 
-                
+                @using (Html.BeginForm("MailSifreGonder", "Home", FormMethod.Post, new { @class = "login100-form validate-form flex-sb flex-w" }))
+                {
+
                     <span class="login100-form-title p-b-51">
-                        Yemekhane Geçiş Sistemine Giriş
+                        Şifre Gönder
                     </span>
 
 
                     <div class="wrap-input100 validate-input m-b-16" data-validate="Username is required">
-                        <input class="input100" type="text" name="username" id="username" placeholder="Kullanıcı Adı">
+                        <input class="input100" type="text" name="username" id="username" placeholder="E-posta Adresinizi Giriniz...">
                         <span class="focus-input100"></span>
                     </div>
 
 
-                    <div class="wrap-input100 validate-input m-b-16" data-validate="Password is required">
-                        <input class="input100" type="password" name="password" id="password" placeholder="Şifre">
-                        <span class="focus-input100"></span>
-                    </div>
-
-                    <div class="flex-sb-m w-full p-t-3 p-b-24">
-                        <div class="contact100-form-checkbox">
-                            @*<input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
-                            <label class="label-checkbox100" for="ckb1">
-                                Beni Hatırla
-                            </label>*@
-                        </div>
-
-                        <div>
-                            <a href="/Home/MailSifreGonder" class="txt1">
-                                Şifremi Unuttum
-                            </a>
-                        </div>
-                    </div>
+                  
 
                     <div class="container-login100-form-btn m-t-17">
-                       
+
                         <button class="login100-form-btn">
-                            Giriş
+                            Gönder
                         </button>
                         @if (ViewData["mesaj"] != null)
                         {

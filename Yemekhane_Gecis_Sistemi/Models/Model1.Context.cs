@@ -45,15 +45,9 @@ public partial class DB : DbContext
 
     public virtual DbSet<kart_tipleri> kart_tipleri { get; set; }
 
-    public virtual DbSet<ucretler> ucretler { get; set; }
-
     public virtual DbSet<unvanlar> unvanlar { get; set; }
 
-    public virtual DbSet<sistem_log> sistem_log { get; set; }
-
     public virtual DbSet<view_kullanicilar> view_kullanicilar { get; set; }
-
-    public virtual DbSet<view_sistem_log> view_sistem_log { get; set; }
 
     public virtual DbSet<view_gecis_loglari> view_gecis_loglari { get; set; }
 
@@ -66,6 +60,10 @@ public partial class DB : DbContext
     public virtual DbSet<kullanicilar> kullanicilar { get; set; }
 
     public virtual DbSet<kart_bilgileri> kart_bilgileri { get; set; }
+
+    public virtual DbSet<sistem_log> sistem_log { get; set; }
+
+    public virtual DbSet<view_sistem_log> view_sistem_log { get; set; }
 
 
     public virtual ObjectResult<SP_KISI_GECIS_RAPORU_Result> SP_KISI_GECIS_RAPORU(string baslangic_tarihi, string bitis_tarihi)

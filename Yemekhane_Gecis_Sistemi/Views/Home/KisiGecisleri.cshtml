@@ -1,0 +1,73 @@
+﻿@using Yemekhane_Gecis_Sistemi.Models
+@model List<view_gecis_loglari>
+@{
+    ViewBag.Title = "KisiGecisleri";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="form-group">
+    <div class="col-md-4">
+        <table>
+            <thead>
+                <tr>                    
+                    <th>Ad:</th>    
+                    <td>@Model.FirstOrDefault().ad</td>             
+                </tr>     
+                <tr>
+                    <th>Soyad:</th>
+                    <td>@Model.FirstOrDefault().soyad</td>
+                </tr>
+                <tr>
+                    <th>Bakiye:</th>
+                    <td>@Model.LastOrDefault().kalan_bakiye TL</td>
+                </tr>                                         
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+<br />
+<br />
+<br />
+
+<div class="form-group">
+    <div class="col-md-12">
+        <table id="tablo1" class="table table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>İşlem Tarihi</th>
+                    <th>İşlem Mesajı</th>
+                    <th>İşlem Adı</th>
+                    <th>Kart Tipi</th>
+                    <th>Ücret</th>
+                    <th>Mesaj</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var a in Model)
+                {
+                    <tr>
+                        <td>@a.log_id</td>
+                        <td>@a.kayit_tarihi</td>
+                        <td>@a.islem_mesaji</td>
+                        <td>@a.islem_adi</td>
+                        <td>@a.kart_tipi</td>
+                        <td>@a.ucret TL</td>
+                        <td>@a.mesaj</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js "></script>
+
+
+<script>
+    $('#tablo1').dataTable({});
+</script>

@@ -30,6 +30,8 @@ public partial class view_sistem_log
 
     public string mesaj { get; set; }
 
+    public string ip { get; set; }
+
 }
 
 }

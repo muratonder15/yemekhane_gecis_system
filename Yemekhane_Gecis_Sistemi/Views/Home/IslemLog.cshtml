@@ -41,10 +41,7 @@
                         <td>@ViewData["soyad"]</td>
 
                     </tr>
-                    <tr>
-                        <th>Kart Tipi:</th>
-                        <td>@ViewData["kart_tipi"]</td>
-                    </tr>
+
                     <tr>
                         <th>Bakiye:</th>
                         <td>@ViewData["bakiye"] TL</td>
@@ -61,7 +58,7 @@
     <br />
     <div class="form-group">
         <div class="col-md-12">
-            <table class="table table-hover">
+            <table id="tablo1" class="table table-hover">
                 <thead>
                     <tr>
 
@@ -94,3 +91,11 @@
         </div>
     </div>
 }
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js "></script>
+
+
+<script>
+    $('#tablo1').dataTable({});
+</script>
