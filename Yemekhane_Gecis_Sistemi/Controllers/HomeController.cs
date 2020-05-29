@@ -53,9 +53,17 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
         {
             if (Session["yetki_id"] != null)
             {
+                string kullanici_id = Session["kullanici_id"].ToString();
+                var kullanici_kart_tipleri = (from kb in db.kart_bilgileri
+                                              where
+                 kb.kullanici_id.ToString() == kullanici_id &&
+                 kb.durum == 1
+                                              select kb.kart_tipi_id).ToList();
                 string kart_tipi_id = Session["kart_tipi_id"].ToString();
-                var mesajlar = (from d in db.duyurular where d.kart_tipi_id.ToString() == kart_tipi_id orderby d.id descending select d).ToList();
+                var mesajlar = (from d in db.duyurular where kullanici_kart_tipleri.Contains(d.kart_tipi_id) orderby d.id descending select d).ToList();
                 TempData["mesaj_sayisi"] = mesajlar.Count();
+
+                
                 return View();
             }
             else
@@ -666,11 +674,9 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
                     if (kisi.Count > 0)
                     {
 
-                        ExportToExcelFile<SP_KISI_GECIS_RAPORU_Result, List<SP_KISI_GECIS_RAPORU_Result>> excelExport = new
-                        ExportToExcelFile<SP_KISI_GECIS_RAPORU_Result, List<SP_KISI_GECIS_RAPORU_Result>>();
-                        excelExport.dataToPrint = kisi;
-                        excelExport.GenerateReport();
-                        islem.SistemLog(Convert.ToInt32(Session["kullanici_id"]), 6, "Kişi geçiş raporu alındı.");
+                       
+                        Session["baslangic_tarihi"] = baslangic_tarihi;
+                        Session["bitis_tarihi"] = bitis_tarihi;
                         return View(kisi);
                     }
                     else
@@ -696,10 +702,54 @@ namespace Yemekhane_Gecis_Sistemi.Controllers
             }
 
 
+        }
+
+
+        [HttpPost]
+        public ActionResult KisiGecisRaporuExcel(string baslangic_tarihi, string bitis_tarihi)
+        {
+            baslangic_tarihi = Session["baslangic_tarihi"].ToString();
+            bitis_tarihi = Session["bitis_tarihi"].ToString() ;
+
+            if (baslangic_tarihi != "" && bitis_tarihi != "")
+            {
+
+                if (Convert.ToDateTime(baslangic_tarihi) <= Convert.ToDateTime(bitis_tarihi))
+                {
+                    List<SP_KISI_GECIS_RAPORU_Result> kisi = db.SP_KISI_GECIS_RAPORU(baslangic_tarihi, bitis_tarihi + " 23:59:59").ToList();
+                    if (kisi.Count > 0)
+                    {
+
+                        ExportToExcelFile<SP_KISI_GECIS_RAPORU_Result, List<SP_KISI_GECIS_RAPORU_Result>> excelExport = new
+                        ExportToExcelFile<SP_KISI_GECIS_RAPORU_Result, List<SP_KISI_GECIS_RAPORU_Result>>();
+                        excelExport.dataToPrint = kisi;
+                        excelExport.GenerateReport();
+                        islem.SistemLog(Convert.ToInt32(Session["kullanici_id"]), 6, "Kişi geçiş raporu alındı.");
+                         return RedirectToAction("KisiGecisRaporu");
+
+                        //return View(kisi);
+                    }
+                    else
+                    {
+                        ViewData["mesaj"] = "Belirtilen tarihlere ait geçiş kaydı bulunmamaktadır!";
+                        return View();
+                    }
+                }
+                else
+                {
+                    ViewData["mesaj"] = "Başlangıç tarihi bitiş tarihinden büyük olamaz!";
+                    return View();
+                }
 
 
 
 
+            }
+            else
+            {
+                ViewData["mesaj"] = "Tarih alanını boş bırakmayınız";
+                return View();
+            }
         }
         public ActionResult GunlukGecisRaporu()
         {

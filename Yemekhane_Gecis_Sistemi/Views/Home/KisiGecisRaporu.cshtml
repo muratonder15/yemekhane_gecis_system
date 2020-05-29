@@ -1,7 +1,7 @@
 ﻿@using Yemekhane_Gecis_Sistemi.Models
 @model  List<SP_KISI_GECIS_RAPORU_Result>
 @{
-    ViewBag.Title = "KisiGecisRaporu";
+    ViewBag.Title = "Kişi Geciş Raporu";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -39,12 +39,60 @@
 </div>
 <div class="form-group">
     <div class="col-sm-offset-1 col-sm-5">
-        <button type="submit" class="btn btn-primary">Rapor Al</button>
+        <button type="submit" class="btn btn-primary">Listele</button>
     </div>
 
 </div>
+
 }
 
+
+@if (Model != null)
+{
+    using (Html.BeginForm("KisiGecisRaporuExcel", "Home", FormMethod.Post, new { @class = "form-horizontal" }))
+    {
+<input type="hidden" id="baslangic_tarihi" name="baslangic_tarihi">
+<input type="hidden" id="bitis_tarihi" name="bitis_tarihi">
+<table class="table table-hover" id="tablo1">
+    <caption>@Session["baslangic_tarihi"].ToString() - @Session["bitis_tarihi"].ToString() Tarihleri Arasındaki Geçişleri</caption>
+    <thead>
+        <tr>
+            <th>Kullanıcı Id</th>
+            <th>Ad</th>
+            <th>Soyad</th>
+            <th>Ucret</th>
+            <th>Geçis Sayısı</th>
+            <th>Kart Tipi</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var a in Model)
+        {
+            <tr>
+                <td>@a.kullanici_id</td>
+                <td>@a.ad</td>
+                <td>@a.soyad</td>
+                <td>@a.ucret TL</td>
+                <td>@a.gecis_sayisi</td>
+                <td>@a.kart_tipi</td>
+
+            </tr>
+
+
+        }
+    </tbody>
+</table>
+<button type="submit" class="btn btn-primary">Rapor Al</button>
+    }
+}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js "></script>
+
+
+<script>
+    $('#tablo1').dataTable({});
+</script>
 
 
 

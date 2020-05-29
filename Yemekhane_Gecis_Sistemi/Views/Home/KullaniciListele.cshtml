@@ -1,7 +1,7 @@
 ﻿@using Yemekhane_Gecis_Sistemi.Models
 @model List<kullanicilar>
 @{
-    ViewBag.Title = "Kullanici Listele";
+    ViewBag.Title = "Kullanıcı Listesi";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -14,7 +14,7 @@
         </div>
     }
     </div>
-    <table class="table table-hover">
+    <table class="table table-hover" id="tablo1">
         <thead>
             <tr>
                 <th>ID</th>
@@ -26,7 +26,7 @@
                 <th>Bakiye</th>
                 <th>Detay</th>
                 <th>Güncelle</th>
-                <th>Sİl</th>
+                <th>Sil</th>
             </tr>
         </thead>
         <tbody>
@@ -68,7 +68,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    @*<button type="button" class="btn btn-primary">Save changes</button>*@
                 </div>
             </div>
         </div>
@@ -96,3 +96,11 @@
             
         }
     </script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js "></script>
+
+
+<script>
+    $('#tablo1').dataTable({});
+</script>
